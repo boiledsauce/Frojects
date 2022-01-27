@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  "web-app":
+    build: "./web-app"
+    ports:
+    - "3000:8080"
+    volumes:
+    - "./web-app/src:/web-app/src"
+  "database":
+    build: "./db"
+    environment:
+      MYSQL_ROOT_PASSWORD: "abc123"
+      MYSQL_DATABASE: "frojects"
+    ports:
+    - "3306:3306"
+    
