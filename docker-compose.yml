@@ -7,7 +7,7 @@ services:
     volumes:
     - "./web-app/src:/web-app/src"
   "database":
-    build: "./db"
+    build: "./database"
     environment:
       MYSQL_ROOT_PASSWORD: "abc123"
       MYSQL_DATABASE: "frojects"
