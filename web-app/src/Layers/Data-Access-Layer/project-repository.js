@@ -5,14 +5,14 @@ const db = require('./db')
 // Get all comments for a task
 // Create a new task
 
-exports.createProject = (userId, callback) => {
-	const query = `SELECT * FROM Project WHERE UserId = ?`
+exports.createProject = (userId) => {
+	const query = `INSERT INTO `
     const values = []
 }
 
 exports.getAllProjectsFromUserId = (userId) => {
     const query = `SELECT * FROM Project WHERE UserId = ?`
-    const values = []
+    const values = [userId]
 
     return new Promise((resolve, reject) => {
 		db.query(query, values, (error, projects) => {
@@ -26,10 +26,38 @@ exports.getAllProjectsFromUserId = (userId) => {
 	})
 }
 
+exports.getAllTasksFromProjectId = (projectId) => {
+    const query = `SELECT * FROM Task WHERE ProjectId = ?`
+    const values = [projectId]
 
-exports.getAllTasksFromProjectId = (id) => {
-    
-
+	return new Promise((resolve, reject) => {
+		db.query(query, values, (error, tasks) => {
+			if (error) {
+				reject(error)
+			}
+			else {
+				resolve(tasks)
+			}
+		})
+	})
 }
+
+exports.getAllTasksFromProjectId = (projectId) => {
+    const query = `SELECT * FROM Task WHERE ProjectId = ?`
+    const values = [projectId]
+
+	return new Promise((resolve, reject) => {
+		db.query(query, values, (error, tasks) => {
+			if (error) {
+				reject(error)
+			}
+			else {
+				resolve(tasks)
+			}
+		})
+	})
+}
+
+
 
 
