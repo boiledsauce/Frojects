@@ -22,7 +22,7 @@ exports.createProject = (name, ownerId, creationDate) => {
 	})
 }
 
-exports.getAllProjectsFromUserId = (userId) => {
+exports.getAllProjectsByUserId = (userId) => {
     const query = `SELECT * FROM Project WHERE UserId = ?`
     const values = [userId]
 
@@ -54,7 +54,7 @@ exports.createTask = (title, projectId, description, creationDate) => {
 	})
 }
 
-exports.getAllTasksFromProjectId = (projectId) => {
+exports.getAllTasksByProjectId = (projectId) => {
     const query = `SELECT * FROM Task WHERE ProjectId = ?`
     const values = [projectId]
 
