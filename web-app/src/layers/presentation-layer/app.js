@@ -1,13 +1,19 @@
-import express from 'express';
-import { engine } from 'express-handlebars';
-
+const express = require('express')
+const expressHandlebars = require('express-handlebars')
 const path = require('path')
+
 const app = express()
 const projectRouter = require('./routers/project-router')
 
 
-app.engine('handlebars', engine());
-app.set('view engine', 'handlebars');
+//View configuration
+app.engine("hbs", expressHandlebars.engine({
+    extname: "hbs"
+}))
+
+app.set('view engine', 'hbs');
+
+
 app.set('views', path.join(__dirname, "views"))
 
 app.get('/', (req, res) => {
@@ -15,7 +21,6 @@ app.get('/', (req, res) => {
 })
 
 app.use('/project', projectRouter)
-
 
 app.listen(8080, () => {
     console.log("It's up and running")
