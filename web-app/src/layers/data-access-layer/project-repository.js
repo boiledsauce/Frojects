@@ -38,8 +38,8 @@ exports.deleteProject = (projectId) => {
 	]})
 }
 
-exports.getAllProjectsFromUserId = (userId) => {
-    const query = `SELECT * FROM Project WHERE UserId = ?`
+exports.getAllProjectsByUserId = (userId) => {
+    const query = `SELECT * FROM Project WHERE OwnerId = ?`
     const values = [userId]
 
     return new Promise((resolve, reject) => {
@@ -87,7 +87,7 @@ exports.deleteTask = (taskId) => {
 	]})
 }
 
-exports.getAllTasksFromProjectId = (projectId) => {
+exports.getAllTasksByProjectId = (projectId) => {
     const query = `SELECT * FROM Task WHERE ProjectId = ?`
     const values = [projectId]
 
