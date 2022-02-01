@@ -1,0 +1,14 @@
+#sidebar{
+    height: 100vh;
+    overflow: hidden;
+    transition:width 0.4s ease-in-out;
+    width:280px;
+}
+body{
+    display: flex;
+    flex-direction: row;
+}
+main{
+    float: left;
+    width: 100%;
+}
