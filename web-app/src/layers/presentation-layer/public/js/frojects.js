@@ -4,7 +4,10 @@ document.addEventListener("DOMContentLoaded", function() {
     const button = document.querySelector("#collapse-sidebar-btn")
 
     button.addEventListener("click", function() {
-        console.log(sidebar.offsetWidth)
-        sidebar.style.width = sidebar.offsetWidth === "0" ? "280px" : "0px"
+        if (sidebar.offsetWidth == 280){
+            sidebar.style.width = "0px"
+        } else {
+            sidebar.style.width = "280px"
+        }
     })
 })
