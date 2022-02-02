@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     button.addEventListener("click", function() {
         console.log(sidebar.offsetWidth)
-        sidebar.style.width = sidebar.offsetWidth === "0" ? "280px" : "0px"
+        console.log(typeof(sidebar.offsetWidth))
+        sidebar.style.width = sidebar.offsetWidth == 0 ? "280px" : "0px"
     })
 })
