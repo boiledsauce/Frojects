@@ -1,11 +1,40 @@
 document.addEventListener("DOMContentLoaded", function() {
+
+    let showSidebar = true
+
     const sidebar = document.querySelector("#sidebar")
 
-    const button = document.querySelector("#collapse-sidebar-btn")
+    adjustSidebarToNavbar()
 
-    button.addEventListener("click", function() {
-        console.log(sidebar.offsetWidth)
-        console.log(typeof(sidebar.offsetWidth))
-        sidebar.style.width = sidebar.offsetWidth == 0 ? "280px" : "0px"
+    window.addEventListener("resize", function() {
+        adjustSidebarToNavbar()
+        if (window.innerWidth >= 992) {
+            adjustSidebarToDesktop()
+        }
     })
+
+    if (window.innerWidth < 992) {
+        
+        const toggleButton = document.querySelector("#sidebar-toggler")
+
+        toggleButton.addEventListener("click", function() {
+            if (sidebar.offsetWidth == 0) {
+                sidebar.style.width = "70%"
+                showSidebar = true
+            } else {
+                sidebar.style.width = "0px"
+                showSidebar = false
+            }
+        })
+        
+    }
+
+    function adjustSidebarToNavbar(){
+        sidebar.style.marginTop = document.querySelector("nav").offsetHeight + "px"
+    }
+
+    function adjustSidebarToDesktop(){
+        sidebar.style.width = null
+        showSidebar = true
+    }
 })
