@@ -6,8 +6,7 @@ const db = require('./db')
 // Create a new task
 
 exports.createProject = (name, ownerId, creationDate) => {
-	const query = `INSERT INTO Project VALUES (Id, Name, OwnerId, CreationDate) 
-	VALUES (?, ?, ?)`
+	const query = `INSERT INTO Project (Name, OwnerId, CreationDate) VALUES (?, ?, ?)`
     const values = [name, ownerId, creationDate]
 
 	return new Promise((resolve, reject) => {
@@ -22,8 +21,24 @@ exports.createProject = (name, ownerId, creationDate) => {
 	})
 }
 
+exports.deleteProject = (projectId) => {
+	const query = "DELETE FROM Project WHERE Id = ?"
+	const values = [projectId]
+
+	return new Promise((resolve, reject) => {[
+		db.query(query, values, (error, result) => {
+			if (error) {
+				reject(error)
+			}
+			else {
+				resolve(result)
+			}
+		})
+	]})
+}
+
 exports.getAllProjectsByUserId = (userId) => {
-    const query = `SELECT * FROM Project WHERE UserId = ?`
+    const query = `SELECT * FROM Project WHERE OwnerId = ?`
     const values = [userId]
 
     return new Promise((resolve, reject) => {
@@ -41,7 +56,7 @@ exports.getAllProjectsByUserId = (userId) => {
 exports.createTask = (title, projectId, description, creationDate) => {
 	const query = `INSERT INTO Task VALUES (?, ?, ?, ?)`
     const values = [title, projectId, description, creationDate]
-	
+
 	return new Promise((resolve, reject) => {
 		db.query(query, values, (error, result) => {
 			if (error){
@@ -52,6 +67,23 @@ exports.createTask = (title, projectId, description, creationDate) => {
 			}
 		})
 	})
+}
+
+
+exports.deleteTask = (taskId) => {
+	const query = "DELETE FROM Task WHERE Id = ?"
+	const values = [projectId]
+
+	return new Promise((resolve, reject) => {[
+		db.query(query, values, (error, result) => {
+			if (error) {
+				reject(error)
+			}
+			else {
+				resolve(result)
+			}
+		})
+	]})
 }
 
 exports.getAllTasksByProjectId = (projectId) => {
