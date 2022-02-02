@@ -1,0 +1,17 @@
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+  <h1 class="display-1 text-center">{{project.Name}}</h1>
+
+  <h1 class="display-5 text-center">Tasks of project: </h1>
+  <p>{{project}}</p>
+  <a href = "/project/{{project.Id}}/create-task">Create task</a>
+  <ul>
+    {{#each tasks}}
+      <li>{{this.Title}}</li>
+      <li>{{this.Description}}</li>
+    {{/each}}
+  </ul>
+</body>
+ 

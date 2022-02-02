@@ -10,6 +10,11 @@ exports.getAllProjectsByUserId = async (userId) => {
     return projects
 }
 
+exports.getProject = async (projectId) => {
+    const project = await projectRepository.getProject(projectId)
+    return project
+}
+
 exports.createTask = async (task) => {
     const result = await projectRepository.createTask(task.title, task.projectId, task.description, creationDate)
     return result
