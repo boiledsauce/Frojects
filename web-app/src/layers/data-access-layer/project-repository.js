@@ -70,7 +70,7 @@ exports.getProject = (projectId) => {
 }
 
 exports.createTask = (title, projectId, description, creationDate) => {
-	const query = `INSERT INTO Task VALUES (?, ?, ?, ?)`
+	const query = `INSERT INTO Task (title, projectId, description, creationDate) VALUES (?, ?, ?, ?)`
     const values = [title, projectId, description, creationDate]
 
 	return new Promise((resolve, reject) => {

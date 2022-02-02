@@ -16,7 +16,7 @@ router.get('/', async (request, response) => {
 
 router.get('/:id', async (request, response) => {
     const id = request.params.id
-    const _project = await projectManager.getProject(id)[0]
+    const _project = (await projectManager.getProject(id))[0]
     const _tasks = await projectManager.getAllTasksByProjectId(id)
     
     const model = { 
@@ -59,7 +59,7 @@ router.post('/:id/create-task', async (request, response) => {
 
     projectManager.createTask(task)
 
-    response.redirect('/:'+_id+'', task)
+    response.redirect('/project/'+_id+'')
 })
 
 router.post('/:id/create', async (request, response) => {
@@ -67,7 +67,6 @@ router.post('/:id/create', async (request, response) => {
     const _name = request.body.name
     const _time = "2021-02-02"
     const ret = await projectManager.createProject({name: _name, ownerId: _ownerId, creationDate: _time})
-    console.log(ret)
 
     response.redirect('/project')
 })

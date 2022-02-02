@@ -16,7 +16,7 @@ exports.getProject = async (projectId) => {
 }
 
 exports.createTask = async (task) => {
-    const result = await projectRepository.createTask(task.title, task.projectId, task.description, creationDate)
+    const result = await projectRepository.createTask(task.title, task.projectId, task.description, task.creationDate)
     return result
 }
 
