@@ -2,11 +2,6 @@
     --sidebar-width: 0px
 }
 
-.toggle-sidebar{
-    z-index: 2;
-    margin-right:-2rem;
-}
-
 #sidebar{
     height: 100vh;
     overflow: hidden;
