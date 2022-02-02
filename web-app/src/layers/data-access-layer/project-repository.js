@@ -53,6 +53,22 @@ exports.getAllProjectsByUserId = (userId) => {
 	})
 }
 
+exports.getProject = (projectId) => {
+    const query = `SELECT * FROM Project WHERE Id = ? LIMIT 1`
+    const values = [projectId]
+
+    return new Promise((resolve, reject) => {
+		db.query(query, values, (error, project) => {
+			if (error){
+				reject(error)
+			}
+			else {
+				resolve(project)
+			}
+		})
+	})
+}
+
 exports.createTask = (title, projectId, description, creationDate) => {
 	const query = `INSERT INTO Task VALUES (?, ?, ?, ?)`
     const values = [title, projectId, description, creationDate]
