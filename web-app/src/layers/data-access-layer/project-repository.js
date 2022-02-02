@@ -6,8 +6,7 @@ const db = require('./db')
 // Create a new task
 
 exports.createProject = (name, ownerId, creationDate) => {
-	const query = `INSERT INTO Project VALUES (Id, Name, OwnerId, CreationDate) 
-	VALUES (?, ?, ?)`
+	const query = `INSERT INTO Project (Name, OwnerId, CreationDate) VALUES (?, ?, ?)`
     const values = [name, ownerId, creationDate]
 
 	return new Promise((resolve, reject) => {
