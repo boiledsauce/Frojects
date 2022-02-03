@@ -6,8 +6,8 @@ const app = express()
 const projectRouter = require('./routers/project-router')
 
 //View configuration
-app.engine("hbs", expressHandlebars.engine({
-    extname: "hbs"
+app.engine('hbs', expressHandlebars.engine({
+    extname: 'hbs'
 }))
 
 app.use(express.urlencoded({
@@ -16,7 +16,7 @@ app.use(express.urlencoded({
 
 app.set('view engine', 'hbs');
 
-app.set('views', path.join(__dirname, "views"))
+app.set('views', path.join(__dirname, 'views'))
 
 //Public folder for static resources.
 app.use(express.static(path.join(__dirname, 'public')))

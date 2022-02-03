@@ -1,8 +1,7 @@
-projectRepository = require("../data-access-layer/project-repository")
+projectRepository = require('../data-access-layer/project-repository')
 
 exports.createProject = async (project) => {
-    const result = await projectRepository.createProject(project.name, project.ownerId, project.creationDate)
-    return result
+    return await projectRepository.createProject(project.name, project.ownerId, project.creationDate)
 }
 
 exports.getAllProjectsByUserId = async (userId) => {

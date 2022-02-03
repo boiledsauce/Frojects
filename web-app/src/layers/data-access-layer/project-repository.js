@@ -1,16 +1,16 @@
-const db = require('./db')
+const database = require('./db')
 
 // Get all tasks for a project
 // Get all tasks
 // Get all comments for a task
 // Create a new task
 
-exports.createProject = (name, ownerId, creationDate) => {
+exports.createProject = (project) => {
 	const query = `INSERT INTO Project (Name, OwnerId, CreationDate) VALUES (?, ?, ?)`
-    const values = [name, ownerId, creationDate]
+    const values = [project.name, project.ownerId, project.creationDate]
 
 	return new Promise((resolve, reject) => {
-		db.query(query, values, (error, result) => {
+		database.query(query, values, (error, result) => {
 			if (error){
 				reject(error)
 			}
@@ -26,7 +26,7 @@ exports.deleteProject = (projectId) => {
 	const values = [projectId]
 
 	return new Promise((resolve, reject) => {[
-		db.query(query, values, (error, result) => {
+		database.query(query, values, (error, result) => {
 			if (error) {
 				reject(error)
 			}
@@ -42,7 +42,7 @@ exports.getAllProjectsByUserId = (userId) => {
     const values = [userId]
 
     return new Promise((resolve, reject) => {
-		db.query(query, values, (error, projects) => {
+		database.query(query, values, (error, projects) => {
 			if (error){
 				reject(error)
 			}
@@ -58,7 +58,7 @@ exports.getProject = (projectId) => {
     const values = [projectId]
 
     return new Promise((resolve, reject) => {
-		db.query(query, values, (error, project) => {
+		database.query(query, values, (error, project) => {
 			if (error){
 				reject(error)
 			}
@@ -74,7 +74,7 @@ exports.createTask = (title, projectId, description, creationDate) => {
     const values = [title, projectId, description, creationDate]
 
 	return new Promise((resolve, reject) => {
-		db.query(query, values, (error, result) => {
+		database.query(query, values, (error, result) => {
 			if (error){
 				reject(error)
 			}
@@ -91,7 +91,7 @@ exports.deleteTask = (taskId) => {
 	const values = [projectId]
 
 	return new Promise((resolve, reject) => {[
-		db.query(query, values, (error, result) => {
+		database.query(query, values, (error, result) => {
 			if (error) {
 				reject(error)
 			}
@@ -107,7 +107,7 @@ exports.getAllTasksByProjectId = (projectId) => {
     const values = [projectId]
 
 	return new Promise((resolve, reject) => {
-		db.query(query, values, (error, tasks) => {
+		database.query(query, values, (error, tasks) => {
 			if (error) {
 				reject(error)
 			}
