@@ -10,8 +10,6 @@ services:
       - "database"
   "database":
     build: "./database"
-    extra_hosts:
-      - "host.docker.internal:172.17.0.1"
     environment:
       MYSQL_ROOT_PASSWORD: "abc123"
       MYSQL_DATABASE: "frojects"
