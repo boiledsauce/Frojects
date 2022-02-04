@@ -2,8 +2,10 @@ const express = require('express')
 const expressHandlebars = require('express-handlebars')
 const path = require('path')
 
-const app = express()
 const projectRouter = require('./routers/project-router')
+const userRouter = require('./routers/user-router')
+
+const app = express()
 
 //View configuration
 app.engine('hbs', expressHandlebars.engine({
@@ -26,6 +28,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/project', projectRouter)
+app.use('/user', userRouter)
 
 app.listen(8080, () => {
     console.log("It's up and running")
