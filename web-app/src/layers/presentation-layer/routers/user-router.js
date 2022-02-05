@@ -8,7 +8,8 @@ router.get('/register', (request, response) => {
     response.render('user/register', {layout: 'empty'})
 })
 
-router.post('/register', (request, response) => {
+router.post('/register', async (request, response) => {
+
     const user = {
         firstName: request.body.firstName,
         lastName: request.body.lastName,
@@ -17,7 +18,21 @@ router.post('/register', (request, response) => {
         confirmPassword: request.body.confirmPassword
     }
 
-    userManager.createUser(user)
+    try{
+        const insertedUserId = await userManager.createUser(user)
+        response.redirect('/' + insertedUserId)
+    } catch (errors) {
+        const model = {
+            user,
+            errors,
+            layout: 'empty'
+        }
+        response.render('user/register', model)
+    }
+
+})
+
+router.get('/:userId', (request, response) => {
 
 })
 

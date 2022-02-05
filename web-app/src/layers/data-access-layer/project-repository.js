@@ -22,19 +22,18 @@ exports.createProject = (project) => {
 }
 
 exports.deleteProject = (projectId) => {
+
 	const query = "DELETE FROM Project WHERE Id = ?"
 	const values = [projectId]
 
-	return new Promise((resolve, reject) => {[
-		database.query(query, values, (error, result) => {
-			if (error) {
+	return new Promise((resolve, reject) => {
+		database.query(query, values, (error) => {
+			if (error)
 				reject(error)
-			}
-			else {
+			else
 				resolve(result)
-			}
 		})
-	]})
+	})
 }
 
 exports.getAllProjectsByUserId = (userId) => {

@@ -1,15 +1,15 @@
 <div class="w-100 min-vh-100 d-flex justify-content-center align-items-center bg-light text-center">
-    <form style="min-width:300px" class="my-3">
+    <form method="POST" style="min-width:300px" class="my-3">
         <img class="mb-4" src="/img/frojectsBG_Dark_Low.webp" alt="" width="72" height="72">
         <h1 class="h3 mb-3 fw-normal">Skapa konto</h1>
 
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Namn">
+            <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Namn" value="{{user.firstName}}">
             <label for="firstName">Förnamn</label>
         </div>
 
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Namnsson">
+            <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Namnsson" value="{{user.lastName}}">
             <label for="lastName">Efternamn</label>
         </div>
 
@@ -25,6 +25,8 @@
             <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
             <label for="confirmPassword">Upprepa Lösenord</label>
         </div>
+
+        {{errors}}
 
         <button class="w-100 btn btn-lg btn-primary mb-3" type="submit">Registrera</button>
         <p class="small">Har du redan ett konto? <a href="/user/login">Logga in</a></p>

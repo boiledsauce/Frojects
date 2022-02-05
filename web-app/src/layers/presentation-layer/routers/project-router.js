@@ -7,7 +7,7 @@ const projectManager = require("../../business-logic-layer/project-manager")
 router.get('/', async (request, response) => {
     const projects = await projectManager.getAllProjectsByUserId(1)
     const model = { 
-        project: projects,
+        projects,
         id: 1
     }
 
@@ -16,12 +16,12 @@ router.get('/', async (request, response) => {
 
 router.get('/:id', async (request, response) => {
     const id = request.params.id
-    const _project = (await projectManager.getProject(id))[0]
-    const _tasks = await projectManager.getAllTasksByProjectId(id)
+    const project = (await projectManager.getProject(id))[0]
+    const tasks = await projectManager.getAllTasksByProjectId(id)
     
     const model = { 
-        project: _project,
-        tasks: _tasks
+        project,
+        tasks
     }
 
     response.render('view-project.hbs', model)
@@ -59,7 +59,7 @@ router.post('/:id/create-task', async (request, response) => {
 
     projectManager.createTask(task)
 
-    response.redirect('/project/'+_id+'')
+    response.redirect('/project/'+_id)
 })
 
 router.post('/:id/create', async (request, response) => {

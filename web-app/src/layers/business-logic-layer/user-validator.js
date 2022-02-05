@@ -12,7 +12,29 @@ exports.getErrorsNewUser = (user) => {
     const errors = []
 
     //Validate firstName
-    if (!user.hasOwnProperty('firstName')){
+    if (!user.firstName){
         errors.push('Förnamn saknas')
     }
+
+    //Validate lastName
+    if (!user.lastName){
+        errors.push('Efternamn saknas')
+    }
+
+    //Validate email
+    if (!user.email){
+        errors.push('E-post saknas')
+    }
+
+    //Validate password
+    if (!user.password){
+        errors.push('Lösenord saknas')
+    }
+
+    //Validate confirm password
+    if (!user.confirmPassword){
+        errors.push('Bekräftelse av lösenord saknas')
+    }
+
+    return errors
 } 
