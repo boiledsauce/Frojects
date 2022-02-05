@@ -6,7 +6,6 @@ exports.createUser = async (user) => {
     const errors = userValidator.getErrorsNewUser(user)
 
     if (errors.length > 0) {
-        console.log("Här finns errors!")
         return Promise.reject(errors)
     }
 
