@@ -22,13 +22,23 @@ router.post('/register', async (request, response) => {
         const insertedUserId = await userManager.createUser(user)
         response.redirect('/' + insertedUserId)
     } catch (errors) {
+
         const model = {
             user,
-            errors,
             layout: 'empty'
+        }
+        console.log(errors)
+        if (errors instanceof ER_DUP_ENTRY){
+            model.errors = [errors.message]
+        } else {
+            model.errors = errors
         }
         response.render('user/register', model)
     }
+
+})
+
+router.get('/login', (request, response) => {
 
 })
 
