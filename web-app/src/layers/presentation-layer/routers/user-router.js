@@ -22,13 +22,18 @@ router.post('/register', async (request, response) => {
         const insertedUserId = await userManager.createUser(user)
         response.redirect('/' + insertedUserId)
     } catch (errors) {
+
         const model = {
             user,
-            errors,
-            layout: 'empty'
+            layout: 'empty',
+            errors
         }
         response.render('user/register', model)
     }
+
+})
+
+router.get('/login', (request, response) => {
 
 })
 
