@@ -1,7 +1,18 @@
 const projectRepository = require('../data-access-layer/project-repository')
+const projectValidator = require('./project-validator')
 
 exports.createProject = async (project) => {
-    return await projectRepository.createProject(project.name, project.ownerId, project.creationDate)
+    const errors = projectValidator.getErrorsNewProject(project)
+
+    if (errors.length > 0) {
+        return Promise.reject(errors)
+    }
+
+    try {
+        return await projectRepository.createProject(project.name, project.ownerId, project.creationDate)
+    } catch (error) {
+        return Promise.reject(["Projektet kunde inte skapas i databasen"])
+    }
 }
 
 exports.getAllProjectsByUserId = async (userId) => {
