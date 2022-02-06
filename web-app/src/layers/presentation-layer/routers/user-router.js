@@ -25,13 +25,8 @@ router.post('/register', async (request, response) => {
 
         const model = {
             user,
-            layout: 'empty'
-        }
-        console.log(errors)
-        if (errors instanceof ER_DUP_ENTRY){
-            model.errors = [errors.message]
-        } else {
-            model.errors = errors
+            layout: 'empty',
+            errors
         }
         response.render('user/register', model)
     }
