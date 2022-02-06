@@ -15,7 +15,7 @@ exports.createProject = (name, ownerId, creationDate) => {
 				reject(error)
 			}
 			else {
-				resolve(result)
+				resolve(result.insertId)
 			}
 		})
 	})
@@ -78,7 +78,7 @@ exports.createTask = (title, projectId, description, creationDate) => {
 				reject(error)
 			}
 			else {
-				resolve(result)
+				resolve(result.insertId)
 			}
 		})
 	})

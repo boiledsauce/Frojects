@@ -13,7 +13,7 @@ exports.getErrorsNewProject = (project) => {
 
     if (!validator.isLength(project.name, {MIN_NAME_LENGTH, MAX_NAME_LENGTH}))
     {
-        errors.push('Projektets namn måste vara mellan '+MIN_NAME_LENGTH+' och '+MAX_NAME_LENGTH+'.')
+        errors.push('Projektets namn måste vara mellan '+ MIN_NAME_LENGTH +' och '+ MAX_NAME_LENGTH +'.')
     }
 
     if (!validator.isAlpha(project.name, ['sv-SE'])){
@@ -22,3 +22,4 @@ exports.getErrorsNewProject = (project) => {
 
     return errors
 } 
+
