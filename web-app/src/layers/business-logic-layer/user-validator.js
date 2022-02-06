@@ -1,3 +1,5 @@
+const validator = require('validator')
+
 const MIN_NAME_LENGTH = 2
 const MAX_NAME_LENGTH = 50
 
@@ -14,7 +16,10 @@ exports.getErrorsNewUser = (user) => {
     //Validate firstName
     if (!user.firstName){
         errors.push('Förnamn saknas')
-    } 
+    }
+    else if (!validator.isAlpha(user.firstName, ['sv-SE'])){
+        errors.push(`Förnamnet får bara innehålla svenska bokstäver`)
+    }
     else if (user.firstName.length < MIN_NAME_LENGTH){
         errors.push(`Förnamnet måste ha minst  ${MIN_NAME_LENGTH} bokstäver`)
     } 
@@ -26,6 +31,9 @@ exports.getErrorsNewUser = (user) => {
     if (!user.lastName){
         errors.push('Efternamn saknas')
     } 
+    else if (!validator.isAlpha(user.lastName, ['sv-SE'])){
+        errors.push(`Efternamnet får bara innehålla svenska bokstäver`)
+    }
     else if (user.lastName.length < MIN_NAME_LENGTH){
         errors.push(`Efternamnet måste ha minst  ${MIN_NAME_LENGTH} bokstäver`)
     }
@@ -37,6 +45,9 @@ exports.getErrorsNewUser = (user) => {
     if (!user.email){
         errors.push('E-post saknas')
     } 
+    else if (!user.email.includes('.')){
+        errors.push(`E-postadressen måste innehålla minst en punkt (.)`)
+    }
     else if (user.email.length < MIN_EMAIL_LENGTH){
         errors.push(`E-postadressen får inte vara kortare än ${MIN_EMAIL_LENGTH} tecken`)
     } 
@@ -45,8 +56,9 @@ exports.getErrorsNewUser = (user) => {
     }
     else if (!user.email.includes('@')){
         errors.push(`E-postadressen måste innehålla @-tecknet`)
-    } else if (!user.email.includes('.')){
-        errors.push(`E-postadressen måste innehålla minst en punkt (.)`)
+    }
+    else if (!validator.isEmail((user.email))){
+        errors.push(`Ogiltig e-postadress`)
     }
 
     //Validate password
