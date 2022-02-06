@@ -7,7 +7,7 @@ exports.createUser = async (user) => {
 
     return new Promise((resolve, reject) => {
         database.query(query, values, (error, result) => {
-            if (error) 
+            if (error)
                 reject(error)
             else
                 resolve(result.insertId)

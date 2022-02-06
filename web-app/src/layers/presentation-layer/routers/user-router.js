@@ -20,7 +20,7 @@ router.post('/register', async (request, response) => {
 
     try{
         const insertedUserId = await userManager.createUser(user)
-        response.redirect('/' + insertedUserId)
+        response.redirect('/user/' + insertedUserId)
     } catch (errors) {
 
         const model = {
@@ -38,7 +38,7 @@ router.get('/login', (request, response) => {
 })
 
 router.get('/:userId', (request, response) => {
-
+    response.render('start')
 })
 
 module.exports = router
