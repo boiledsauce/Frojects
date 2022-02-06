@@ -11,6 +11,8 @@ router.get('/', async (request, response) => {
         id: 1
     }
 
+    console.log(projects)
+
     response.render('project.hbs', model)
 })
 
@@ -66,6 +68,14 @@ router.post('/:id/create', async (request, response) => {
     const _ownerId = request.params.id
     const _name = request.body.name
     const _time = "2021-02-02"
+    console.log("HJEHEHEHE")
+    console.log(_ownerId, _name, _time)
+    console.log(_ownerId, _name, _time)
+    console.log(_ownerId, _name, _time)
+    console.log(_ownerId, _name, _time)
+    console.log(_ownerId, _name, _time)
+    console.log(_ownerId, _name, _time)
+
     const ret = await projectManager.createProject({name: _name, ownerId: _ownerId, creationDate: _time})
 
     response.redirect('/project')
