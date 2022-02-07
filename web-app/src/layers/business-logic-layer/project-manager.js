@@ -16,30 +16,40 @@ exports.createProject = async (project) => {
 }
 
 exports.getAllProjectsByUserId = async (userId) => {
-    return await projectRepository.getAllProjectsByUserId(userId)
+    try {
+       return await projectRepository.getAllProjectsByUserId(userId)
+    } catch (error) {
+        return Promise.reject(["Projekten kunde inte hämtas från databasen"])
+    }
 }
 
 exports.getProject = async (projectId) => {
-    return await projectRepository.getProject(projectId)
+    try {
+        return await projectRepository.getProject(projectId)
+    } catch (error) {
+        return Promise.reject(["Projektet kunde inte hämtas från databasen"])
+    }
 }
 
 exports.createTask = async (task) => {
     const errors = projectValidator.getErrorsNewTask(task)
-    console.log(task)
 
     if (errors.length > 0) {
         return Promise.reject(errors)
     }
 
     try {
-
         return await projectRepository.createTask(task.title, task.projectId, task.description, task.creationDate)
     } catch (error) {
-
         return Promise.reject(["Din task kunde inte skapas i databasen"])
     }
 }
 
 exports.getAllTasksByProjectId = async (projectId) => {
-    return await projectRepository.getAllTasksByProjectId(projectId)
+    try {
+        return await projectRepository.getAllTasksByProjectId(projectId)
+    }
+    catch (error) {
+        return Promise.reject(["Dina tasks kunde inte hämtas från databasen"])
+    }
 }
