@@ -18,7 +18,7 @@ router.post('/register', async (request, response) => {
         confirmPassword: request.body.confirmPassword
     }
 
-    try {
+    try{
         const insertedUserId = await userManager.createUser(user)
         response.redirect('/user/' + insertedUserId)
 
@@ -38,11 +38,30 @@ router.get('/login', (request, response) => {
     response.render('user/login', {layout: 'empty'})
 })
 
-router.post('/login', (request, response) => {
+router.post('/login', async (request, response) => {
 
-    const user = {
-        
+    const userCredentials = {
+        email: request.body.email,
+        password: request.body.password
     }
+
+    try{
+        const user = await userManager.getUserByEmail(userCredentials.email)
+
+        request.session.userId = user.Id
+
+        response.redirect('/')
+
+    } catch (errors) {
+        const model = {
+            email: userCredentials.email,
+            errors,
+            layout: 'empty'
+        }
+        response.render('user/login', model)
+    }
+
+
 })
 
 router.get('/:userId', (request, response) => {

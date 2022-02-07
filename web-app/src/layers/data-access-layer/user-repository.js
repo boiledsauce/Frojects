@@ -7,10 +7,12 @@ exports.createUser = (user) => {
 
     return new Promise((resolve, reject) => {
         database.query(query, values, (error, result) => {
-            if (error)
+            if (error){
                 reject(error)
-            else
+            }          
+            else{
                 resolve(result.insertId)
+            }
         })
     })
 
@@ -18,15 +20,21 @@ exports.createUser = (user) => {
 
 exports.getUserByEmail = (email) => {
 
-    const query = 'SELECT FROM User WHERE email = ?'
+    const query = 'SELECT * FROM User WHERE email = ?'
     const values = [email]
 
     return new Promise((resolve, reject) => {
-        database.query(query, values, (error, user) => {
-            if (error)
+        database.query(query, values, (error, userList) => {
+            console.log("user list: " + userList)
+            if (error){
                 reject(error)
-            else
-                resolve(user)
+            }   
+            else if (userList.length == 0){
+                reject()
+            }
+            else{
+                resolve(userList[0])
+            }
         })
     })
 }

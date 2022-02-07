@@ -41,8 +41,8 @@ app.set('views', path.join(__dirname, 'views'))
 //Public folder for static resources.
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.get('/', (req, res) => {
-    res.render('start')
+app.get('/', (request, response) => {
+    response.render('start')
 })
 
 app.use('/project', projectRouter)
