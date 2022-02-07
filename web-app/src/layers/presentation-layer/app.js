@@ -4,7 +4,7 @@ const path = require('path')
 const session = require('express-session')
 const RedisStore = require("connect-redis")(session)
 const { createClient } = require("redis")
-const redisClient = createClient({ host: 'redis', port: 6379 })
+const redisClient = createClient({ url: 'redis://redis:6379' })
 redisClient.connect().catch(console.error)
 
 
