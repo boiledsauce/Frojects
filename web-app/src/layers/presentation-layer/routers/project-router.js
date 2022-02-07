@@ -49,21 +49,28 @@ router.get('/:id/create-task', (request, response) => {
 })
 
 router.post('/:id/create-task', async (request, response) => {
-    const _id = request.params.id
-    const _title = request.body.title
-    const _description = request.body.description
-    const _creationDate = "2020-02-05"
 
     const task = {
-        title: _title,
-        projectId: _id,
-        description: _description,
-        creationDate: _creationDate
+        title: request.body.title,
+        projectId: request.params.id,
+        description: request.body.description,
+        creationDate: "2020-02-05"
     }
 
-    projectManager.createTask(task)
-
-    response.redirect('/project/'+_id)
+    try {
+        console.log(task.title,task.projectId,task.description,task.creationDate)
+        const insertedTaskId = await projectManager.createTask(task)
+        const projectId = request.params.id
+        console.log(request.baseUrl)
+        response.redirect(request.baseUrl + '/' + projectId)
+    }
+    catch (errors) {
+        const model = {
+            id: request.params.id,
+            errors: [errors]
+        }
+        response.render('create-task.hbs', model)
+    }
 })
 
 router.post('/:id/create', async (request, response) => {
@@ -76,14 +83,12 @@ console.log("HEHJEHE")
 
     try{
         const insertedProjectId = await projectManager.createProject(project)
-        console.log(insertedProjectId)
         response.redirect(request.baseUrl + '/' + insertedProjectId)
     } catch (errors) {
         const model = {
             id: request.params.id,
             errors: [errors]
         }
-        console.log(errors)
         response.render('create-project', model)
     }
 })

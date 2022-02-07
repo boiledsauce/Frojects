@@ -8,7 +8,7 @@ exports.createUser = async (user) => {
     if (errors.length > 0) {
         return Promise.reject(errors)
     }
-
+errors
     try{
         const insertedUserID = await userRepository.createUser(user)
         return Promise.resolve(insertedUserID)

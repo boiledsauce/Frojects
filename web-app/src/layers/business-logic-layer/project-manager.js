@@ -24,7 +24,20 @@ exports.getProject = async (projectId) => {
 }
 
 exports.createTask = async (task) => {
-    return await projectRepository.createTask(task.title, task.projectId, task.description, task.creationDate)
+    const errors = projectValidator.getErrorsNewTask(task)
+    console.log(task)
+
+    if (errors.length > 0) {
+        return Promise.reject(errors)
+    }
+
+    try {
+
+        return await projectRepository.createTask(task.title, task.projectId, task.description, task.creationDate)
+    } catch (error) {
+
+        return Promise.reject(["Din task kunde inte skapas i databasen"])
+    }
 }
 
 exports.getAllTasksByProjectId = async (projectId) => {
