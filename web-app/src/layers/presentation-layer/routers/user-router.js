@@ -18,9 +18,10 @@ router.post('/register', async (request, response) => {
         confirmPassword: request.body.confirmPassword
     }
 
-    try{
+    try {
         const insertedUserId = await userManager.createUser(user)
         response.redirect('/user/' + insertedUserId)
+
     } catch (errors) {
 
         const model = {
@@ -34,7 +35,14 @@ router.post('/register', async (request, response) => {
 })
 
 router.get('/login', (request, response) => {
+    response.render('user/login', {layout: 'empty'})
+})
 
+router.post('/login', (request, response) => {
+
+    const user = {
+        
+    }
 })
 
 router.get('/:userId', (request, response) => {
