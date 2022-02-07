@@ -4,8 +4,8 @@ const path = require('path')
 const session = require('express-session')
 const RedisStore = require("connect-redis")(session)
 const { createClient } = require("redis")
-const redisClient = createClient({ legacyMode: true,  host: 'redis', port: 6379 })
-//redisClient.connect().catch(console.error)
+const redisClient = createClient({ host: 'redis', port: 6379 })
+redisClient.connect().catch(console.error)
 
 
 const projectRouter = require('./routers/project-router')

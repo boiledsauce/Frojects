@@ -15,3 +15,18 @@ exports.createUser = (user) => {
     })
 
 }
+
+exports.getUserByEmail = (email) => {
+
+    const query = 'SELECT FROM User WHERE email = ?'
+    const values = [email]
+
+    return new Promise((resolve, reject) => {
+        database.query(query, values, (error, user) => {
+            if (error)
+                reject(error)
+            else
+                resolve(user)
+        })
+    })
+}
