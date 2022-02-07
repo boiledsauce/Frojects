@@ -8,6 +8,7 @@ services:
     - "./web-app/src:/web-app/src"
     depends_on:
       - "database"
+      - "redis"
   "database":
     build: "./database"
     environment:
@@ -15,4 +16,8 @@ services:
       MYSQL_DATABASE: "frojects"
     ports:
     - "3306:3306"
+  "redis":
+    build: "./redis"
+    ports:
+    - "6379:6379"
     
