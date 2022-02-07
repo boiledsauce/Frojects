@@ -5,32 +5,45 @@ const router = express.Router({mergeParams: true})
 const projectManager = require("../../business-logic-layer/project-manager")
 
 router.get('/', async (request, response) => {
-    const projects = await projectManager.getAllProjectsByUserId(1)
-    const model = { 
-        projects,
-        id: 1
+    try {
+        const projects = await projectManager.getAllProjectsByUserId(1)
+
+        const model = { 
+            projects,
+            id: 1
+        }
+        response.render('project.hbs', model)
+    } catch (errors) {
+        const model = {
+            errors
+        }
+        response.render('project.hbs', model)
     }
-
-    console.log(projects)
-
-    response.render('project.hbs', model)
 })
 
 router.get('/:id', async (request, response) => {
     const id = request.params.id
-    const project = (await projectManager.getProject(id))[0]
-    const tasks = await projectManager.getAllTasksByProjectId(id)
-    
-    const model = { 
-        project,
-        tasks
+
+    try {
+        const project = (await projectManager.getProject(id))[0]
+        const tasks = await projectManager.getAllTasksByProjectId(id)
+        const model = { 
+            project,
+            tasks
+        }
+        response.render('view-project.hbs', model)
+
+    } catch (errors) {
+        const model = {
+            errors
+        }
+        response.render('view-project.hbs', model)
     }
 
-    response.render('view-project.hbs', model)
 })
 
 router.get('/:id/create', (request, response) => {
-    
+
     const model = {
         id: 1
     }
@@ -40,7 +53,6 @@ router.get('/:id/create', (request, response) => {
 
 router.get('/:id/create-task', (request, response) => {
     const id = request.params.id
-    console.log(id)
     
     const model = {
         id
@@ -58,23 +70,20 @@ router.post('/:id/create-task', async (request, response) => {
     }
 
     try {
-        console.log(task.title,task.projectId,task.description,task.creationDate)
         const insertedTaskId = await projectManager.createTask(task)
         const projectId = request.params.id
-        console.log(request.baseUrl)
         response.redirect(request.baseUrl + '/' + projectId)
     }
     catch (errors) {
         const model = {
             id: request.params.id,
-            errors: [errors]
+            errors
         }
         response.render('create-task.hbs', model)
     }
 })
 
 router.post('/:id/create', async (request, response) => {
-console.log("HEHJEHE")
     const project = {
         name: request.body.name,
         ownerId: request.params.id,
@@ -87,7 +96,7 @@ console.log("HEHJEHE")
     } catch (errors) {
         const model = {
             id: request.params.id,
-            errors: [errors]
+            errors
         }
         response.render('create-project', model)
     }

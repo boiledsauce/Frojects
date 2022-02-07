@@ -4,7 +4,7 @@ const path = require('path')
 const session = require('express-session')
 const RedisStore = require("connect-redis")(session)
 const { createClient } = require("redis")
-const redisClient = createClient({ legacyMode: true,  url: 'redis://host.docker.internal:6379' })
+const redisClient = createClient({ legacyMode: true, url: 'redis://host.docker.internal:6379' })
 redisClient.connect().catch(console.error)
 
 
