@@ -61,16 +61,11 @@ router.post('/login', async (request, response) => {
         response.render('user/login', model)
     }
 
-
 })
 
 router.post('/logout', (request, response) => {
     request.session.destroy()
     response.redirect('/user/login')
-})
-
-router.get('/:userId', (request, response) => {
-    response.render('start')
 })
 
 module.exports = router

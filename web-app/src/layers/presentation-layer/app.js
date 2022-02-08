@@ -63,7 +63,7 @@ app.use('/', (request, response, next) => {
 		next()
 	}
 	else{
-		response.redirect('/user/login')
+		response.render('user/login', {layout: 'empty'})
 	}
 })
 
