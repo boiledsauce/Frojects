@@ -44,15 +44,13 @@ router.post('/login', async (request, response) => {
         email: request.body.email,
         password: request.body.password
     }
-
+    
     try{
-        const user = await userManager.getUserByEmail(userCredentials.email)
-
+    
         request.session.userId = user.Id
-
         response.redirect('/')
-
-    } catch (errors) {
+    }
+    catch (errors) {
         const model = {
             email: userCredentials.email,
             errors,

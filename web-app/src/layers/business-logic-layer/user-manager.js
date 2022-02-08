@@ -36,3 +36,11 @@ exports.getUserByEmail = async (email) => {
     }
     
 }
+
+exports.userCredentialsAreValid = async (userCredentials) => {
+
+    const user = await userRepository.getUserByEmail(userCredentials.email)
+
+    return (user.password == userCredentials.password)
+
+}

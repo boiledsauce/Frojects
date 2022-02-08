@@ -83,9 +83,10 @@ exports.getErrorsNewUser = (user) => {
     return errors
 } 
 
-exports.getErrorsLogin = (user) => {
+exports.getErrorsLogin = (userCredentials) => {
 
     //Validate email
+    
 
     //Validate password
 }
