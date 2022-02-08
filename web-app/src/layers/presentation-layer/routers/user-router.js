@@ -64,6 +64,11 @@ router.post('/login', async (request, response) => {
 
 })
 
+router.post('/logout', (request, response) => {
+    request.session.destroy()
+    response.redirect('/user/login')
+})
+
 router.get('/:userId', (request, response) => {
     response.render('start')
 })
