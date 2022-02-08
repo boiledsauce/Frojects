@@ -1,4 +1,5 @@
 {{> errors}}
+
 <head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
@@ -10,7 +11,7 @@
   <a href = "/project/{{project.Id}}/create-task">Create task</a>
   <ul>
     {{#each tasks}}
-      <li>{{this.Title}}</li>
+        <li><a href = "/project/{{../project.Id}}/task/{{this.Id}}">{{this.Title}}</a></li>
     {{/each}}
   </ul>
 </body>
