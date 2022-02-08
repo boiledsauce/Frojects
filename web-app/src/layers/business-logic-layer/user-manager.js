@@ -2,39 +2,23 @@ const userRepository = require('../data-access-layer/user-repository')
 const userValidator = require('./user-validator')
 
 exports.createUser = async (user) => {
+    const validationErrors = await userValidator.getErrorsNewUser(user)
 
-    const errors = userValidator.getErrorsNewUser(user)
-
-    if (errors.length > 0) {
-        return Promise.reject(errors)
+    if (validationErrors.length > 0){
+        return Promise.reject(validationErrors)
     }
 
-    try{
-        const insertedUserID = await userRepository.createUser(user)
-        return Promise.resolve(insertedUserID)
-    } 
-    catch (error){
-
-        if (error.code == 'ER_DUP_ENTRY'){
-            return Promise.reject(['Det finns redan en användare med den e-posten i databasen'])
-        } 
-        else {
-            return Promise.reject(['Användaren kunde inte skapas i databasen'])
-        }
-    }
+    return Promise.resolve(await userRepository.createUser(user))
 
 }
 
 exports.getUserByEmail = async (email) => {
-
     try{
-        const user = await userRepository.getUserByEmail(email)
-        return Promise.resolve(user)
+        return await userRepository.getUserByEmail(email)
     }
-    catch (error){
-        return Promise.reject(['Ingen användare med e-posten hittades i databasen'])
+    catch (error) {
+        return Promise.reject(error)
     }
-    
 }
 
 exports.userCredentialsAreValid = async (userCredentials) => {

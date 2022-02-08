@@ -19,6 +19,7 @@ router.post('/register', async (request, response) => {
     }
 
     try{
+        
         const insertedUserId = await userManager.createUser(user)
         response.redirect('/user/' + insertedUserId)
 
@@ -39,28 +40,30 @@ router.get('/login', (request, response) => {
 })
 
 router.post('/login', async (request, response) => {
-
-    const userCredentials = {
+    
+    const loginCredentials = {
         email: request.body.email,
         password: request.body.password
     }
     
     try{
+        const user = await userManager.getUserByEmail(loginCredentials.email)
 
+        console.log(user)
 
-    
-        request.session.userId = 1
+        const session = request.session
+        session.userId = 1
         response.redirect('/')
     }
     catch (errors) {
+        console.log(errors)
+        if (errors instanceof Error){
+            errors = ["Ett oväntat fel uppstod"]
+        }
         const model = {
-            email: userCredentials.email,
+            email: loginCredentials.email,
             errors,
             layout: 'empty'
-        }
-        if (errors instanceof Error){
-            console.log(errors)
-            model.errors = [errors]
         }
         response.render('user/login', model)
     }
