@@ -8,15 +8,31 @@ exports.createUser = async (user) => {
     if (errors.length > 0) {
         return Promise.reject(errors)
     }
-errors
+
     try{
         const insertedUserID = await userRepository.createUser(user)
         return Promise.resolve(insertedUserID)
-    } catch (error){
+    } 
+    catch (error){
+
         if (error.code == 'ER_DUP_ENTRY'){
-            return Promise.reject(["Det finns redan en användare med den e-posten i databasen"])
-        } else {
-            return Promise.reject(["Användaren kunde inte skapas i databasen"])
+            return Promise.reject(['Det finns redan en användare med den e-posten i databasen'])
+        } 
+        else {
+            return Promise.reject(['Användaren kunde inte skapas i databasen'])
         }
     }
+
+}
+
+exports.getUserByEmail = async (email) => {
+
+    try{
+        const user = await userRepository.getUserByEmail(email)
+        return Promise.resolve(user)
+    }
+    catch (error){
+        return Promise.reject(['Ingen användare med e-posten hittades i databasen'])
+    }
+    
 }

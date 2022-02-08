@@ -4,7 +4,8 @@ const path = require('path')
 const session = require('express-session')
 const RedisStore = require("connect-redis")(session)
 const { createClient } = require("redis")
-const redisClient = createClient({ legacyMode: true, url: 'redis://host.docker.internal:6379' })
+
+const redisClient = createClient({ url: 'redis://redis:6379' })
 redisClient.connect().catch(console.error)
 
 
@@ -41,8 +42,8 @@ app.set('views', path.join(__dirname, 'views'))
 //Public folder for static resources.
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.get('/', (req, res) => {
-    res.render('start')
+app.get('/', (request, response) => {
+    response.render('start')
 })
 
 app.use('/project', projectRouter)

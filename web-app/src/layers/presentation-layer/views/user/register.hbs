@@ -1,5 +1,7 @@
 <div class="w-100 min-vh-100 d-flex justify-content-center align-items-center bg-light text-center">
+
     <form method="POST" style="min-width:300px; max-width:50vw" class="my-3">
+
         <img class="mb-4" src="/img/frojectsBG_Dark_Low.webp" alt="" width="72" height="72">
         <h1 class="h3 mb-3 fw-normal">Skapa konto</h1>
 
@@ -17,10 +19,12 @@
             <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" value="{{user.email}}">
             <label for="email">E-post</label>
         </div>
+        
         <div class="form-floating mb-3">
             <input type="password" class="form-control" id="password" name="password" placeholder="Password">
             <label for="password">Lösenord</label>
         </div>
+
         <div class="form-floating mb-3">
             <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
             <label for="confirmPassword">Upprepa lösenord</label>
@@ -31,5 +35,7 @@
         <button class="w-100 btn btn-lg btn-primary mb-3" type="submit">Registrera</button>
         <p class="small">Har du redan ett konto? <a href="/user/login">Logga in</a></p>
         <p class="mt-5 mb-3 text-muted">© Frojects 2022</p>
+
   </form>
+
 </div>
