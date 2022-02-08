@@ -46,8 +46,10 @@ router.post('/login', async (request, response) => {
     }
     
     try{
+
+
     
-        request.session.userId = user.Id
+        request.session.userId = 1
         response.redirect('/')
     }
     catch (errors) {
@@ -55,6 +57,10 @@ router.post('/login', async (request, response) => {
             email: userCredentials.email,
             errors,
             layout: 'empty'
+        }
+        if (errors instanceof Error){
+            console.log(errors)
+            model.errors = [errors]
         }
         response.render('user/login', model)
     }
