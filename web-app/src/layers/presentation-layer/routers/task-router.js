@@ -26,5 +26,43 @@ router.get('/:taskId', async (request, response) => {
     }
 })
 
+router.get('/:taskId/create-comment', async (request, response) => {
+    try {
+        const id = request.params.id
+        const taskId = request.params.taskId
+        const task = (await taskManager.getTaskById(taskId))[0]
+
+        const model = {
+            id,
+            task
+        }
+        response.render('create-comment.hbs', model)
+    } catch (errors) {
+        const model = {
+            errors
+        }
+        response.render('create-comment.hbs', model)
+    }
+})
+
+
+router.post('/:taskId/create-comment', async (request, response) => {
+    const comment = {
+        name: request.body.text,
+        taskId: request.params.taskId,
+        creationDate: "2021-02-08"
+    }
+    try{
+        const insertedCommentId = await projectManager.createProject(comment)
+        response.redirect(request.baseUrl)
+    } catch (errors) {
+        const model = {
+            id: request.params.id,
+            errors
+        }
+        response.render('create-comment', model)
+    }
+})
+
 
 module.exports = router
