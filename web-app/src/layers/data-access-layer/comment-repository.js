@@ -18,6 +18,23 @@ exports.createComment = (text, taskId, creationDate) => {
 	})
 }
 
+exports.getAllCommentsDataFromTaskId = (taskId) => {
+    const query = `SELECT * FROM Comment WHERE TaskId = ?`
+    const values = [taskId]
+
+    return new Promise((resolve, reject) => {
+		database.query(query, values, (error, tasks) => {
+			if (error) {
+                console.log(error)
+				reject(error)
+			}
+			else {
+				resolve(tasks)
+			}
+		})
+	})
+}
+
 exports.getAllCommentsByTaskId = (taskId) => {
     const query = `SELECT * FROM Comment WHERE TaskId = ?`
     const values = [taskId]
