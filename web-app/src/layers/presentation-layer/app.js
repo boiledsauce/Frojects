@@ -1,132 +1,139 @@
-const express = require('express')
-const expressHandlebars = require('express-handlebars')
-const path = require('path')
+module.exports = function createApp({userManager}){
 
-//Use Redis database for sessions
-const session = require('express-session')
-const RedisStore = require("connect-redis")(session)
-const { createClient } = require("redis")
-const redisClient = createClient({ legacyMode: true, url: 'redis://redis:6379' })
-redisClient.connect().catch(console.error)
+	return {
 
-//Middleware for passing message with redirect
-const flash = require('express-flash')
+		async start(){
 
-//CSRF Protection
-const csrf = require("csurf")
+			const express = require('express')
+			const expressHandlebars = require('express-handlebars')
+			const path = require('path')
 
-//Router imports
-const projectRouter = require('./routers/project-router')
-const userRouter = require('./routers/user-router')
+			//Use Redis database for sessions
+			const session = require('express-session')
+			const RedisStore = require("connect-redis")(session)
+			const { createClient } = require("redis")
+			const redisClient = createClient({ legacyMode: true, url: 'redis://redis:6379' })
+			redisClient.connect().catch(console.error)
 
-const userManager = require('../business-logic-layer/user-manager')
+			//Middleware for passing message with redirect
+			const flash = require('express-flash')
 
-const app = express()
+			//CSRF Protection
+			const csrf = require("csurf")
 
-//View configuration
-app.engine('hbs', expressHandlebars.engine({
-    extname: 'hbs'
-}))
+			//Router imports
+			const projectRouter = require('./routers/project-router')
+			const userRouter = require('./routers/user-router')
 
-app.set('view engine', 'hbs')
+			const app = express()
 
-app.set('views', path.join(__dirname, 'views'))
+			//View configuration
+			app.engine('hbs', expressHandlebars.engine({
+				extname: 'hbs'
+			}))
 
-//Parse requests
-app.use(express.urlencoded({
-	extended: false
-}))
+			app.set('view engine', 'hbs')
 
-//Session configuration
-app.use(session({
-	secret: "tdffZDd>DASD",
-	store: new RedisStore({ client: redisClient }),
-	saveUninitialized: false,
-	resave: false,
-	cookie: {
-        maxAge: 1000 * 60 * 60 // milliseconds (1 hour)
-    }
-}))
+			app.set('views', path.join(__dirname, 'views'))
 
-app.use(flash())
+			//Parse requests
+			app.use(express.urlencoded({
+				extended: false
+			}))
 
-//Public folder for static resources.
-app.use(express.static(path.join(__dirname, 'public')))
+			//Session configuration
+			app.use(session({
+				secret: "tdffZDd>DASD",
+				store: new RedisStore({ client: redisClient }),
+				saveUninitialized: false,
+				resave: false,
+				cookie: {
+					maxAge: 1000 * 60 * 60 // milliseconds (1 hour)
+				}
+			}))
 
-//Make express-connect flash message available to all views
-app.use((request, response, next) => {
-    response.locals.message = request.flash("message")
-    next()
-})
+			app.use(flash())
 
-//Make the session object available to all views
-app.use((request, response, next) => {
-    response.locals.session = request.session
-    next()
-})
+			//Public folder for static resources.
+			app.use(express.static(path.join(__dirname, 'public')))
 
-app.use(csrf())
+			//Make express-connect flash message available to all views
+			app.use((request, response, next) => {
+				response.locals.message = request.flash("message")
+				next()
+			})
 
-//Make CSRF token available to all views
-app.use((request, response, next) => {
-    response.locals.csrfToken = request.csrfToken()
-    next()
-})
+			//Make the session object available to all views
+			app.use((request, response, next) => {
+				response.locals.session = request.session
+				next()
+			})
 
-//Authentication
-app.use('/app', (request, response, next) => {
-	if (userManager.userIsLoggedIn(request.session)){
-		response.render('start')
+			app.use(csrf())
+
+			//Make CSRF token available to all views
+			app.use((request, response, next) => {
+				response.locals.csrfToken = request.csrfToken()
+				next()
+			})
+
+			//Authentication
+			app.use('/app', (request, response, next) => {
+				if (userManager.userIsLoggedIn(request.session)){
+					response.render('start')
+				}
+				else{
+					response.render('errors/403', {layout: 'empty'})
+				}
+			})
+
+			//Use empty layout when not inside /app
+			app.use('/', (request, response, next) => {
+				response.locals.layout = 'empty'
+				next()
+			})
+
+			app.use('/user', userRouter)
+
+			app.use('app/projects', projectRouter)
+
+			app.get('/', (request, response) => {
+				response.render('user/welcome')
+			})
+
+			//404 Page not found error handler
+			app.use((request, response) => {
+				response.status(404).render("errors/404")
+			})
+
+			//CSRF error handler
+			app.use(function (error, request, response, next) {
+				if (error.code !== "EBADCSRFTOKEN"){
+					return next(error)
+				}
+			
+				response.status(403).render("errors/403")
+			})
+
+			/*
+			500 Internal server error handler.
+			Catches all uncaught synchronous exceptions
+			*/
+			app.use((error, request, response, next) => {
+				console.log(error)
+				response.status(500).render("errors/500")
+			})
+
+			const port = 8080
+
+			app.listen(port, (error) => {
+				if (error){
+					console.log(error)
+				}
+				else{
+					console.log("It's up and running")
+				}
+			})
+		}
 	}
-	else{
-		response.render('errors/403', {layout: 'empty'})
-	}
-})
-
-//Use empty layout when not inside /app
-app.use('/', (request, response, next) => {
-	response.locals.layout = 'empty'
-	next()
-})
-
-app.use('/user', userRouter)
-
-app.use('app/projects', projectRouter)
-
-app.get('/', (request, response) => {
-	response.render('user/welcome')
-})
-
-//404 Page not found error handler
-app.use((request, response) => {
-    response.status(404).render("errors/404")
-})
-
-//CSRF error handler
-app.use(function (error, request, response, next) {
-    if (error.code !== "EBADCSRFTOKEN"){
-		return next(error)
-	}
-   
-    response.status(403).render("errors/403")
-})
-
-/*
-500 Internal server error handler.
-Catches all uncaught synchronous exceptions
-*/
-app.use((error, request, response, next) => {
-	console.log(error)
-    response.status(500).render("errors/500")
-})
-
-const port = 8080
-
-app.listen(port, (error) => {
-	if (error){
-		console.log(error)
-	}
-	else{
-    	console.log("It's up and running")
-	}
-})
+}
