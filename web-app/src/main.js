@@ -26,32 +26,32 @@ container.register(
 // managers
 container.register(
 	'projectManager',
-	awilix.asFunction(require('./layers/layers/business-logic-layer/project-manager'))
+	awilix.asFunction(require('./layers/business-logic-layer/project-manager'))
 )
 
 container.register(
 	'taskManager',
-	awilix.asFunction(require('./layers/layers/business-logic-layer/task-manager'))
+	awilix.asFunction(require('./layers/business-logic-layer/task-manager'))
 )
 
 container.register(
 	'userManager',
-	awilix.asFunction(require('./layers/layers/business-logic-layer/user-manager'))
+	awilix.asFunction(require('./layers/business-logic-layer/user-manager'))
 )
 
 container.register(
 	'commentManager',
-	awilix.asFunction(require('./layers/layers/business-logic-layer/comment-manager'))
+	awilix.asFunction(require('./layers/business-logic-layer/comment-manager'))
 )
 
 container.register(
 	'projectManager',
-	awilix.asFunction(require('./layers/layers/business-logic-layer/project-manager'))
+	awilix.asFunction(require('./layers/business-logic-layer/project-manager'))
 )
 
 container.register(
 	'app',
-	awilix.asFunction(require('./layers/layers/presentation-layer/app'))
+	awilix.asFunction(require('./layers/presentation-layer/app'))
 )
 
 const app = container.resolve('app')

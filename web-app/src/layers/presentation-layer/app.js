@@ -80,12 +80,14 @@ module.exports = function createApp({userManager}){
 			//Authentication
 			app.use('/app', (request, response, next) => {
 				if (userManager.userIsLoggedIn(request.session)){
-					response.render('start')
+					return next()
 				}
 				else{
 					response.render('errors/403', {layout: 'empty'})
 				}
 			})
+
+			app.use('/app/project', projectRouter)
 
 			//Use empty layout when not inside /app
 			app.use('/', (request, response, next) => {
@@ -94,8 +96,6 @@ module.exports = function createApp({userManager}){
 			})
 
 			app.use('/user', userRouter)
-
-			app.use('app/projects', projectRouter)
 
 			app.get('/', (request, response) => {
 				response.render('user/welcome')
