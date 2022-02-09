@@ -1,5 +1,5 @@
-const taskRepository = require('../data-access-layer/task-repository')
 const projectValidator = require('./project-validator')
+
 module.exports = function createTaskManager({taskRepository}){
     return {    
         async createTask(task) {
