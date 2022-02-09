@@ -11,7 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+<<<<<<< HEAD
+    "awilix": "^6.1.0",
+=======
     "bcrypt": "^5.0.1",
+>>>>>>> 86443dce3dda1e55039637254169468567072343
     "connect-redis": "^6.1.0",
     "csurf": "^1.11.0",
     "express": "^4.17.2",
