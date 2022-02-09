@@ -9,6 +9,9 @@ const { createClient } = require("redis")
 const redisClient = createClient({ legacyMode: true, url: 'redis://redis:6379' })
 redisClient.connect().catch(console.error)
 
+//Middleware for passing message with redirect
+const flash = require('express-flash')
+
 //CSRF Protection
 const csrf = require("csurf")
 
@@ -25,7 +28,7 @@ app.engine('hbs', expressHandlebars.engine({
     extname: 'hbs'
 }))
 
-app.set('view engine', 'hbs');
+app.set('view engine', 'hbs')
 
 app.set('views', path.join(__dirname, 'views'))
 
@@ -45,9 +48,22 @@ app.use(session({
     }
 }))
 
+app.use(flash())
 
 //Public folder for static resources.
 app.use(express.static(path.join(__dirname, 'public')))
+
+//Make express-connect flash message available to all views
+app.use((request, response, next) => {
+    response.locals.message = request.flash("message")
+    next()
+})
+
+//Make the session object available to all views
+app.use((request, response, next) => {
+    response.locals.session = request.session
+    next()
+})
 
 app.use(csrf())
 
@@ -65,7 +81,7 @@ app.use('/app', (request, response, next) => {
 		response.render('start')
 	}
 	else{
-		response.render('errors/403')
+		response.render('errors/403', {layout: 'empty'})
 	}
 })
 
@@ -94,7 +110,8 @@ app.use(function (error, request, response, next) {
 Catches all uncaught synchronous exceptions
 */
 app.use((error, request, response, next) => {
-    response.status(500).render("errors/500", {error});
+	console.log(error)
+    response.status(500).render("errors/500", {layout: 'empty'})
 })
 
 const port = 8080

@@ -81,8 +81,17 @@ router.post('/login', async (request, response) => {
 })
 
 router.post('/logout', (request, response) => {
-    request.session.destroy()
-    response.redirect('/user/login')
+
+    const logoutValue = request.body.logout
+
+    if (logoutValue == 'logout'){
+        delete request.session.user
+
+        request.flash('message', 'Du har loggats ut')
+
+        response.redirect('/user/login')
+    }
+
 })
 
 module.exports = router
