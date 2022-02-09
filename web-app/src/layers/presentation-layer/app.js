@@ -58,6 +58,7 @@ app.use((request, response, next) => {
 app.use('/user', userRouter)
 
 //Authentication
+/*
 app.use('/', (request, response, next) => {
 	if ('userId' in request.session){
 		next()
@@ -65,7 +66,7 @@ app.use('/', (request, response, next) => {
 	else{
 		response.render('user/login', {layout: 'empty'})
 	}
-})
+})*/
 
 app.get('/', (request, response) => {
     response.render('start')

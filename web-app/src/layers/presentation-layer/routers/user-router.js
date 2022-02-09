@@ -35,11 +35,11 @@ router.post('/register', async (request, response) => {
 })
 
 router.get('/login', (request, response) => {
+    console.log("LOGGING IN")
     response.render('user/login', {layout: 'empty'})
 })
 
 router.post('/login', async (request, response) => {
-
     const userCredentials = {
         email: request.body.email,
         password: request.body.password
@@ -53,6 +53,7 @@ router.post('/login', async (request, response) => {
         response.redirect('/')
     }
     catch (errors) {
+        console.log(errors)
         const model = {
             email: userCredentials.email,
             errors,
