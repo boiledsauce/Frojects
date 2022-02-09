@@ -51,10 +51,11 @@ router.get('/:taskId/create-comment', async (request, response) => {
 
 
 router.post('/:taskId/create-comment', async (request, response) => {
-    console.log(request.params.taskId)
+
     const comment = {
         text: request.body.text,
         taskId: request.params.taskId,
+        authorId: request.params.id,
         creationDate: "2021-02-08"
     }
     try{

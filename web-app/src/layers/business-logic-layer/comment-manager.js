@@ -7,9 +7,9 @@ exports.createComment = async (comment) => {
     if (errors.length > 0) {
         return Promise.reject(errors)
     }
-*/
+*/console.log(comment)
     try {
-        return await commentRepository.createComment(comment.text, comment.taskId, comment.creationDate)
+        return await commentRepository.createComment(comment.text, comment.taskId, comment.authorId, comment.creationDate)
     } catch (error) {
         return Promise.reject(["Kommentaren kunde inte skapas i databasen"])
     }
