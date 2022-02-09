@@ -76,7 +76,6 @@ app.use((request, response, next) => {
 //Authentication
 app.use('/app', (request, response, next) => {
 	if (userManager.userIsLoggedIn(request.session)){
-		console.log("Session: " + JSON.stringify(response.locals.session))
 		response.render('start')
 	}
 	else{
@@ -92,11 +91,11 @@ app.use('/', (request, response, next) => {
 
 app.use('/user', userRouter)
 
+app.use('app/projects', projectRouter)
+
 app.get('/', (request, response) => {
 	response.render('user/welcome')
 })
-
-app.use('app/project', projectRouter)
 
 //404 Page not found error handler
 app.use((request, response) => {
