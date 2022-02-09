@@ -36,6 +36,7 @@ router.post('/register', async (request, response) => {
 })
 
 router.get('/login', (request, response) => {
+    console.log("LOGGING IN")
     response.render('user/login', {layout: 'empty'})
 })
 

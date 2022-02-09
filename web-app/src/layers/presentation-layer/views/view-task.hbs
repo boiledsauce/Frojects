@@ -10,5 +10,27 @@
   <h4 class="display-8">Date of task submitted: </h1>
       <p>{{task.CreationDate}}</p>
   </ul>
+    
+  <a href = "/project/{{projectId}}/task/{{task.Id}}/create-comment">Comment on this task</a>
+  <table>
+        <tr>
+            <th>Name: </th>
+            <th>Comment: </th>
+            <th>Date of comment: </th>
+        </tr>
+            {{#each comment.name}}
+                <td>{{this}}</td>
+            {{/each}}
+        <tr>
+            {{#each comment.description}}
+                <td>{{this}}</td>
+            {{/each}}
+        </tr>
+        <tr>
+            {{#each comment.date}}
+                {{this}}
+            {{/each}}
+        </tr>
+    </table>
 </body>
  

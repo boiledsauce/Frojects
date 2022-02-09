@@ -1,5 +1,6 @@
 {{> errors}}
-<form action="/project/{{id}}/create" method="POST">
+<form action="" method="POST">
+{{> csrfToken}}
     <div class="form-group">
         <label for="exampleInputEmail1">Project Name</label>
         <input type="text" class="form-control" name="name" aria-describedby="emailHelp" placeholder="Enter project name">
