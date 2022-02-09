@@ -1,5 +1,14 @@
 const express = require("express")
 
+createUserSession = (session, user) => {
+    session.user = {
+        id: user.Id,
+        firstName: user.FirstName,
+        lastName: user.LastName,
+        email: user.Email
+    }
+}
+
 module.exports = function({userManager}){
 
     const router = express.Router({mergeParams: true})
@@ -19,8 +28,12 @@ module.exports = function({userManager}){
         }
     
         try{
-            const insertedUserId = await userManager.createUser(user)
-            response.redirect('/user/' + insertedUserId)
+            user.id = await userManager.createUser(user)
+
+            createUserSession(request.session, user)
+
+            request.flash('message', 'Ditt konto har skapats. Välkommen till Frojects!')
+            response.redirect('/app')
     
         } catch (errors) {
     
@@ -49,12 +62,8 @@ module.exports = function({userManager}){
     
             if (await userManager.loginCredentialsMatchUser(loginCredentials, user)){
                 delete user.password
-                request.session.user = {
-                    id: user.Id,
-                    firstName: user.FirstName,
-                    lastName: user.LastName,
-                    email: user.Email
-                }
+
+                createUserSession(request.session, user)
     
                 request.flash('message', 'Välkommen in i stugan!')
                 response.redirect('/app')

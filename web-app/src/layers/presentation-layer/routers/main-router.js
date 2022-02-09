@@ -1,13 +1,13 @@
 const express = require("express")
 
-module.exports = function({projectRouter, userRouter}){
+module.exports = function({projectRouter, userRouter, userManager}){
 
     const router = express.Router({mergeParams: true})
 
     //Authentication
     router.use('/app', (request, response, next) => {
         if (userManager.userIsLoggedIn(request.session)){
-            return next()
+            next()
         }
         else{
             response.render('errors/403', {layout: 'empty'})

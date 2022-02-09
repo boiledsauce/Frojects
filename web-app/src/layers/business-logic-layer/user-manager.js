@@ -3,6 +3,26 @@ const saltRounds = 10
 
 const userValidator = require('./user-validator')
 
+getHashFromPassword = async (password) => {
+    return new Promise((resolve, reject) => {
+        bcrypt.genSalt(saltRounds, (error, salt) => {
+            if (error){
+                console.log(error)
+                reject(['Ett salt för lösenordet kunde inte genereras'])
+            }
+    
+            bcrypt.hash(password, salt, (error, hash) => {
+                if (error){
+                    console.log(error)
+                    reject(['Lösenordet kunde inte hashas'])
+                }
+                
+                resolve(hash)
+            })
+        })
+    })
+}
+
 module.exports = function createUserManager({userRepository}){
 
     return {
@@ -16,7 +36,6 @@ module.exports = function createUserManager({userRepository}){
                 }
             
                 user.hashedPassword = await getHashFromPassword(user.password)
-                console.log("Hashat: " + user.hashedPassword)
                 delete user.password
         
                 return await userRepository.createUser(user)
@@ -52,28 +71,8 @@ module.exports = function createUserManager({userRepository}){
             })
         },
         
-        async userIsLoggedIn(session){
-            return ('user' in session)
-        },
-        
-        async getHashFromPassword(password){
-            return new Promise((resolve, reject) => {
-                bcrypt.genSalt(saltRounds, (error, salt) => {
-                    if (error){
-                        console.log(error)
-                        reject(['Ett salt för lösenordet kunde inte genereras'])
-                    }
-            
-                    bcrypt.hash(password, salt, (error, hash) => {
-                        if (error){
-                            console.log(error)
-                            reject(['Lösenordet kunde inte hashas'])
-                        }
-                        
-                        resolve(hash)
-                    })
-                })
-            })
+        userIsLoggedIn(session){
+            return session.hasOwnProperty('user')
         }
 
     }
