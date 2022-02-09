@@ -9,12 +9,17 @@ const { createClient } = require("redis")
 const redisClient = createClient({ legacyMode: true, url: 'redis://redis:6379' })
 redisClient.connect().catch(console.error)
 
+//Middleware for passing message with redirect
+const flash = require('express-flash')
+
 //CSRF Protection
 const csrf = require("csurf")
 
 //Router imports
 const projectRouter = require('./routers/project-router')
 const userRouter = require('./routers/user-router')
+
+const userManager = require('../business-logic-layer/user-manager')
 
 const app = express()
 
@@ -23,7 +28,7 @@ app.engine('hbs', expressHandlebars.engine({
     extname: 'hbs'
 }))
 
-app.set('view engine', 'hbs');
+app.set('view engine', 'hbs')
 
 app.set('views', path.join(__dirname, 'views'))
 
@@ -43,9 +48,22 @@ app.use(session({
     }
 }))
 
+app.use(flash())
 
 //Public folder for static resources.
 app.use(express.static(path.join(__dirname, 'public')))
+
+//Make express-connect flash message available to all views
+app.use((request, response, next) => {
+    response.locals.message = request.flash("message")
+    next()
+})
+
+//Make the session object available to all views
+app.use((request, response, next) => {
+    response.locals.session = request.session
+    next()
+})
 
 app.use(csrf())
 
@@ -55,28 +73,57 @@ app.use((request, response, next) => {
     next()
 })
 
-app.use('/user', userRouter)
-
 //Authentication
-
-app.use('/', (request, response, next) => {
-	if ('userId' in request.session){
-		next()
+app.use('/app', (request, response, next) => {
+	if (userManager.userIsLoggedIn(request.session)){
+		console.log("Session: " + JSON.stringify(response.locals.session))
+		response.render('start')
 	}
 	else{
-		response.render('user/welcome', {layout: 'empty'})
+		response.render('errors/403', {layout: 'empty'})
 	}
 })
 
-app.get('/', (request, response) => {
-    response.render('start')
+//Use empty layout when not inside /app
+app.use('/', (request, response, next) => {
+	response.locals.layout = 'empty'
+	next()
 })
 
-app.use('/project', projectRouter)
+app.use('/user', userRouter)
 
-const PORT = 8080
+app.get('/', (request, response) => {
+	response.render('user/welcome')
+})
 
-app.listen(PORT, (error) => {
+app.use('app/project', projectRouter)
+
+//404 Page not found error handler
+app.use((request, response) => {
+    response.status(404).render("errors/404")
+})
+
+//CSRF error handler
+app.use(function (error, request, response, next) {
+    if (error.code !== "EBADCSRFTOKEN"){
+		return next(error)
+	}
+   
+    response.status(403).render("errors/403")
+})
+
+/*
+500 Internal server error handler.
+Catches all uncaught synchronous exceptions
+*/
+app.use((error, request, response, next) => {
+	console.log(error)
+    response.status(500).render("errors/500")
+})
+
+const port = 8080
+
+app.listen(port, (error) => {
 	if (error){
 		console.log(error)
 	}
