@@ -41,12 +41,8 @@ router.get('/login', (request, response) => {
 })
 
 router.post('/login', async (request, response) => {
-<<<<<<< HEAD
-    const userCredentials = {
-=======
     
     const loginCredentials = {
->>>>>>> 6c889b8e60a2f61d596d86f0109dbdce8a4797b2
         email: request.body.email,
         password: request.body.password
     }
@@ -62,12 +58,9 @@ router.post('/login', async (request, response) => {
     }
     catch (errors) {
         console.log(errors)
-<<<<<<< HEAD
-=======
         if (errors instanceof Error){
             errors = ["Ett oväntat fel uppstod"]
         }
->>>>>>> 6c889b8e60a2f61d596d86f0109dbdce8a4797b2
         const model = {
             email: loginCredentials.email,
             errors,

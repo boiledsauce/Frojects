@@ -4,6 +4,7 @@ const express = require("express")
 const router = express.Router({mergeParams: true})
 
 const taskManager = require("../../business-logic-layer/task-manager")
+const commentManager = require("../../business-logic-layer/comment-manager")
 
 router.get('/', async (request, response) => {
     response.sendStatus(404)
@@ -27,18 +28,21 @@ router.get('/:taskId', async (request, response) => {
 })
 
 router.get('/:taskId/create-comment', async (request, response) => {
-    try {
-        const id = request.params.id
-        const taskId = request.params.taskId
-        const task = (await taskManager.getTaskById(taskId))[0]
+    
 
+    try {
+        const task = (await taskManager.getTaskById(taskId))[0]
         const model = {
-            id,
+            id: request.params.id,
+            taskId: request.params.taskId,
             task
         }
-        response.render('create-comment.hbs', model)
+        
+        response.redirect(router.baseUrl, model)
     } catch (errors) {
         const model = {
+            id: request.params.id,
+            taskId: request.params.taskId,
             errors
         }
         response.render('create-comment.hbs', model)
@@ -47,17 +51,19 @@ router.get('/:taskId/create-comment', async (request, response) => {
 
 
 router.post('/:taskId/create-comment', async (request, response) => {
+    console.log(request.params.taskId)
     const comment = {
-        name: request.body.text,
+        text: request.body.text,
         taskId: request.params.taskId,
         creationDate: "2021-02-08"
     }
     try{
-        const insertedCommentId = await projectManager.createProject(comment)
+        const insertedCommentId = await commentManager.createComment(comment)
         response.redirect(request.baseUrl)
     } catch (errors) {
         const model = {
             id: request.params.id,
+            taskId: request.params.taskId,
             errors
         }
         response.render('create-comment', model)
