@@ -16,6 +16,8 @@ const csrf = require("csurf")
 const projectRouter = require('./routers/project-router')
 const userRouter = require('./routers/user-router')
 
+const userManager = require('../business-logic-layer/user-manager')
+
 const app = express()
 
 //View configuration
@@ -58,24 +60,46 @@ app.use((request, response, next) => {
 app.use('/user', userRouter)
 
 //Authentication
-app.use('/', (request, response, next) => {
-	if ('userId' in request.session){
-		next()
+app.use('/app', (request, response, next) => {
+	if (userManager.userIsLoggedIn(request.session)){
+		response.render('start')
 	}
 	else{
-		response.render('user/welcome', {layout: 'empty'})
+		response.render('errors/403')
 	}
 })
 
 app.get('/', (request, response) => {
-    response.render('start')
+	response.render('user/welcome', {layout: 'empty'})
 })
 
-app.use('/project', projectRouter)
+app.use('app/project', projectRouter)
 
-const PORT = 8080
+//404 Page not found error handler
+app.use((request, response) => {
+    response.status(404).render("errors/404", {layout: 'empty'})
+})
 
-app.listen(PORT, (error) => {
+//CSRF error handler
+app.use(function (error, request, response, next) {
+    if (error.code !== "EBADCSRFTOKEN"){
+		return next(error)
+	}
+   
+    response.status(403).render("errors/403", {layout: 'empty'})
+})
+
+/*
+500 Internal server error handler.
+Catches all uncaught synchronous exceptions
+*/
+app.use((error, request, response, next) => {
+    response.status(500).render("errors/500", {error});
+})
+
+const port = 8080
+
+app.listen(port, (error) => {
 	if (error){
 		console.log(error)
 	}

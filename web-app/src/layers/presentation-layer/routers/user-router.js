@@ -1,4 +1,5 @@
 const express = require("express")
+const session = require("express-session")
 
 const router = express.Router({mergeParams: true})
 
@@ -19,7 +20,6 @@ router.post('/register', async (request, response) => {
     }
 
     try{
-        
         const insertedUserId = await userManager.createUser(user)
         response.redirect('/user/' + insertedUserId)
 
@@ -49,11 +49,20 @@ router.post('/login', async (request, response) => {
     try{
         const user = await userManager.getUserByEmail(loginCredentials.email)
 
-        console.log(user)
+        if (await userManager.loginCredentialsMatchUser(loginCredentials, user)){
+            delete user.password
+            request.session.user = user
 
-        const session = request.session
-        session.userId = 1
-        response.redirect('/')
+            response.redirect('/app')
+        }
+        else{
+            const model = {
+                email: loginCredentials.email,
+                errors: ['Felaktigt lösenord'],
+                layout: 'empty'
+            }
+            response.render('user/login', model)
+        }
     }
     catch (errors) {
         console.log(errors)

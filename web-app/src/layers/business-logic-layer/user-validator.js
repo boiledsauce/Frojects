@@ -9,7 +9,7 @@ const MAX_EMAIL_LENGTH = 254
 const MIN_PASSWORD_LENGTH = 6
 const MAX_PASSWORD_LENGTH = 60
 
-exports.getErrorsNewUser = async (user) => {
+exports.getErrorsNewUser = (user) => {
     
     const errors = []
 
@@ -82,11 +82,3 @@ exports.getErrorsNewUser = async (user) => {
 
     return errors
 } 
-
-exports.getErrorsLogin = (userCredentials) => {
-
-    //Validate email
-    
-
-    //Validate password
-}
