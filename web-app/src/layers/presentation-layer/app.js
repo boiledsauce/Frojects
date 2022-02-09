@@ -64,7 +64,7 @@ app.use('/', (request, response, next) => {
 		next()
 	}
 	else{
-		response.render('user/login', {layout: 'empty'})
+		response.render('user/welcome', {layout: 'empty'})
 	}
 })*/
 
@@ -74,7 +74,9 @@ app.get('/', (request, response) => {
 
 app.use('/project', projectRouter)
 
-app.listen(8080, (error) => {
+const PORT = 8080
+
+app.listen(PORT, (error) => {
 	if (error){
 		console.log(error)
 	}
