@@ -73,11 +73,10 @@ app.use((request, response, next) => {
     next()
 })
 
-app.use('/user', userRouter)
-
 //Authentication
 app.use('/app', (request, response, next) => {
 	if (userManager.userIsLoggedIn(request.session)){
+		console.log("Session: " + JSON.stringify(response.locals.session))
 		response.render('start')
 	}
 	else{
@@ -85,15 +84,23 @@ app.use('/app', (request, response, next) => {
 	}
 })
 
+//Use empty layout when not inside /app
+app.use('/', (request, response, next) => {
+	response.locals.layout = 'empty'
+	next()
+})
+
+app.use('/user', userRouter)
+
 app.get('/', (request, response) => {
-	response.render('user/welcome', {layout: 'empty'})
+	response.render('user/welcome')
 })
 
 app.use('app/project', projectRouter)
 
 //404 Page not found error handler
 app.use((request, response) => {
-    response.status(404).render("errors/404", {layout: 'empty'})
+    response.status(404).render("errors/404")
 })
 
 //CSRF error handler
@@ -102,7 +109,7 @@ app.use(function (error, request, response, next) {
 		return next(error)
 	}
    
-    response.status(403).render("errors/403", {layout: 'empty'})
+    response.status(403).render("errors/403")
 })
 
 /*
@@ -111,7 +118,7 @@ Catches all uncaught synchronous exceptions
 */
 app.use((error, request, response, next) => {
 	console.log(error)
-    response.status(500).render("errors/500", {layout: 'empty'})
+    response.status(500).render("errors/500")
 })
 
 const port = 8080

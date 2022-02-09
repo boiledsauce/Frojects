@@ -6,7 +6,7 @@ const router = express.Router({mergeParams: true})
 const userManager = require('../../business-logic-layer/user-manager')
 
 router.get('/register', (request, response) => {
-    response.render('user/register', {layout: 'empty'})
+    response.render('user/register')
 })
 
 router.post('/register', async (request, response) => {
@@ -27,7 +27,6 @@ router.post('/register', async (request, response) => {
 
         const model = {
             user,
-            layout: 'empty',
             errors
         }
         response.render('user/register', model)
@@ -36,8 +35,7 @@ router.post('/register', async (request, response) => {
 })
 
 router.get('/login', (request, response) => {
-    console.log("LOGGING IN")
-    response.render('user/login', {layout: 'empty'})
+    response.render('user/login')
 })
 
 router.post('/login', async (request, response) => {
@@ -54,13 +52,13 @@ router.post('/login', async (request, response) => {
             delete user.password
             request.session.user = user
 
+            request.flash('message', 'Välkommen in i stugan!')
             response.redirect('/app')
         }
         else{
             const model = {
                 email: loginCredentials.email,
-                errors: ['Felaktigt lösenord'],
-                layout: 'empty'
+                errors: ['Felaktigt lösenord']
             }
             response.render('user/login', model)
         }
@@ -72,8 +70,7 @@ router.post('/login', async (request, response) => {
         }
         const model = {
             email: loginCredentials.email,
-            errors,
-            layout: 'empty'
+            errors
         }
         response.render('user/login', model)
     }
