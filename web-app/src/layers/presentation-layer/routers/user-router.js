@@ -50,7 +50,12 @@ router.post('/login', async (request, response) => {
 
         if (await userManager.loginCredentialsMatchUser(loginCredentials, user)){
             delete user.password
-            request.session.user = user
+            request.session.user = {
+                id: user.Id,
+                firstName: user.FirstName,
+                lastName: user.LastName,
+                email: user.Email
+            }
 
             request.flash('message', 'Välkommen in i stugan!')
             response.redirect('/app')
