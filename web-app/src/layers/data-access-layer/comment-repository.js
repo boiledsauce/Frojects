@@ -3,7 +3,7 @@ const database = require('./db')
 exports.createComment = (text, taskId, creationDate) => {
 	const query = `INSERT INTO Comment (Text, TaskId, CreationDate) VALUES (?, ?, ?)`
     const values = [text, taskId, creationDate]
-
+    
 	return new Promise((resolve, reject) => {
 		database.query(query, values, (error, result) => {
 			if (error){

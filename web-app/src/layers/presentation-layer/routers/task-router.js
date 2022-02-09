@@ -16,7 +16,8 @@ router.get('/:taskId', async (request, response) => {
         const task = (await taskManager.getTaskById(taskId))[0]
 
         const model = {
-            task
+            task,
+            projectId: request.params.id
         }
         response.render('view-task.hbs', model)
     } catch (errors) {
@@ -37,8 +38,7 @@ router.get('/:taskId/create-comment', async (request, response) => {
             taskId: request.params.taskId,
             task
         }
-        
-        response.redirect(router.baseUrl, model)
+        response.render('create-comment.hbs', model)
     } catch (errors) {
         const model = {
             id: request.params.id,
@@ -59,14 +59,15 @@ router.post('/:taskId/create-comment', async (request, response) => {
     }
     try{
         const insertedCommentId = await commentManager.createComment(comment)
-        response.redirect(request.baseUrl)
+        response.redirect(`/project/${request.params.id}/task/${request.params.taskId}`)
     } catch (errors) {
         const model = {
             id: request.params.id,
             taskId: request.params.taskId,
             errors
         }
-        response.render('create-comment', model)
+        console.log(errors)
+        response.render('create-comment.hbs', model)
     }
 })
 
