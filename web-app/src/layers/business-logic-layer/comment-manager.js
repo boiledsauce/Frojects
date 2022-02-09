@@ -8,7 +8,6 @@ exports.createComment = async (comment) => {
         return Promise.reject(errors)
     }
 */
-console.log
     try {
         return await commentRepository.createComment(comment.text, comment.taskId, comment.creationDate)
     } catch (error) {
