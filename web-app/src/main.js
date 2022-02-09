@@ -50,6 +50,26 @@ container.register(
 )
 
 container.register(
+	'mainRouter',
+	awilix.asFunction(require('./layers/presentation-layer/routers/main-router'))
+)
+
+container.register(
+	'projectRouter',
+	awilix.asFunction(require('./layers/presentation-layer/routers/project-router'))
+)
+
+container.register(
+	'taskRouter',
+	awilix.asFunction(require('./layers/presentation-layer/routers/task-router'))
+)
+
+container.register(
+	'userRouter',
+	awilix.asFunction(require('./layers/presentation-layer/routers/user-router'))
+)
+
+container.register(
 	'app',
 	awilix.asFunction(require('./layers/presentation-layer/app'))
 )
