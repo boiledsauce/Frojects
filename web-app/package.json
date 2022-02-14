@@ -23,6 +23,7 @@
     "node-gyp": "^8.4.1",
     "nodemon": "^2.0.15",
     "redis": "^4.0.3",
+    "sequelize": "^6.16.1",
     "validator": "^13.7.0"
   }
 }
