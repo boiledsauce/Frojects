@@ -1,4 +1,4 @@
-module.exports = function createApp({userManager}){
+module.exports = function createApp({mainRouter}){
 
 	return {
 
@@ -20,10 +20,6 @@ module.exports = function createApp({userManager}){
 
 			//CSRF Protection
 			const csrf = require("csurf")
-
-			//Router imports
-			const projectRouter = require('./routers/project-router')
-			const userRouter = require('./routers/user-router')
 
 			const app = express()
 
@@ -48,7 +44,7 @@ module.exports = function createApp({userManager}){
 				saveUninitialized: false,
 				resave: false,
 				cookie: {
-					maxAge: 1000 * 60 * 60 // milliseconds (1 hour)
+					maxAge: 1000 * 60 * 60 // (1 hour)
 				}
 			}))
 
@@ -77,29 +73,7 @@ module.exports = function createApp({userManager}){
 				next()
 			})
 
-			//Authentication
-			app.use('/app', (request, response, next) => {
-				if (userManager.userIsLoggedIn(request.session)){
-					response.render('start')
-				}
-				else{
-					response.render('errors/403', {layout: 'empty'})
-				}
-			})
-
-			//Use empty layout when not inside /app
-			app.use('/', (request, response, next) => {
-				response.locals.layout = 'empty'
-				next()
-			})
-
-			app.use('/user', userRouter)
-
-			app.use('app/projects', projectRouter)
-
-			app.get('/', (request, response) => {
-				response.render('user/welcome')
-			})
+			app.use('/', mainRouter)
 
 			//404 Page not found error handler
 			app.use((request, response) => {
