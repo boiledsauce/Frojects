@@ -16,23 +16,14 @@ module.exports = function createProjectRepository(){
 					OwnerId: ownerId,
 					CreationDate: "2012-11-11"
 				})
+
+				const createdId = project.dataValues.Id
+				return createdId
+
 			} catch (error) {
 				console.error(error)
 				throw error
 			}
-			/*const query = `INSERT INTO Project (Name, OwnerId, CreationDate) VALUES (?, ?, ?)`
-			const values = [name, ownerId, creationDate]
-		
-			return new Promise((resolve, reject) => {
-				database.query(query, values, (error, result) => {
-					if (error){
-						reject(error)
-					}
-					else {
-						resolve(result.insertId)
-					}
-				})
-			})*/
 		},
 		
 		async deleteProject(projectId){
