@@ -1,75 +1,61 @@
-const database = require('./db')
+const {database, models} = require('./db')
 
 module.exports = function createTaskRepository(){
-
 	return {
-
 		async createTask(title, projectId, description, creationDate){
-			const query = `INSERT INTO Task (title, projectId, description, creationDate) VALUES (?, ?, ?, ?)`
-			const values = [title, projectId, description, creationDate]
-
-			return new Promise((resolve, reject) => {
-				database.query(query, values, (error, result) => {
-					if (error){
-						reject(error)
-					}
-					else {
-						resolve(result.insertId)
-					}
+			try {
+				const task = await models.Task.create({
+					Title: title,
+					ProjectId: projectId,
+					Description: description,
+					CreationDate: creationDate
 				})
-			})
+				const createdId = task.dataValues.Id
+				return createdId
+			} catch (error) {
+				console.error(error)
+				throw error
+			}
 		},
 
-
 		async deleteTask(taskId){
-			const query = "DELETE FROM Task WHERE Id = ?"
-			const values = [taskId]
-
-			return new Promise((resolve, reject) => {[
-				database.query(query, values, (error, result) => {
-					if (error) {
-						reject(error)
-					}
-					else {
-						resolve(result)
+			try {
+				models.Task.destroy({
+					where: {
+						Id: taskId
 					}
 				})
-			]})
+			}
+			catch (error) {
+				console.error(error)
+				throw error
+			}
 		},
 
 		async getAllTasksByProjectId(projectId){
-			const query = `SELECT * FROM Task WHERE ProjectId = ?`
-			const values = [projectId]
-
-			return new Promise((resolve, reject) => {
-				database.query(query, values, (error, tasks) => {
-					if (error) {
-						reject(error)
-					}
-					else {
-						resolve(tasks)
+			try {
+				const tasks = await models.Task.findAll({
+					where: {
+						ProjectId: projectId
 					}
 				})
-			})
+			} catch (error) {
+				console.error(error)
+				throw error
+			}
 		},
 
 		async getTaskById(taskId){
-			const query = `SELECT * FROM Task WHERE Id = ?`
-			const values = [taskId]
-
-			return new Promise((resolve, reject) => {
-				database.query(query, values, (error, tasks) => {
-					if (error) {
-						reject(error)
-					}
-					else {
-						resolve(tasks)
+			try {
+				const task = await models.Task.findOne({
+					where: {
+						Id: taskId
 					}
 				})
-			})
+			} catch (error) {
+				console.error(error)
+				throw error
+			}
 		}
-
 	}
 }
-
-
