@@ -1,4 +1,4 @@
-const database = require('./db')
+const {database, models} = require('./db')
 
 module.exports = function createProjectRepository(){
 
@@ -10,7 +10,17 @@ module.exports = function createProjectRepository(){
 		// Create a new task
 		
 		async createProject(name, ownerId, creationDate){
-			const query = `INSERT INTO Project (Name, OwnerId, CreationDate) VALUES (?, ?, ?)`
+			try {
+				const project = await models.Project.create({
+					Name: name,
+					OwnerId: ownerId,
+					CreationDate: "2012-11-11"
+				})
+			} catch (error) {
+				console.error(error)
+				throw error
+			}
+			/*const query = `INSERT INTO Project (Name, OwnerId, CreationDate) VALUES (?, ?, ?)`
 			const values = [name, ownerId, creationDate]
 		
 			return new Promise((resolve, reject) => {
@@ -22,7 +32,7 @@ module.exports = function createProjectRepository(){
 						resolve(result.insertId)
 					}
 				})
-			})
+			})*/
 		},
 		
 		async deleteProject(projectId){
@@ -43,7 +53,7 @@ module.exports = function createProjectRepository(){
 		async getAllProjectsByUserId(userId){
 			const query = `SELECT * FROM Project WHERE OwnerId = ?`
 			const values = [userId]
-		
+			console.log("HEHE")
 			return new Promise((resolve, reject) => {
 				database.query(query, values, (error, projects) => {
 					if (error){
@@ -63,6 +73,7 @@ module.exports = function createProjectRepository(){
 			return new Promise((resolve, reject) => {
 				database.query(query, values, (error, project) => {
 					if (error){
+						console.error(error)
 						reject(error)
 					}
 					else {

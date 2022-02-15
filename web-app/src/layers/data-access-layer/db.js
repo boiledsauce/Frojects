@@ -1,4 +1,7 @@
 const mysql = require('mysql')
+const setUpSequelize = require('./models/init-models');
+
+const { Sequelize /*, Model, DataTypes*/ } = require('sequelize');
 
 const connection = mysql.createConnection({
 	host     : 'database',
@@ -8,4 +11,14 @@ const connection = mysql.createConnection({
 	database : 'frojects'
 })
 
-module.exports = connection
+
+const sequelize = new Sequelize('frojects', 'root', 'abc123', {
+	host: 'database',
+	port: 3306,
+	dialect: 'mysql'
+});
+
+const models = setUpSequelize.initModels(sequelize)
+
+module.exports = {database: connection, models}
+	//sequelize

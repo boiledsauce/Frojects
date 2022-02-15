@@ -8,11 +8,12 @@ module.exports = function({taskRouter, projectManager, taskManager}){
     //http://localhost:3000/project/35/task/49
     router.get('/', async (request, response) => {
         try {
-            const projects = await projectManager.getAllProjectsByUserId(1)
+            const userId = request.session.user.id
+            const projects = await projectManager.getAllProjectsByUserId(userId)
     
             const model = { 
                 projects,
-                id: 1
+                id: userId
             }
             response.render('project.hbs', model)
         } catch (errors) {
@@ -22,7 +23,36 @@ module.exports = function({taskRouter, projectManager, taskManager}){
             response.render('project.hbs', model)
         }
     })
+
+    router.get('/create', (request, response) => {
     
+        const model = {
+            id: request.session.user.id
+        }
+    
+        response.render('create-project.hbs', model)
+    })
+
+     
+    router.post('/create', async (request, response) => {
+        const project = {
+            name: request.body.name,
+            ownerId: request.session.user.id,
+            creationDate: "2021-02-02"
+        }
+        console.log(project.ownerId)
+        try{
+            const insertedProjectId = await projectManager.createProject(project)
+            response.redirect(request.baseUrl + '/' + insertedProjectId)
+        } catch (errors) {
+            const model = {
+                id: request.params.id,
+                errors
+            }
+            response.render('create-project', model)
+        }
+    })
+
     router.get('/:id', async (request, response) => {
         const id = request.params.id
     
@@ -46,14 +76,7 @@ module.exports = function({taskRouter, projectManager, taskManager}){
     
     })
     
-    router.get('/:id/create', (request, response) => {
-    
-        const model = {
-            id: 1
-        }
-    
-        response.render('create-project.hbs', model)
-    })
+ 
     
     /*
     router.get('/:id', (request, response) => {
@@ -132,25 +155,7 @@ module.exports = function({taskRouter, projectManager, taskManager}){
         }
     })
     */
-    
-    router.post('/:id/create', async (request, response) => {
-        const project = {
-            name: request.body.name,
-            ownerId: request.params.id,
-            creationDate: "2021-02-02"
-        }
-    
-        try{
-            const insertedProjectId = await projectManager.createProject(project)
-            response.redirect(request.baseUrl + '/' + insertedProjectId)
-        } catch (errors) {
-            const model = {
-                id: request.params.id,
-                errors
-            }
-            response.render('create-project', model)
-        }
-    })
+   
     
     return router
 

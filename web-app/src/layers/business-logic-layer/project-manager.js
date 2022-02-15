@@ -3,6 +3,7 @@ const projectValidator = require('./project-validator')
 module.exports = function createProjectManager({projectRepository}){
     return {
          async createProject(project) {
+             console.log(project)
                 const errors = projectValidator.getErrorsNewProject(project)
 
                 if (errors.length > 0) {
