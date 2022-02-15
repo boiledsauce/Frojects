@@ -34,7 +34,7 @@ module.exports = function({taskManager, commentManager}){
         const comment = {
             text: request.body.text,
             taskId: request.params.taskId,
-            authorId: request.params.id,
+            authorId: request.session.user.id,
             creationDate: "2021-02-08"
         }
         try{
