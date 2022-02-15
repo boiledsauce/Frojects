@@ -53,10 +53,11 @@ module.exports = function({taskManager, commentManager}){
     })
 
     router.get('/:taskId', async (request, response) => {
+        console.log("HEHE")
         try {
             const taskId = request.params.taskId
-            const task = (await taskManager.getTaskById(taskId))[0]
-    
+            const task = await taskManager.getTaskById(taskId)
+            console.log(task)
             const model = {
                 task,
                 projectId: request.params.id

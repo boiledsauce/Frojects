@@ -10,7 +10,7 @@ module.exports = function createProjectRepository(){
 					CreationDate: "2012-11-11"
 				})
 
-				const createdId = project.dataValues.Id
+				const createdId = project.Id
 				return createdId
 
 			} catch (error) {
@@ -23,7 +23,7 @@ module.exports = function createProjectRepository(){
 			try {
 				models.Project.destroy({
 					where: {
-						id: projectId
+						Id: projectId
 					}
 				})
 			} catch (error) {
@@ -36,7 +36,7 @@ module.exports = function createProjectRepository(){
 			try {
 				const projects = await models.Project.findAll({
 					where: {
-						ownerId: userId
+						OwnerId: userId
 					}
 				})
 				console.log(projects)
@@ -55,6 +55,8 @@ module.exports = function createProjectRepository(){
 						Id: projectId 
 					}
 				})
+
+				return project
 			} catch (error) {
 				console.error(error)
 				throw error

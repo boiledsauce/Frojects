@@ -55,12 +55,11 @@ module.exports = function({taskRouter, projectManager, taskManager}){
 
     router.get('/:id', async (request, response) => {
         const id = request.params.id
-    
+        
         try {
-            const project = (await projectManager.getProject(id))[0]
-            console.log(project)
+            const project = await projectManager.getProject(id)
             const tasks = await taskManager.getAllTasksByProjectId(id)
-            console.log("TASKS", tasks)
+            console.log(tasks)
             const model = { 
                 project,
                 tasks
@@ -73,11 +72,8 @@ module.exports = function({taskRouter, projectManager, taskManager}){
             }
             response.render('view-project.hbs', model)
         }
-    
     })
-    
- 
-    
+
     /*
     router.get('/:id', (request, response) => {
         const id = request.params.id
@@ -90,10 +86,9 @@ module.exports = function({taskRouter, projectManager, taskManager}){
     */
     
     router.get('/:id/create-task', (request, response) => {
-        const id = request.params.id
-        console.log(id)
+        const taskId = request.params.id
         const model = {
-            id
+            taskId
         }
         response.render('create-task.hbs', model)
     })

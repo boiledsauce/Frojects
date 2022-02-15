@@ -6,12 +6,12 @@
 <h1 class="display-1 text-center">Projects</h1>
 <h2 class="display-5 text-center">Welcome Wille</h1>
 <h1>Create a new project</h1>
-<a href = "/project/{{id}}/create">Create</a>
+<a href = "/app/project/create">Create</a>
 
 <h2>All of your projects: </h2>
 <ul>
   {{#each projects}}
-    <li><a href = "/project/{{this.Id}}">{{this.Name}}</a></li>
+    <li><a href = "/app/project/{{this.Id}}">{{this.Name}}</a></li>
   {{/each}}
 </ul>
 </body>

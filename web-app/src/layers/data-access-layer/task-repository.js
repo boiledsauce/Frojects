@@ -39,6 +39,7 @@ module.exports = function createTaskRepository(){
 						ProjectId: projectId
 					}
 				})
+				return tasks
 			} catch (error) {
 				console.error(error)
 				throw error
@@ -52,6 +53,7 @@ module.exports = function createTaskRepository(){
 						Id: taskId
 					}
 				})
+				return task
 			} catch (error) {
 				console.error(error)
 				throw error

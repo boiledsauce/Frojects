@@ -8,10 +8,10 @@
 
   <h1 class="display-5 text-center">Tasks of project: </h1>
   <p>{{project}}</p>
-  <a href = "/project/{{project.Id}}/create-task">Create task</a>
+  <a href = "/app/project/{{project.Id}}/create-task">Create task</a>
   <ul>
     {{#each tasks}}
-        <li><a href = "/project/{{../project.Id}}/task/{{this.Id}}">{{this.Title}}</a></li>
+        <li><a href = "/app/project/{{../project.Id}}/task/{{this.Id}}">{{this.Title}}</a></li>
     {{/each}}
   </ul>
 </body>
