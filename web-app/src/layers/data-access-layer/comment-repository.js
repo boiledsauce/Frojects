@@ -1,4 +1,4 @@
-const database = require('./db')
+const { models } = require('./db')
 
 module.exports = function createCommentRepository(){
 
@@ -12,7 +12,7 @@ module.exports = function createCommentRepository(){
 					CreationDate: "2012-11-11"
 				})
 
-				return comment
+				return comment.Id
 			} catch (error) {
 				console.error(error)
 				throw error
@@ -26,6 +26,7 @@ module.exports = function createCommentRepository(){
 						TaskId: taskId
 					}
 				})
+				return comments
 			} catch (error) {
 				console.error(error)
 				throw error

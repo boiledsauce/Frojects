@@ -1,4 +1,4 @@
-const {database, models} = require('./db')
+const { models } = require('./db')
 
 module.exports = function createTaskRepository(){
 	return {

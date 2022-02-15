@@ -31,7 +31,6 @@ module.exports = function({taskManager, commentManager}){
     
     
     router.post('/:taskId/create-comment', async (request, response) => {
-    
         const comment = {
             text: request.body.text,
             taskId: request.params.taskId,
@@ -39,8 +38,10 @@ module.exports = function({taskManager, commentManager}){
             creationDate: "2021-02-08"
         }
         try{
+            console.log(comment.taskId, comment.authorId)
+
             const insertedCommentId = await commentManager.createComment(comment)
-            response.redirect(`/project/${request.params.id}/task/${request.params.taskId}`)
+            response.redirect(`/app/project/${request.params.id}/task/${request.params.taskId}`)
         } catch (errors) {
             const model = {
                 id: request.params.id,
@@ -53,13 +54,14 @@ module.exports = function({taskManager, commentManager}){
     })
 
     router.get('/:taskId', async (request, response) => {
-        console.log("HEHE")
         try {
             const taskId = request.params.taskId
             const task = await taskManager.getTaskById(taskId)
+            const comment = await commentManager.getAllCommentsByTaskId(taskId)
             console.log(task)
             const model = {
                 task,
+                comment,
                 projectId: request.params.id
             }
             response.render('view-task.hbs', model)

@@ -9,6 +9,7 @@ module.exports = function({taskRouter, projectManager, taskManager}){
     router.get('/', async (request, response) => {
         try {
             const userId = request.session.user.id
+            console.log("USERID: ", userId)
             const projects = await projectManager.getAllProjectsByUserId(userId)
     
             const model = { 

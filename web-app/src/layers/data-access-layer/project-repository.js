@@ -1,4 +1,4 @@
-const {database, models} = require('./db')
+const { models } = require('./db')
 module.exports = function createProjectRepository(){
 
 	return {
@@ -39,7 +39,6 @@ module.exports = function createProjectRepository(){
 						OwnerId: userId
 					}
 				})
-				console.log(projects)
 				return projects
 			}
 			catch (error) {
