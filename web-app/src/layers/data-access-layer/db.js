@@ -15,7 +15,8 @@ const connection = mysql.createConnection({
 const sequelize = new Sequelize('frojects', 'root', 'abc123', {
 	host: 'database',
 	port: 3306,
-	dialect: 'mysql'
+	dialect: 'mysql',
+	query: {raw:true}
 });
 
 const models = setUpSequelize.initModels(sequelize)

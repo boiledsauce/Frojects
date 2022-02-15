@@ -39,6 +39,8 @@ module.exports = function createProjectRepository(){
 						ownerId: userId
 					}
 				})
+				console.log(projects)
+				return projects
 			}
 			catch (error) {
 				console.error(error)
@@ -48,7 +50,11 @@ module.exports = function createProjectRepository(){
 		
 		async getProject(projectId){
 			try {
-				const project = await models.Project.findOne(projectId)
+				const project = await models.Project.findOne({
+					where: {
+						Id: projectId 
+					}
+				})
 			} catch (error) {
 				console.error(error)
 				throw error
