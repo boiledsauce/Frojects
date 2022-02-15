@@ -3,63 +3,33 @@ const database = require('./db')
 module.exports = function createCommentRepository(){
 
 	return {
-
 		async createComment(text, taskId, authorId, creationDate){
-			const query = `INSERT INTO Comment (Text, TaskId, AuthorId, CreationDate) VALUES (?, ?, ?, ?)`
-			const values = [text, taskId, authorId, creationDate]
-			
-			return new Promise((resolve, reject) => {
-				database.query(query, values, (error, result) => {
-					if (error){
-						console.log(error)
-						reject(error)
-					}
-					else {
-						console.log(result)
-						resolve(result.insertId)
-					}
+			try {
+				const comment = await models.Comment.create({
+					Text: text,
+					TaskId: taskId,
+					AuthorId: authorId,
+					CreationDate: "2012-11-11"
 				})
-			})
-		},
 
-		/*
-		SELECT * FROM Comment AS C 
-		JOIN User AS U on U.Id = C.Id
-		*/
-		async getAllCommentData(taskId){
-			const query = `SELECT * FROM Comment WHERE TaskId = ?`
-			const values = [taskId]
-		
-			return new Promise((resolve, reject) => {
-				database.query(query, values, (error, tasks) => {
-					if (error) {
-						console.log(error)
-						reject(error)
-					}
-					else {
-						resolve(tasks)
-					}
-				})
-			})
+				return comment
+			} catch (error) {
+				console.error(error)
+				throw error
+			}
 		},
 		
 		async getAllCommentsByTaskId(taskId){
-			const query = `SELECT * FROM Comment WHERE TaskId = ?`
-			const values = [taskId]
-		
-			return new Promise((resolve, reject) => {
-				database.query(query, values, (error, tasks) => {
-					if (error) {
-						console.log(error)
-						reject(error)
-					}
-					else {
-						resolve(tasks)
+			try {
+				const comments = await models.Comment.findAll({
+					where: {
+						TaskId: taskId
 					}
 				})
-			})
+			} catch (error) {
+				console.error(error)
+				throw error
+			}
 		}
-
 	}
-
 }
