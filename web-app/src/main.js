@@ -101,12 +101,5 @@ container.register(
 	awilix.asFunction(require('./layers/presentation-layer-REST/app'))
 )
 
-
-//sequelize
-container.register(
-	'sequelize',
-	awilix.asFunction(require('./layers/data-access-layer/models/init-models'))
-)
-
 const webApp = container.resolve('webApp')
 webApp.start()
