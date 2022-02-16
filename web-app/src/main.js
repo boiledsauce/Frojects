@@ -91,7 +91,6 @@ container.register(
 	awilix.asFunction(require('./layers/presentation-layer-REST/routers/task-router'))
 )
 
-<<<<<<< HEAD
 container.register(
 	'userRESTRouter',
 	awilix.asFunction(require('./layers/presentation-layer-REST/routers/user-router'))
@@ -111,8 +110,3 @@ container.register(
 
 const webApp = container.resolve('webApp')
 webApp.start()
-=======
-const app = container.resolve('app')
-
-app.start()
->>>>>>> 999a7b0edfd2c5b5aa73c1ff0e21d9d9e9f1eee4
