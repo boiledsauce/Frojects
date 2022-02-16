@@ -1,5 +1,5 @@
 const awilix = require('awilix')
-
+const express = require('express')
 const container = awilix.createContainer()
 
 // repositories
@@ -49,31 +49,58 @@ container.register(
 	awilix.asFunction(require('./layers/business-logic-layer/project-manager'))
 )
 
-// routers
+// routers web 
 container.register(
 	'mainRouter',
-	awilix.asFunction(require('./layers/presentation-layer/routers/main-router'))
+	awilix.asFunction(require('./layers/presentation-layer-web/routers/main-router'))
 )
 
 container.register(
 	'projectRouter',
-	awilix.asFunction(require('./layers/presentation-layer/routers/project-router'))
+	awilix.asFunction(require('./layers/presentation-layer-web/routers/project-router'))
 )
 
 container.register(
 	'taskRouter',
-	awilix.asFunction(require('./layers/presentation-layer/routers/task-router'))
+	awilix.asFunction(require('./layers/presentation-layer-web/routers/task-router'))
 )
 
 container.register(
 	'userRouter',
-	awilix.asFunction(require('./layers/presentation-layer/routers/user-router'))
+	awilix.asFunction(require('./layers/presentation-layer-web/routers/user-router'))
 )
 
 container.register(
-	'app',
-	awilix.asFunction(require('./layers/presentation-layer/app'))
+	'webApp',
+	awilix.asFunction(require('./layers/presentation-layer-web/app'))
 )
+
+// routers API
+container.register(
+	'mainRESTRouter',
+	awilix.asFunction(require('./layers/presentation-layer-REST/routers/main-router'))
+)
+
+container.register(
+	'projectRESTRouter',
+	awilix.asFunction(require('./layers/presentation-layer-REST/routers/project-router'))
+)
+
+container.register(
+	'taskRESTRouter',
+	awilix.asFunction(require('./layers/presentation-layer-REST/routers/task-router'))
+)
+
+container.register(
+	'userRESTRouter',
+	awilix.asFunction(require('./layers/presentation-layer-REST/routers/user-router'))
+)
+
+container.register(
+	'RESTapp',
+	awilix.asFunction(require('./layers/presentation-layer-REST/app'))
+)
+
 
 //sequelize
 container.register(
@@ -81,6 +108,5 @@ container.register(
 	awilix.asFunction(require('./layers/data-access-layer/models/init-models'))
 )
 
-const app = container.resolve('app')
-
-app.start()
+const webApp = container.resolve('webApp')
+webApp.start()
