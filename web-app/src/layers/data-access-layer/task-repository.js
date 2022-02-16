@@ -1,14 +1,15 @@
 const { models } = require('./db')
 
 module.exports = function createTaskRepository(){
+
 	return {
 		async createTask(title, projectId, description, creationDate){
 			try {
 				const task = await models.Task.create({
-					Title: title,
-					ProjectId: projectId,
-					Description: description,
-					CreationDate: creationDate
+					title,
+					projectId,
+					description,
+					creationDate
 				})
 				const createdId = task.dataValues.Id
 				return createdId

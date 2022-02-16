@@ -1,33 +1,35 @@
 const { DataTypes } = require("sequelize")
-const _Comment = require("./Comment");
-const _Deadline = require("./Deadline");
-const _Project = require("./Project");
-const _Task = require("./Task");
-const _User = require("./User");
-const _UserProjectAccess = require("./UserProjectAccess");
+const _Comment = require("./Comment")
+const _Deadline = require("./Deadline")
+const _Project = require("./Project")
+const _Task = require("./Task")
+const _User = require("./User")
+const _UserProjectAccess = require("./UserProjectAccess")
 
-function initModels(sequelize) {
-  const Comment = _Comment(sequelize, DataTypes);
-  const Deadline = _Deadline(sequelize, DataTypes);
-  const Project = _Project(sequelize, DataTypes);
-  const Task = _Task(sequelize, DataTypes);
-  const User = _User(sequelize, DataTypes);
-  const UserProjectAccess = _UserProjectAccess(sequelize, DataTypes);
+initModels = (sequelize) => {
+  const Comment = _Comment(sequelize, DataTypes)
+  const Deadline = _Deadline(sequelize, DataTypes)
+  const Project = _Project(sequelize, DataTypes)
+  const Task = _Task(sequelize, DataTypes)
+  const User = _User(sequelize, DataTypes)
+  const UserProjectAccess = _UserProjectAccess(sequelize, DataTypes)
 
-  Task.belongsTo(Project, { as: "Project", foreignKey: "ProjectId"});
-  Project.hasMany(Task, { as: "Tasks", foreignKey: "ProjectId"});
-  UserProjectAccess.belongsTo(Project, { as: "Project", foreignKey: "ProjectId"});
-  Project.hasMany(UserProjectAccess, { as: "UserProjectAccesses", foreignKey: "ProjectId"});
-  Comment.belongsTo(Task, { as: "Task", foreignKey: "TaskId"});
-  Task.hasMany(Comment, { as: "Comments", foreignKey: "TaskId"});
-  Deadline.belongsTo(Task, { as: "Task", foreignKey: "TaskId"});
-  Task.hasMany(Deadline, { as: "Deadlines", foreignKey: "TaskId"});
-  Comment.belongsTo(User, { as: "Author", foreignKey: "AuthorId"});
-  User.hasMany(Comment, { as: "Comments", foreignKey: "AuthorId"});
-  Project.belongsTo(User, { as: "Owner", foreignKey: "OwnerId"});
-  User.hasMany(Project, { as: "Projects", foreignKey: "OwnerId"});
-  UserProjectAccess.belongsTo(User, { as: "User", foreignKey: "UserId"});
-  User.hasMany(UserProjectAccess, { as: "UserProjectAccesses", foreignKey: "UserId"});
+  Task.belongsTo(Project, { foreignKey: "projectId"})
+  Project.hasMany(Task, { foreignKey: "projectId"})
+  UserProjectAccess.belongsTo(Project, { foreignKey: "projectId"})
+  Project.hasMany(UserProjectAccess, { foreignKey: "projectId"})
+  Comment.belongsTo(Task, { foreignKey: "taskId"})
+  Task.hasMany(Comment, { foreignKey: "taskId"})
+  Deadline.belongsTo(Task, { foreignKey: "taskId"})
+  Task.hasMany(Deadline, { foreignKey: "taskId"})
+  Comment.belongsTo(User, { foreignKey: "authorId"})
+  User.hasMany(Comment, { foreignKey: "authorId"})
+  Project.belongsTo(User, { foreignKey: "ownerId"})
+  User.hasMany(Project, { foreignKey: "ownerId"})
+  UserProjectAccess.belongsTo(User, { foreignKey: "userId"})
+  User.hasMany(UserProjectAccess, { foreignKey: "userId"})
+
+  sequelize.sync()
 
   return {
     Comment,
@@ -35,10 +37,9 @@ function initModels(sequelize) {
     Project,
     Task,
     User,
-    UserProjectAccess,
-  };
+    UserProjectAccess
+  }
+
 }
 
-module.exports = initModels;
-module.exports.initModels = initModels;
-module.exports.default = initModels;
+module.exports = { initModels }

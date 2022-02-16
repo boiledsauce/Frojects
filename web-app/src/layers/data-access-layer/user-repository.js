@@ -1,4 +1,4 @@
-const {database, sequelize} = require('./db')
+const { models } = require('./db')
 
 module.exports = function createUserRepository(){
 

@@ -1,50 +1,29 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
+module.exports = (sequelize, DataTypes) => {
+  
   return sequelize.define('User', {
-    Id: {
+    id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    FirstName: {
+    firstName: {
       type: DataTypes.STRING(50),
       allowNull: false
     },
-    LastName: {
+    lastName: {
       type: DataTypes.STRING(50),
       allowNull: false
     },
-    Email: {
+    email: {
       type: DataTypes.STRING(50),
       allowNull: false,
       unique: "Email"
     },
-    HashedPassword: {
+    hashedPassword: {
       type: DataTypes.CHAR(60),
       allowNull: false
     }
-  }, {
-    sequelize,
-    tableName: 'User',
-    timestamps: false,
-    indexes: [
-      {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "Id" },
-        ]
-      },
-      {
-        name: "Email",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "Email" },
-        ]
-      },
-    ]
-  });
-};
+  })
+
+}
