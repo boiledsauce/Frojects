@@ -3,19 +3,20 @@ const { models } = require('./db')
 module.exports = function createTaskRepository(){
 
 	return {
-		async createTask(title, projectId, description, creationDate){
+
+		async createTask(task){
 			try {
 				const task = await models.Task.create({
-					title,
-					projectId,
-					description,
-					creationDate
+					title: task.title,
+					projectId: task.projectId,
+					description: task.description
 				})
-				const createdId = task.dataValues.Id
-				return createdId
+
+				return task.id
+
 			} catch (error) {
 				console.error(error)
-				throw error
+				throw ['Kunde inte skapa uppgiften i databasen']
 			}
 		},
 
@@ -37,10 +38,11 @@ module.exports = function createTaskRepository(){
 			try {
 				const tasks = await models.Task.findAll({
 					where: {
-						ProjectId: projectId
+						projectId: projectId
 					}
 				})
 				return tasks
+
 			} catch (error) {
 				console.error(error)
 				throw error
@@ -51,13 +53,14 @@ module.exports = function createTaskRepository(){
 			try {
 				const task = await models.Task.findOne({
 					where: {
-						Id: taskId
+						id: taskId
 					}
 				})
 				return task
+
 			} catch (error) {
 				console.error(error)
-				throw error
+				throw [`Uppgiften kunde inte hämtas från databasen`]
 			}
 		}
 	}

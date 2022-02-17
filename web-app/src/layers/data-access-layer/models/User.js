@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.CHAR(60),
       allowNull: false
     }
+    
   })
 
 }

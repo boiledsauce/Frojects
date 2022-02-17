@@ -14,11 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     description: {
       type: DataTypes.STRING(255),
       allowNull: false
-    },
-    creationDate: {
-      type: DataTypes.DATE,
-      allowNull: false
     }
+    
   })
 
 }
