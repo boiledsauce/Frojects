@@ -3,8 +3,9 @@
 <h2>Run instructions</h2>
 <ol>
   <li>Run <code>git clone https://github.com/boiledsauce/Frojects</code></li>
-  <li>In the project directory, run <code>docker-compose up</code></li>
-  <li>Visit localhost:3000 with your browser</li>
+  <li>Navigate to <code>/Frojects/web-app/</code></li>
+  <li>Run <code>docker-compose up</code></li>
+  <li>Visit <code>localhost:3000</code> with your browser</li>
 </ol>
 
 <h2>Requirements</h2>
