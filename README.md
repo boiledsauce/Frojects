@@ -3,7 +3,7 @@
 <h2>Run instructions</h2>
 <ol>
   <li>Run <code>git clone https://github.com/boiledsauce/Frojects</code></li>
-  <li>Navigate to <code>/Frojects/web-app/</code></li>
+  <li>Navigate to <code>/Frojects/</code></li>
   <li>Run <code>docker-compose up</code></li>
   <li>Visit <code>localhost:3000</code> with your browser</li>
 </ol>
