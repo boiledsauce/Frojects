@@ -2,7 +2,7 @@ module.exports = function createApp({mainRouter, mainRESTRouter}){
 
 	return {
 
-		async start(){
+		async getApp(){
 
 			const express = require('express')
 			const path = require('path')
@@ -20,7 +20,8 @@ module.exports = function createApp({mainRouter, mainRESTRouter}){
 
 			//404 Page not found error handler
 			app.use((request, response) => {
-				response.status(404).render("errors/404")
+				response.status(200).send("ok").json()
+				//response.status(404).render("errors/404")
 			})
 
 			//CSRF error handler
@@ -29,7 +30,7 @@ module.exports = function createApp({mainRouter, mainRESTRouter}){
 					return next(error)
 				}
 			
-				response.status(403).render("errors/403")
+				response.status(403).send("ok").json()
 			})
 
 			/*
@@ -38,9 +39,10 @@ module.exports = function createApp({mainRouter, mainRESTRouter}){
 			*/
 			app.use((error, request, response, next) => {
 				console.log(error)
-				response.status(500).render("errors/500")
+				response.status(500).send("ok").json()
 			})
-
+			
+			/*
 			const port = 8080
 
 			app.listen(port, (error) => {
@@ -51,6 +53,8 @@ module.exports = function createApp({mainRouter, mainRESTRouter}){
 					console.log("It's up and running")
 				}
 			})
+			*/
+			return app
 		}
 	}
 }

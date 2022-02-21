@@ -1,7 +1,6 @@
 const awilix = require('awilix')
 const express = require('express')
 const container = awilix.createContainer()
-
 // repositories
 container.register(
 	'projectRepository',
@@ -72,7 +71,7 @@ container.register(
 
 container.register(
 	'webApp',
-	awilix.asFunction(require('./layers/presentation-layers/presentation-layer-web/app'))
+	awilix.asFunction(require('./layers/presentation-layers/presentation-layer-web/web-app'))
 )
 
 // routers API
@@ -98,8 +97,17 @@ container.register(
 
 container.register(
 	'RESTapp',
-	awilix.asFunction(require('./layers/presentation-layers/presentation-layer-REST/app'))
+	awilix.asFunction(require('./layers/presentation-layers/presentation-layer-REST/REST-app'))
 )
 
-const webApp = container.resolve('webApp')
-webApp.start()
+container.register(
+	'setupApps',
+	awilix.asFunction(require('./layers/presentation-layers/app'))
+)
+
+
+const apps = container.resolve('setupApps')
+apps.start()
+
+//const webApp = container.resolve('webApp')
+//webApp.start()
