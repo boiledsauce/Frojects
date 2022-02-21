@@ -5,13 +5,14 @@ module.exports = function createProjectRepository(){
 	return {
 		async createProject(name, ownerId, creationDate){
 			try {
+				creationDate = "2012-02-20"
 				const project = await models.Project.create({
-					Name: name,
-					OwnerId: ownerId,
-					CreationDate: "2012-11-11"
+					ownerId,
+					name,
+					creationDate
 				})
-
-				const createdId = project.Id
+				console.log(name, ownerId, creationDate)
+				const createdId = project.id
 				return createdId
 
 			} catch (error) {
@@ -24,7 +25,7 @@ module.exports = function createProjectRepository(){
 			try {
 				models.Project.destroy({
 					where: {
-						Id: projectId
+						projectId
 					}
 				})
 			} catch (error) {
@@ -37,9 +38,10 @@ module.exports = function createProjectRepository(){
 			try {
 				const projects = await models.Project.findAll({
 					where: {
-						OwnerId: userId
+						ownerId: userId
 					}
 				})
+				//console.log(projects)
 				return projects
 			}
 			catch (error) {
@@ -52,7 +54,7 @@ module.exports = function createProjectRepository(){
 			try {
 				const project = await models.Project.findOne({
 					where: {
-						Id: projectId 
+						id: projectId 
 					}
 				})
 

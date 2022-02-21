@@ -36,13 +36,13 @@ module.exports = function({taskRouter, projectManager, taskManager}){
 
      
     router.post('/create', async (request, response) => {
+        console.log("name", request.body.name)
         const project = {
             name: request.body.name,
             ownerId: request.session.user.id,
             creationDate: "2021-02-02"
         }
-        console.log(project.ownerId)
-        try{
+        try {
             const insertedProjectId = await projectManager.createProject(project)
             response.redirect(request.baseUrl + '/' + insertedProjectId)
         } catch (errors) {
@@ -60,7 +60,6 @@ module.exports = function({taskRouter, projectManager, taskManager}){
         try {
             const project = await projectManager.getProject(id)
             const tasks = await taskManager.getAllTasksByProjectId(id)
-            console.log(tasks)
             const model = { 
                 project,
                 tasks

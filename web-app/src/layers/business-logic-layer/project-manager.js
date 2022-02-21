@@ -4,7 +4,6 @@ module.exports = function createProjectManager({projectRepository}){
     return {
          async createProject(project) {
                 const errors = projectValidator.getErrorsNewProject(project)
-
                 if (errors.length > 0) {
                     return Promise.reject(errors)
                 }

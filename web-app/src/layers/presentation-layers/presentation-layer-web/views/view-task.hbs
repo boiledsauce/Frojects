@@ -3,15 +3,15 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
 <body>
-  <h1 class="display-1 text-center">{{task.Title}}</h1>
+  <h1 class="display-1 text-center">{{task.title}}</h1>
   <h1 class="display-5 text-center">Tasks of project: </h1>
       <h4 class="display-8">Description of Task</h1>
-      <p>{{task.Description}}</p>
+      <p>{{task.description}}</p>
   <h4 class="display-8">Date of task submitted: </h1>
-      <p>{{task.CreationDate}}</p>
+      <p>{{task.creationDate}}</p>
   </ul>
     
-  <a href = "/app/project/{{projectId}}/task/{{task.Id}}/create-comment">Comment on this task</a>
+  <a href = "/app/project/{{projectId}}/task/{{task.id}}/create-comment">Comment on this task</a>
   <table>
         <tr>
             <th>Comment:</th>
@@ -19,8 +19,8 @@
         </tr>
             {{#each comment}}
             <tr>
-                <td>{{this.Text}}</td>
-                <td>{{this.CreationDate}}</td>
+                <td>{{this.text}}</td>
+                <td>{{this.creationDate}}</td>
             </tr>
             {{/each}}
     </table>

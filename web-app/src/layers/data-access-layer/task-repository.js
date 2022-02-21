@@ -4,12 +4,13 @@ module.exports = function createTaskRepository(){
 
 	return {
 
-		async createTask(task){
+		async createTask(title, projectId, description, creationDate){
 			try {
 				const task = await models.Task.create({
-					title: task.title,
-					projectId: task.projectId,
-					description: task.description
+					title,
+					projectId,
+					description,
+					creationDate
 				})
 
 				return task.id

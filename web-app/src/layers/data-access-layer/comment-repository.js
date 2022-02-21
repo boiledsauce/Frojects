@@ -6,13 +6,13 @@ module.exports = function createCommentRepository(){
 		async createComment(text, taskId, authorId, creationDate){
 			try {
 				const comment = await models.Comment.create({
-					Text: text,
-					TaskId: taskId,
-					AuthorId: authorId,
-					CreationDate: "2012-11-11"
+					text,
+					taskId,
+					authorId,
+					creationDate
 				})
 
-				return comment.Id
+				return comment.id
 			} catch (error) {
 				console.error(error)
 				throw error
@@ -23,7 +23,7 @@ module.exports = function createCommentRepository(){
 			try {
 				const comments = await models.Comment.findAll({
 					where: {
-						TaskId: taskId
+						taskId
 					}
 				})
 				return comments
