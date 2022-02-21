@@ -41,7 +41,6 @@ module.exports = function createProjectRepository(){
 						ownerId: userId
 					}
 				})
-				//console.log(projects)
 				return projects
 			}
 			catch (error) {
