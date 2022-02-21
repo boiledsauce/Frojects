@@ -1,8 +1,8 @@
-module.exports = function createApp({mainRouter, mainRESTRouter}){
+module.exports = function createApp({mainRouter}){
 
 	return {
 
-		async start(){
+		async getApp(){
 
 			const express = require('express')
 			const expressHandlebars = require('express-handlebars')
@@ -73,7 +73,6 @@ module.exports = function createApp({mainRouter, mainRESTRouter}){
 				next()
 			})
 
-			app.use('/api', mainRESTRouter)
 			app.use('/', mainRouter)
 
 			//404 Page not found error handler
@@ -98,7 +97,7 @@ module.exports = function createApp({mainRouter, mainRESTRouter}){
 				console.log(error)
 				response.status(500).render("errors/500")
 			})
-
+		/*
 			const port = 8080
 
 			app.listen(port, (error) => {
@@ -109,6 +108,8 @@ module.exports = function createApp({mainRouter, mainRESTRouter}){
 					console.log("It's up and running")
 				}
 			})
+			*/
+			return app
 		}
 	}
 }
