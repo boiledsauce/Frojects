@@ -1,30 +1,36 @@
 const mysql = require('mysql')
-const { initModels } = require('./models/init-models');
+const { initModels } = require('./models/init-models')
 
-const { Sequelize /*, Model, DataTypes*/ } = require('sequelize');
+const DB_HOST = 'database'
+const DB_PORT = 3306
+const DB_USER = 'root'
+const DB_PASSWORD = 'abc123'
+const DB_NAME = 'frojects'
+
+const { Sequelize } = require('sequelize')
 
 const connection = mysql.createConnection({
-	host     : 'database',
-	port	 : 3306,
-	user     : 'root',
-	password : 'abc123',
-	database : 'frojects'
+	host     : DB_HOST,
+	port	 : DB_PORT,
+	user     : DB_USER,
+	password : DB_PASSWORD,
+	database : DB_NAME
 })
 
-initialize = async () => {
+initialize = () => {
 	try{
-		connection.query('CREATE DATABASE IF NOT EXISTS `frojects`;')
+		connection.query(`CREATE DATABASE IF NOT EXISTS ${DB_NAME}`)
 	} catch (error) {
-		throw ['Databasen kunde inte skapas']
+		console.log(error)
 	}
 
 }
 
 initialize()
 
-const sequelize = new Sequelize('frojects', 'root', 'abc123', {
-	host: 'database',
-	port: 3306,
+const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
+	host: DB_HOST,
+	port: DB_PORT,
 	dialect: 'mysql',
 	query: {raw: true}
 })

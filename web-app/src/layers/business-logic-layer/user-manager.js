@@ -61,7 +61,7 @@ module.exports = function createUserManager({userRepository}){
         
         async loginCredentialsMatchUser(loginCredentials, user){
             return new Promise((resolve, reject) => {
-                bcrypt.compare(loginCredentials.password, user.HashedPassword, (error, result) => {
+                bcrypt.compare(loginCredentials.password, user.hashedPassword, (error, result) => {
                     if (error){
                         console.log(error)
                         reject(['Lösenorden kunde inte jämföras'])

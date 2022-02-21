@@ -1,14 +1,5 @@
 const express = require("express")
 
-createUserSession = (session, user) => {
-    session.user = {
-        id: user.Id,
-        firstName: user.FirstName,
-        lastName: user.LastName,
-        email: user.Email
-    }
-}
-
 module.exports = function({userManager}){
 
     const router = express.Router({mergeParams: true})
@@ -28,9 +19,9 @@ module.exports = function({userManager}){
         }
     
         try{
-            user.id = await userManager.createUser(user)
+            const createdUser = await userManager.createUser(user)
 
-            createUserSession(request.session, user)
+            request.session.user = createdUser
 
             request.flash('message', 'Ditt konto har skapats. Välkommen till Frojects!')
             response.redirect('/app')
@@ -61,9 +52,8 @@ module.exports = function({userManager}){
             const user = await userManager.getUserByEmail(loginCredentials.email)
     
             if (await userManager.loginCredentialsMatchUser(loginCredentials, user)){
-                delete user.password
 
-                createUserSession(request.session, user)
+                request.session.user = user
     
                 request.flash('message', 'Välkommen in i stugan!')
                 response.redirect('/app')
@@ -77,8 +67,9 @@ module.exports = function({userManager}){
             }
         }
         catch (errors) {
-            console.log(errors)
+
             if (errors instanceof Error){
+                console.log(errors)
                 errors = ["Ett oväntat fel uppstod"]
             }
             const model = {
@@ -86,6 +77,7 @@ module.exports = function({userManager}){
                 errors
             }
             response.render('user/login', model)
+            
         }
     
     })
