@@ -3,10 +3,11 @@ const jwt = require('jsonwebtoken')
 
 const ACCESS_TOKEN_SECRET = 'd52b08e837b9ec2f937b734c5563daefc7a83b28fdf1864ea7f0e1c7f2c3eb6eb216fed8f06ee8fcc96f7224f1c98a61f9ebf27bc67cc09cd4452d60583e9a9f'
 
+/*
 const user = {
 	username: "Test Testsson",
 	password: "abc123"
-}
+}*/
 
 function authenticateAccessToken(request, response, next) {
 	const authHeader = request.headers['authorization']
@@ -22,7 +23,7 @@ function authenticateAccessToken(request, response, next) {
 	})
 }
 
-module.exports = function createApp({mainRESTRouter}){
+module.exports = function createApp({mainRESTRouter, userManager}){
 
 	return {
 
@@ -32,13 +33,32 @@ module.exports = function createApp({mainRESTRouter}){
 
 			//Parse requests
 			app.use(express.json())
-
-			app.use('/login', (request, response) => {
-
-				//TODO Authenticate user
-
-				const accessToken = jwt.sign(user, ACCESS_TOKEN_SECRET, { expiresIn: 60 * 60 }) //1 hour
-				response.json({ accessToken })
+			
+			app.post('/login', async (request, response) => {
+			
+				const loginCredentials = {
+					email: request.body.email,
+					password: request.body.password
+				}
+				
+				try{
+					const user = await userManager.getUserByEmail(loginCredentials.email)
+					
+					if (await userManager.loginCredentialsMatchUser(loginCredentials, user)) {
+						const accessToken = jwt.sign(user, ACCESS_TOKEN_SECRET, { expiresIn: 60 * 60 }) //1 hour
+						response.json({ accessToken })				
+					}
+					else {
+						response.status(500).json("Internal server error")
+					}
+				}
+				catch (errors) {
+					response.status(500).json("Internal server error")
+					if (errors instanceof Error){
+						console.log(errors)
+						errors = ["Ett oväntat fel uppstod"]
+					}
+				}
 			})
 
 			app.use('/', authenticateAccessToken, mainRESTRouter)

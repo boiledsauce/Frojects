@@ -1,4 +1,5 @@
 const express = require("express")
+const jwt = require('jsonwebtoken')
 
 module.exports = function({taskRouter, projectManager, taskManager}){
 
@@ -6,54 +7,77 @@ module.exports = function({taskRouter, projectManager, taskManager}){
     
     router.use('/:id/task', taskRouter)
     //http://localhost:3000/project/35/task/49
+    
     router.get('/', async (request, response) => {
         try {
-            const userId = request.session.user.id
-            console.log("USERID: ", userId)
-            const projects = await projectManager.getAllProjectsByUserId(userId)
-    
-            const model = { 
-                projects,
-                id: userId
-            }
-            response.render('project.hbs', model)
+            const user = request.user
+            const projects = await projectManager.getAllProjectsByUserId(user.id)
+            response.json(projects)
         } catch (errors) {
-            const model = {
-                errors
-            }
-            response.render('project.hbs', model)
+            response.json(errors)
         }
     })
 
-    router.get('/create', (request, response) => {
-    
-        const model = {
-            id: request.session.user.id
+    router.post('/', async (request, response) => {
+        try {
+            const project = {
+                name: request.body.projectName,
+                ownerId: request.user.id,
+                creationDate: "2021-02-20"
+            }
+            console.log("projeid", project.ownerId)
+
+            const createdProject = await projectManager.createProject(project)
+            response.json(createdProject)
+        } catch (errors) {
+            console.log(errors)
+            response.status(403).json("Bad request")
         }
-    
-        response.render('create-project.hbs', model)
     })
 
-     
-    router.post('/create', async (request, response) => {
-        const project = {
-            name: request.body.name,
-            ownerId: request.session.user.id,
-            creationDate: "2021-02-02"
-        }
-        console.log(project.ownerId)
-        try{
-            const insertedProjectId = await projectManager.createProject(project)
-            response.redirect(request.baseUrl + '/' + insertedProjectId)
-        } catch (errors) {
-            const model = {
+
+    router.put('/:id', async (request, response) => {
+        try {
+            const project = {
                 id: request.params.id,
-                errors
+                name: request.body.projectName,
+                ownerId: request.user.id,
+                creationDate: "2021-02-20"
             }
-            response.render('create-project', model)
+            
+            if (await projectManager.belongsToUser(project.ownerId, project.id)) {
+                const updatedProject = await projectManager.updateProject(project)
+                response.json(updatedProject)
+            }
+            else {
+                console.log("Invalid project")
+            }
+        } catch (errors) {
+            console.log(errors)
+            response.status(403).json("Bad request")
         }
     })
 
+    router.delete('/:id', async (request, response) => {
+        try {
+            const project = {
+                id: request.params.id,
+                ownerId: request.user.id
+            }
+            console.log(project)
+                if (await projectManager.belongsToUser(project.ownerId, project.id)){
+                    const deletedResult = await projectManager.deleteProject(project.id)
+                    response.json(deletedResult)
+                } else {
+                    response.status(403).json("Bad request")
+                }
+
+            } catch (errors) {
+                console.log(errors)
+                response.status(403).json("Bad request")
+            }
+    })
+/*
     router.get('/:id', async (request, response) => {
         const id = request.params.id
         
@@ -74,7 +98,7 @@ module.exports = function({taskRouter, projectManager, taskManager}){
             response.render('view-project.hbs', model)
         }
     })
-
+*/
     /*
     router.get('/:id', (request, response) => {
         const id = request.params.id
@@ -85,7 +109,7 @@ module.exports = function({taskRouter, projectManager, taskManager}){
         response.render('create-task.hbs', model)
     })
     */
-    
+    /*
     router.get('/:id/create-task', (request, response) => {
         const taskId = request.params.id
         const model = {
@@ -116,7 +140,7 @@ module.exports = function({taskRouter, projectManager, taskManager}){
             response.render('create-task.hbs', model)
         }
     })
-    
+    */
     /*
     router.get('/:id/create-task', (request, response) => {
         const id = request.params.id

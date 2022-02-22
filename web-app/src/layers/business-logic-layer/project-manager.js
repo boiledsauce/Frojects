@@ -29,6 +29,37 @@ module.exports = function createProjectManager({projectRepository}){
                 } catch (error) {
                     return Promise.reject(["Projektet kunde inte hämtas från databasen"])
                 }
+            },
+
+            async updateProject(project) {
+                try {
+                    return await projectRepository.updateProject(project.id, project.name)
+                } catch (error) {
+                    return Promise.reject(["Projektet kunde inte hämtas från databasen"])
+                }
+            },
+
+            async deleteProject(projectId) {
+                try {
+                    return await projectRepository.deleteProject(projectId)
+                } catch (error) {
+                    return Promise.reject(["Projektet kunde inte tas bort från databasen"])
+                }
+            },
+
+            async belongsToUser(ownerId, projectId) {
+                    try {
+                    
+                        const project = await this.getProject(projectId)
+                        if (project && project.ownerId == ownerId) {
+                            return true 
+                        }
+                        return false
+
+                    } catch (error) {
+                        console.log(error)
+                        return Promise.reject([""])
+                    }
             }
         }
     }
