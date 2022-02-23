@@ -25,7 +25,7 @@ module.exports = function createProjectRepository(){
 			try {
 				models.Project.destroy({
 					where: {
-						projectId
+						id: projectId
 					}
 				})
 			} catch (error) {
@@ -54,6 +54,23 @@ module.exports = function createProjectRepository(){
 				const project = await models.Project.findOne({
 					where: {
 						id: projectId 
+					}
+				})
+
+				return project
+			} catch (error) {
+				console.error(error)
+				throw error
+			}
+		},
+
+		async updateProject(id, name){
+			try {
+				const project = await models.Project.update({ name }, {
+					where: {
+						id,
+						//ownerId: 4,
+						//creationDate: "2012-02-20" 
 					}
 				})
 

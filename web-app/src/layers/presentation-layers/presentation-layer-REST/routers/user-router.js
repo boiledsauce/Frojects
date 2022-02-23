@@ -56,7 +56,8 @@ module.exports = function({userManager}){
             email: request.body.email,
             password: request.body.password
         }
-        
+            router.use('/user', userRouter)
+
         try{
             const user = await userManager.getUserByEmail(loginCredentials.email)
     
