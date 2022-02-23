@@ -10,6 +10,7 @@ module.exports = function({taskManager, commentManager}){
     
     router.get('/:taskId/create-comment', async (request, response) => {
         
+        const taskId = request.params.taskId
     
         try {
             const task = (await taskManager.getTaskById(taskId))[0]
@@ -18,14 +19,14 @@ module.exports = function({taskManager, commentManager}){
                 taskId: request.params.taskId,
                 task
             }
-            response.render('create-comment.hbs', model)
+            response.render('comment/create', model)
         } catch (errors) {
             const model = {
                 id: request.params.id,
                 taskId: request.params.taskId,
                 errors
             }
-            response.render('create-comment.hbs', model)
+            response.render('comment/create', model)
         }
     })
     
@@ -49,7 +50,7 @@ module.exports = function({taskManager, commentManager}){
                 errors
             }
             console.log(errors)
-            response.render('create-comment.hbs', model)
+            response.render('comment/create', model)
         }
     })
 
@@ -64,12 +65,12 @@ module.exports = function({taskManager, commentManager}){
                 comment,
                 projectId: request.params.id
             }
-            response.render('view-task.hbs', model)
+            response.render('task/view', model)
         } catch (errors) {
             const model = {
                 errors
             }
-            response.render('view-task.hbs', model)
+            response.render('task/view', model)
         }
     })
     

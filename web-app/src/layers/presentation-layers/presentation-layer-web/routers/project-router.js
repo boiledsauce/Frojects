@@ -16,12 +16,12 @@ module.exports = function({taskRouter, projectManager, taskManager}){
                 projects,
                 id: userId
             }
-            response.render('project.hbs', model)
+            response.render('project/projectList', model)
         } catch (errors) {
             const model = {
                 errors
             }
-            response.render('project.hbs', model)
+            response.render('project/projectList', model)
         }
     })
 
@@ -31,7 +31,7 @@ module.exports = function({taskRouter, projectManager, taskManager}){
             id: request.session.user.id
         }
     
-        response.render('create-project.hbs', model)
+        response.render('project/create', model)
     })
 
      
@@ -50,7 +50,7 @@ module.exports = function({taskRouter, projectManager, taskManager}){
                 id: request.params.id,
                 errors
             }
-            response.render('create-project', model)
+            response.render('project/create', model)
         }
     })
 
@@ -64,33 +64,22 @@ module.exports = function({taskRouter, projectManager, taskManager}){
                 project,
                 tasks
             }
-            response.render('view-project.hbs', model)
+            response.render('project/view', model)
     
         } catch (errors) {
             const model = {
                 errors
             }
-            response.render('view-project.hbs', model)
+            response.render('project/view', model)
         }
     })
-
-    /*
-    router.get('/:id', (request, response) => {
-        const id = request.params.id
-        console.log(id)
-        const model = {
-            id
-        }
-        response.render('create-task.hbs', model)
-    })
-    */
     
     router.get('/:id/create-task', (request, response) => {
         const taskId = request.params.id
         const model = {
             taskId
         }
-        response.render('create-task.hbs', model)
+        response.render('task/create', model)
     })
     
     router.post('/:id/create-task', async (request, response) => {
@@ -112,7 +101,7 @@ module.exports = function({taskRouter, projectManager, taskManager}){
                 id: request.params.id,
                 errors
             }
-            response.render('create-task.hbs', model)
+            response.render('task/create', model)
         }
     })
     
