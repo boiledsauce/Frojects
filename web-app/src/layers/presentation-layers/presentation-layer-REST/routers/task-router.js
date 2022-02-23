@@ -1,8 +1,6 @@
-const express = require("express")
+const router = require("express").Router({mergeParams: true})
 
-module.exports = function({taskManager, commentManager}){
-
-    const router = express.Router({mergeParams: true})
+module.exports = ({taskManager, commentManager}) => {
     
     router.get('/', async (request, response) => {
         response.sendStatus(404)

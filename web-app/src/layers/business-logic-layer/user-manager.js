@@ -23,7 +23,7 @@ getHashFromPassword = async (password) => {
     })
 }
 
-module.exports = function createUserManager({userRepository}){
+module.exports = ({userRepository}) => {
 
     return {
 

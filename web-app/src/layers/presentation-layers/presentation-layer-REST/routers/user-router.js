@@ -1,17 +1,6 @@
-const express = require("express")
+const router = require("express").Router({mergeParams: true})
 
-createUserSession = (session, user) => {
-    session.user = {
-        id: user.Id,
-        firstName: user.FirstName,
-        lastName: user.LastName,
-        email: user.Email
-    }
-}
-
-module.exports = function({userManager}){
-
-    const router = express.Router({mergeParams: true})
+module.exports = ({userManager}) => {
     
     router.get('/register', (request, response) => {
         response.render('user/register')

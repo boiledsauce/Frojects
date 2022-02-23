@@ -1,6 +1,6 @@
 const router = require("express").Router({mergeParams: true})
 
-module.exports = function({projectRouter, userRouter, userManager}){
+module.exports = ({projectRouter, userRouter, userManager}) => {
 
     //Authentication
     router.use('/app', (request, response, next) => {

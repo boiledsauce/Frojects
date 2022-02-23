@@ -1,6 +1,6 @@
 const router = require("express").Router({mergeParams: true})
 
-module.exports = function({taskRouter, projectManager, taskManager}){
+module.exports = ({taskRouter, projectManager, taskManager}) => {
     
     router.use('/:projectId/tasks', taskRouter)
 

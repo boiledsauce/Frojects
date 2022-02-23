@@ -1,9 +1,6 @@
-const express = require("express")
-const jwt = require('jsonwebtoken')
+const router = require("express").Router({mergeParams: true})
 
-module.exports = function({taskRouter, projectManager, taskManager}){
-
-    const router = express.Router({mergeParams: true})
+module.exports = ({taskRouter, projectManager, taskManager}) => {
     
     router.use('/:id/task', taskRouter)
     //http://localhost:3000/project/35/task/49

@@ -1,6 +1,6 @@
 const { models } = require('./db')
 
-module.exports = function createTaskRepository(){
+module.exports = () => {
 
 	return {
 

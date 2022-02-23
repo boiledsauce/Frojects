@@ -1,6 +1,6 @@
 const { models } = require('./db')
 
-module.exports = function createUserRepository(){
+module.exports = () => {
 
     return {
         
@@ -17,12 +17,12 @@ module.exports = function createUserRepository(){
                 return createdUser
 
             } catch (error) {
+                console.log("Nu  blev det mega error!")
 
-                if (error.code == 'ER_DUP_ENTRY'){
+                if (error.parent.code == 'ER_DUP_ENTRY'){
                     throw ['Det finns redan en användare med denna e-post']
                 }
-
-                console.log(error)
+                console.log(error.parent)
                 throw ['Kunde inte skapa användaren i databasen']
 
             }

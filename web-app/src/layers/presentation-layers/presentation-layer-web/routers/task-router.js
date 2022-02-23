@@ -1,6 +1,6 @@
 const router = require("express").Router({mergeParams: true})
 
-module.exports = function({taskManager, commentManager}){
+module.exports = ({taskManager, commentManager}) => {
 
     router.get('/create', (request, response) => {
         const taskId = request.params.id

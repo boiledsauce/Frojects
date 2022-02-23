@@ -1,6 +1,6 @@
 const { models } = require('./db')
 
-module.exports = function createCommentRepository(){
+module.exports = () => {
 
 	return {
 		async createComment(text, taskId, authorId, creationDate){

@@ -108,6 +108,3 @@ container.register(
 
 const apps = container.resolve('setupApps')
 apps.start()
-
-//const webApp = container.resolve('webApp')
-//webApp.start()

@@ -1,4 +1,4 @@
-module.exports = function createApp({mainRouter}){
+module.exports = ({mainRouter}) => {
 
 	return {
 
@@ -86,7 +86,7 @@ module.exports = function createApp({mainRouter}){
 					return next(error)
 				}
 			
-				response.status(403).render("errors/403")
+				response.status(403).render("errors/403", {layout: "empty"})
 			})
 
 			/*

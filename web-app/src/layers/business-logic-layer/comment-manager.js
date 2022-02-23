@@ -1,7 +1,7 @@
-const projectValidator = require('./project-validator')
+module.exports = ({commentRepository}) => {
 
-module.exports = function createCommentManager({commentRepository}){
     return {
+        
         async createComment(comment) {
             //const errors = projectValidator.getErrorsNewProject(project)
         /*
@@ -23,6 +23,8 @@ module.exports = function createCommentManager({commentRepository}){
                 return Promise.reject(["Kommentarerna kunde inte hämtas från databasen"])
             }
         }
+
     }
+
 }
 

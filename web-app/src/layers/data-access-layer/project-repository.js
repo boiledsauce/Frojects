@@ -1,8 +1,9 @@
 const { models } = require('./db')
 
-module.exports = function createProjectRepository(){
+module.exports = () => {
 
 	return {
+		
 		async createProject(name, ownerId, creationDate){
 			try {
 				creationDate = "2012-02-20"

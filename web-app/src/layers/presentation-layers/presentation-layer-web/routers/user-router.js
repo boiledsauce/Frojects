@@ -1,6 +1,6 @@
 const router = require("express").Router({mergeParams: true})
 
-module.exports = function({userManager}){
+module.exports = ({userManager}) => {
     
     router.get('/register', (request, response) => {
         response.render('user/register')

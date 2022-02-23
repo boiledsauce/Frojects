@@ -1,7 +1,9 @@
 const projectValidator = require('./project-validator')
 
-module.exports = function createTaskManager({taskRepository}){
-    return {    
+module.exports = ({taskRepository}) => {
+
+    return {
+
         async createTask(task) {
             const errors = projectValidator.getErrorsNewTask(task)
             console.log(task)
@@ -33,6 +35,8 @@ module.exports = function createTaskManager({taskRepository}){
                 return Promise.reject(["Din task kunde inte hämtas från databasen"])
             }
         }
+        
     }
+
 }
 
