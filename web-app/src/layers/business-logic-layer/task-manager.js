@@ -32,6 +32,23 @@ module.exports = function createTaskManager({taskRepository}){
             catch (error) {
                 return Promise.reject(["Din task kunde inte hämtas från databasen"])
             }
+        },
+
+        async getTaskDeadline(taskId) {
+            try {
+                return await taskRepository.getTaskDeadline(taskId)
+            } catch (error) {
+                return Promise.reject(["Din deadline för denna task kunde inte hämtas från databasen"])
+            }
+        },
+
+        async completeTask(taskId) {
+            try {
+                return await taskRepository.completeTask(taskId)
+            } catch (error) {
+                console.log(error)
+                return Promise.reject(["Tasken för denna task kunde inte färdiggöras"])
+            }
         }
     }
 }

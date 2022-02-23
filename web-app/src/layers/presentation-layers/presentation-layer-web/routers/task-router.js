@@ -29,7 +29,22 @@ module.exports = function({taskManager, commentManager}){
         }
     })
     
-    
+    router.post('/:taskId/complete-task', async (request, response) => {
+        const taskId = request.params.taskId
+
+        try {
+            console.log("EROROROROROROR")
+            const id = request.params.id
+            const result = await taskManager.completeTask(taskId)
+            console.log("result: ", result)
+            response.redirect(request.baseUrl + '/' + taskId)
+
+        } catch (errors) { 
+            console.log(errors)
+            response.redirect(request.baseUrl + '/' + taskId + 'HEHE')
+        }
+    })
+
     router.post('/:taskId/create-comment', async (request, response) => {
         const comment = {
             text: request.body.text,
@@ -38,8 +53,6 @@ module.exports = function({taskManager, commentManager}){
             creationDate: "2021-02-08"
         }
         try{
-            console.log(comment.taskId, comment.authorId)
-
             const insertedCommentId = await commentManager.createComment(comment)
             response.redirect(`/app/project/${request.params.id}/task/${request.params.taskId}`)
         } catch (errors) {
@@ -58,7 +71,6 @@ module.exports = function({taskManager, commentManager}){
             const taskId = request.params.taskId
             const task = await taskManager.getTaskById(taskId)
             const comment = await commentManager.getAllCommentsByTaskId(taskId)
-            console.log(task)
             const model = {
                 task,
                 comment,

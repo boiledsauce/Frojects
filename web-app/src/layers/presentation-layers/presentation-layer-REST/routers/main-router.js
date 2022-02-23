@@ -14,7 +14,6 @@ module.exports = function({projectRESTRouter, userRESTRouter, userManager}){
             response.send("no")
         }
     })*/
-                    name: request.body.projectName,
 
     /*
     router.get('/app', (request, response) => {

@@ -4,13 +4,17 @@
 </head>
 <body>
   <h1 class="display-1 text-center">{{task.title}}</h1>
-  <h1 class="display-5 text-center">Tasks of project: </h1>
       <h4 class="display-8">Description of Task</h1>
       <p>{{task.description}}</p>
   <h4 class="display-8">Date of task submitted: </h1>
       <p>{{task.creationDate}}</p>
   </ul>
-    
+  <h4 class="display-8">Task status</h5>
+    {{#if task.isCompleted}}
+        <p>Closed</p>
+        {{else}}
+        <p>Open</p>
+    {{/if}}
   <a href = "/app/project/{{projectId}}/task/{{task.id}}/create-comment">Comment on this task</a>
   <table>
         <tr>
@@ -23,6 +27,12 @@
                 <td>{{this.creationDate}}</td>
             </tr>
             {{/each}}
+    {{#unless task.isCompleted}}
     </table>
+        <form action="{{task.id}}/complete-task" method="POST">
+        {{> csrfToken}}
+            <button type="submit" class="btn btn-primary">Complete task</button>
+        </form>
+    {{/unless}}
 </body>
  

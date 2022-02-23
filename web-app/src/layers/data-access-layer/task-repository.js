@@ -63,6 +63,51 @@ module.exports = function createTaskRepository(){
 				console.error(error)
 				throw [`Uppgiften kunde inte hämtas från databasen`]
 			}
+		},
+
+		async getTaskDeadline(taskId){
+			try {
+				const deadline = await models.Deadline.findOne({
+					where: {
+						taskId
+					}
+				})
+				return deadline
+
+			} catch (error) {
+				console.error(error)
+				throw [`Deadlinen kunde inte hämtas från databasen`]
+			}
+		},
+
+		async createTaskDeadline(taskId, taskEndingDate){
+			try {
+				const deadline = await models.Deadline.create({
+					taskId,
+					deadline: taskEndingDate
+				})
+				return deadline
+
+			} catch (error) {
+				console.error(error)
+				throw [`Deadlinen kunde inte skapas`]
+			}
+		},
+		
+		async completeTask(taskId) {
+			try {
+				console.log(taskId)
+				const result = await models.Task.update({ isCompleted: true }, {
+					where: {
+						id: taskId,
+					}
+				})
+				console.log("DB RESULT", result)
+				return result
+			} catch (error) {
+				console.error(error)
+				throw [`Tasken kunde inte färdiggöras`]
+			}
 		}
 	}
 }
