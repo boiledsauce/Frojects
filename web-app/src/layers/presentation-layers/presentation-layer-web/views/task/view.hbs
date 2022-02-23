@@ -35,7 +35,7 @@
             {{/each}}
     {{#unless task.isCompleted}}
     </table>
-        <form action="{{task.id}}/complete-task" method="POST">
+        <form action="./{{task.id}}/complete-task" method="POST">
         {{> csrfToken}}
             <button type="submit" class="btn btn-primary">Complete task</button>
         </form>

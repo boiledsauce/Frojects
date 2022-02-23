@@ -20,8 +20,8 @@ module.exports = function({taskManager, commentManager}){
     
         try {
             const insertedTaskId = await taskManager.createTask(task)
-            const projectId = request.params.id
-            response.redirect(request.baseUrl + '/' + projectId)
+            const projectId = request.params.projectId
+            response.redirect(request.baseUrl + '/' + insertedTaskId)
         }
         catch (errors) {
             const model = {
@@ -58,15 +58,13 @@ module.exports = function({taskManager, commentManager}){
         const taskId = request.params.taskId
 
         try {
-            console.log("EROROROROROROR")
-            const id = request.params.id
+            const id = request.params.projectId
             const result = await taskManager.completeTask(taskId)
-            console.log("result: ", result)
-            response.redirect(request.baseUrl + '/' + taskId)
+            response.redirect(`/app/projects/${id}`)
 
         } catch (errors) { 
             console.log(errors)
-            response.redirect(request.baseUrl + '/' + taskId + 'HEHE')
+            response.redirect(request.baseUrl + '/' + taskId)
         }
     })
 
