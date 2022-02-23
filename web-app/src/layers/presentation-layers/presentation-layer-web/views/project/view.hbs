@@ -1,0 +1,39 @@
+{{> errors}}
+
+<div class="container">
+    <div class="row mb-5">
+        <div class="col">
+            <h1 class="display-1">{{project.name}}</h1>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col d-flex justify-content-between">
+            <h2 class="display-5">Tasks</h2>
+        </div>
+        <div class="col d-flex align-items-center justify-content-end">
+            <a class="btn btn-primary ms-4" href="/app/projects/{{project.id}}/tasks/create">Create task</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+            {{#if tasks.length}}
+                <div class="list-group">
+                  
+                    {{#each tasks}}
+                        <a href="/app/projects/{{projectId}}/tasks/{{this.id}}" class="list-group-item list-group-item-action" aria-current="true">
+                          <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{this.title}}</h5>
+                            <small>3 days ago</small>
+                          </div>
+                          <p class="mb-1">{{this.description}}</p>
+                        </a>
+                    {{/each}}
+
+                </div>
+            {{/if}}
+
+        </div>
+    </div>
+</div>
+ 

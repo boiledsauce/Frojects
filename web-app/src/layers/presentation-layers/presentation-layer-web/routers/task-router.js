@@ -1,31 +1,56 @@
-const express = require("express")
+const router = require("express").Router({mergeParams: true})
 
 module.exports = function({taskManager, commentManager}){
 
-    const router = express.Router({mergeParams: true})
+    router.get('/create', (request, response) => {
+        const taskId = request.params.id
+        const model = {
+            taskId
+        }
+        response.render('task/create', model)
+    })
     
-    router.get('/', async (request, response) => {
-        response.sendStatus(404)
+    router.post('/create', async (request, response) => {
+        const task = {
+            title: request.body.title,
+            projectId: request.params.projectId,
+            description: request.body.description,
+            creationDate: "2020-02-05"
+        }
+    
+        try {
+            const insertedTaskId = await taskManager.createTask(task)
+            const projectId = request.params.id
+            response.redirect(request.baseUrl + '/' + projectId)
+        }
+        catch (errors) {
+            const model = {
+                id: request.params.id,
+                errors
+            }
+            response.render('task/create', model)
+        }
     })
     
     router.get('/:taskId/create-comment', async (request, response) => {
         
+        const taskId = request.params.taskId
     
         try {
             const task = (await taskManager.getTaskById(taskId))[0]
             const model = {
-                id: request.params.id,
+                projectId: request.params.projectId,
                 taskId: request.params.taskId,
                 task
             }
-            response.render('create-comment.hbs', model)
+            response.render('comment/create', model)
         } catch (errors) {
             const model = {
-                id: request.params.id,
+                projectId: request.params.projectId,
                 taskId: request.params.taskId,
                 errors
             }
-            response.render('create-comment.hbs', model)
+            response.render('comment/create', model)
         }
     })
     
@@ -62,7 +87,7 @@ module.exports = function({taskManager, commentManager}){
                 errors
             }
             console.log(errors)
-            response.render('create-comment.hbs', model)
+            response.render('comment/create', model)
         }
     })
 
@@ -76,12 +101,12 @@ module.exports = function({taskManager, commentManager}){
                 comment,
                 projectId: request.params.id
             }
-            response.render('view-task.hbs', model)
+            response.render('task/view', model)
         } catch (errors) {
             const model = {
                 errors
             }
-            response.render('view-task.hbs', model)
+            response.render('task/view', model)
         }
     })
     

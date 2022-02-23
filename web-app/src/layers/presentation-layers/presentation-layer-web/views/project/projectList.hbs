@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="row mb-5">
+      <div class="col">
+          <h1 class="display-1">Projects<a class="btn btn-primary ms-5" href="/app/projects/create">Create new</a></h1>
+      </div>
+  </div>
+    <div class="row">
+        <div class="col col-md-6">
+
+            <div class="list-group">
+                {{#if projects.length}}
+
+                    {{#each projects}}
+                        <a href="/app/projects/{{this.id}}" class="list-group-item list-group-item-action">{{this.name}}</a>
+                    {{/each}}
+
+                {{else}}
+
+                    <p>Inga projekt ännu</p>
+
+                {{/if}}
+            </div>
+
+        </div>
+    </div>
+</div>
+ 

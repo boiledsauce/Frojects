@@ -1,9 +1,15 @@
 {{> errors}}
-<head>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-</head>
-<body>
-  <h1 class="display-1 text-center">{{task.title}}</h1>
+
+<div class="container">
+    <div class="row mb-5">
+        <div class="col">
+            <h1 class="display-1">{{task.title}}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <h2 class="display-5">Tasks</h2>
+    </div>
+</div>
       <h4 class="display-8">Description of Task</h1>
       <p>{{task.description}}</p>
   <h4 class="display-8">Date of task submitted: </h1>

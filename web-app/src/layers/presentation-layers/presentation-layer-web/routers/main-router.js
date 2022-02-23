@@ -1,8 +1,6 @@
-const express = require("express")
+const router = require("express").Router({mergeParams: true})
 
 module.exports = function({projectRouter, userRouter, userManager}){
-
-    const router = express.Router({mergeParams: true})
 
     //Authentication
     router.use('/app', (request, response, next) => {
@@ -18,7 +16,7 @@ module.exports = function({projectRouter, userRouter, userManager}){
         response.render('start')
     })
     
-    router.use('/app/project', projectRouter)
+    router.use('/app/projects', projectRouter)
     
     //Use empty layout when not inside /app
     router.use('/', (request, response, next) => {
