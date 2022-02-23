@@ -1,18 +1,27 @@
-<head>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-</head>
-<body>
-{{> errors }}
-<h1 class="display-1 text-center">Projects</h1>
-<h2 class="display-5 text-center">Welcome Wille</h1>
-<h1>Create a new project</h1>
-<a href = "/app/project/create">Create</a>
+<div class="container">
+  <div class="row mb-5">
+      <div class="col">
+          <h1 class="display-1">Projects<a class="btn btn-primary ms-5" href="/app/projects/create">Create new</a></h1>
+      </div>
+  </div>
+    <div class="row">
+        <div class="col col-md-6">
 
-<h2>All of your projects: </h2>
-<ul>
-  {{#each projects}}
-    <li><a href = "/app/project/{{this.id}}">{{this.name}}</a></li>
-  {{/each}}
-</ul>
-</body>
+            <div class="list-group">
+                {{#if projects.length}}
+
+                    {{#each projects}}
+                        <a href="/app/projects/{{this.id}}" class="list-group-item list-group-item-action">{{this.name}}</a>
+                    {{/each}}
+
+                {{else}}
+
+                    <p>Inga projekt ännu</p>
+
+                {{/if}}
+            </div>
+
+        </div>
+    </div>
+</div>
  

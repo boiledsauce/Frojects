@@ -1,8 +1,6 @@
-const express = require("express")
+const router = require("express").Router({mergeParams: true})
 
 module.exports = function({projectRouter, userRouter, userManager}){
-
-    const router = express.Router({mergeParams: true})
 
     //Authentication
     router.use('/app', (request, response, next) => {
