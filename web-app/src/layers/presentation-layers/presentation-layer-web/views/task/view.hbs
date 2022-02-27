@@ -1,44 +1,34 @@
-{{> errors}}
-
-<div class="container">
-    <div class="row mb-5">
-        <div class="col">
-            <h1 class="display-1">{{task.title}}</h1>
-        </div>
-    </div>
-    <div class="row">
-        <h2 class="display-5">Tasks</h2>
-    </div>
-</div>
-      <h4 class="display-8">Description of Task</h1>
-      <p>{{task.description}}</p>
-  <h4 class="display-8">Date of task submitted: </h1>
-      <p>{{task.creationDate}}</p>
+<h1>{{task.title}}</h1>
+<p>{{task.description}}</p>
+  <h4 class="display-8">Skapad</h1>
+      <p>{{task.createdAt}}</p>
   </ul>
-  <h4 class="display-8">Task status</h5>
+  <h4 class="display-8">Status</h5>
     {{#if task.isCompleted}}
-        <p>Closed</p>
-        {{else}}
-        <p>Open</p>
+        <div class="alert alert-success" role="alert">
+            Avklarad
+        </div>
     {{/if}}
-  <a href = "/app/project/{{projectId}}/task/{{task.id}}/create-comment">Comment on this task</a>
-  <table>
-        <tr>
-            <th>Comment:</th>
-            <th>Date: </th>
-        </tr>
-            {{#each comment}}
-            <tr>
-                <td>{{this.text}}</td>
-                <td>{{this.creationDate}}</td>
-            </tr>
-            {{/each}}
+  <a class="btn btn-primary mb-3" href="/app/project/{{projectId}}/tasks/{{task.id}}/comments/create">Kommentera</a>
+
+{{#if comments.length}}
+  <div class="list-group">
+        {{#each comments}}
+            <div class="list-group-item list-group-item-action active" aria-current="true">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{this.authorId}}</h5>
+                    <small>{{this.createdAt}}</small>
+                </div>
+                <p class="mb-1">{{this.text}}</p>
+            </div>
+        {{/each}}
+  </div>
+{{/if}}
+
     {{#unless task.isCompleted}}
-    </table>
         <form action="./{{task.id}}/complete-task" method="POST">
-        {{> csrfToken}}
-            <button type="submit" class="btn btn-primary">Complete task</button>
+            {{> csrfToken}}
+            <button type="submit" class="btn btn-primary">Klarmarkera</button>
         </form>
     {{/unless}}
-</body>
  

@@ -1,7 +1,9 @@
 {{#if errors.length}}
-    <ul class="text-danger text-start">
-        {{#each errors}}
-            <li>{{this}}</li>
-        {{/each}}
-    </ul>
+    <div class="alert alert-danger" role="alert">
+        <ul class="text-danger text-start mb-0">
+            {{#each errors}}
+                <li>{{this}}</li>
+            {{/each}}
+        </ul>
+    </div>
 {{/if}}

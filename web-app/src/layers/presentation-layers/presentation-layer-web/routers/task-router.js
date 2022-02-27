@@ -20,7 +20,6 @@ module.exports = ({taskManager, commentManager}) => {
     
         try {
             const insertedTaskId = await taskManager.createTask(task)
-            const projectId = request.params.projectId
             response.redirect(request.baseUrl + '/' + insertedTaskId)
         }
         catch (errors) {
@@ -93,10 +92,10 @@ module.exports = ({taskManager, commentManager}) => {
         try {
             const taskId = request.params.taskId
             const task = await taskManager.getTaskById(taskId)
-            const comment = await commentManager.getAllCommentsByTaskId(taskId)
+            const comments = await commentManager.getAllCommentsByTaskId(taskId)
             const model = {
                 task,
-                comment,
+                comments,
                 projectId: request.params.id
             }
             response.render('task/view', model)

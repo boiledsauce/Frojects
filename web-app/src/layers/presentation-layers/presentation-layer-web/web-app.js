@@ -77,7 +77,7 @@ module.exports = ({mainRouter}) => {
 
 			//404 Page not found error handler
 			app.use((request, response) => {
-				response.status(404).render("errors/404")
+				response.status(404).render("errors/404", {layout: 'empty'})
 			})
 
 			//CSRF error handler
@@ -95,20 +95,9 @@ module.exports = ({mainRouter}) => {
 			*/
 			app.use((error, request, response, next) => {
 				console.log(error)
-				response.status(500).render("errors/500")
+				response.status(500).render("errors/500", {layout: 'empty'})
 			})
-		/*
-			const port = 8080
 
-			app.listen(port, (error) => {
-				if (error){
-					console.log(error)
-				}
-				else{
-					console.log("It's up and running")
-				}
-			})
-			*/
 			return app
 		}
 	}
