@@ -7,17 +7,31 @@ services:
     volumes:
     - "./web-app/src:/web-app/src"
     depends_on:
-      - "database"
-      - "redis"
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
   "database":
     build: "./database"
     environment:
-      MYSQL_ROOT_PASSWORD: "abc123"
+      MYSQL_ROOT_PASSWORD: "V4x6qmfgwliejFcE5jd0"
+      MYSQL_PASSWORD: "iWHnm16lURvL6iHfyvcK"
+      MYSQL_USER: "frojects-user"
       MYSQL_DATABASE: "frojects"
     ports:
     - "3306:3306"
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=V4x6qmfgwliejFcE5jd0 --execute \"SHOW DATABASES\""
+      interval: 2s
+      timeout: 20s
+      retries: 10
   "redis":
     build: "./redis"
     ports:
     - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
     

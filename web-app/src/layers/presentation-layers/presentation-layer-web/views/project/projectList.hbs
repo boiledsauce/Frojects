@@ -11,7 +11,7 @@
                 {{#if projects.length}}
 
                     {{#each projects}}
-                        <a href="/app/projects/{{this.id}}" class="list-group-item list-group-item-action">{{this.name}}</a>
+                        <a href="/app/projects/{{this.id}}" class="list-group-item list-group-item-action"><i class="bi bi-kanban me-2"></i>{{this.name}}</a>
                     {{/each}}
 
                 {{else}}
