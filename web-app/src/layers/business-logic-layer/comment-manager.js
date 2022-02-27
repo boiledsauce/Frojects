@@ -12,15 +12,15 @@ module.exports = ({commentRepository}) => {
             try {
                 return await commentRepository.createComment(comment.text, comment.taskId, comment.authorId, comment.creationDate)
             } catch (error) {
-                return Promise.reject(["Kommentaren kunde inte skapas i databasen"])
+                throw ["Kommentaren kunde inte skapas i databasen"]
             }
         },
         
         async getAllCommentsByTaskId (taskId) {
             try {
-            return await commentRepository.getAllCommentsByTaskId(taskId)
+                return await commentRepository.getAllCommentsByTaskId(taskId)
             } catch (error) {
-                return Promise.reject(["Kommentarerna kunde inte hämtas från databasen"])
+                throw ["Kommentarerna kunde inte hämtas från databasen"]
             }
         }
 

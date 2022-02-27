@@ -7,13 +7,13 @@ module.exports = ({projectRepository}) => {
         async createProject(project) {
             const errors = projectValidator.getErrorsNewProject(project)
             if (errors.length > 0) {
-                return Promise.reject(errors)
+                throw errors
             }
 
             try {
                 return await projectRepository.createProject(project.name, project.ownerId, project.creationDate)
             } catch (error) {
-                return Promise.reject(["Projektet kunde inte skapas i databasen"])
+                throw ["Projektet kunde inte skapas i databasen"]
             }
         },
             
@@ -21,7 +21,7 @@ module.exports = ({projectRepository}) => {
             try {
             return await projectRepository.getAllProjectsByUserId(userId)
             } catch (error) {
-                return Promise.reject(["Projekten kunde inte hämtas från databasen"])
+                throw ["Projekten kunde inte hämtas från databasen"]
             }
         },
 
@@ -29,7 +29,7 @@ module.exports = ({projectRepository}) => {
             try {
                 return await projectRepository.getProject(projectId)
             } catch (error) {
-                return Promise.reject(["Projektet kunde inte hämtas från databasen"])
+                throw ["Projektet kunde inte hämtas från databasen"]
             }
         },
 
@@ -37,7 +37,7 @@ module.exports = ({projectRepository}) => {
             try {
                 return await projectRepository.updateProject(project.id, project.name)
             } catch (error) {
-                return Promise.reject(["Projektet kunde inte hämtas från databasen"])
+                throw ["Projektet kunde inte hämtas från databasen"]
             }
         },
 
@@ -45,22 +45,18 @@ module.exports = ({projectRepository}) => {
             try {
                 return await projectRepository.deleteProject(projectId)
             } catch (error) {
-                return Promise.reject(["Projektet kunde inte tas bort från databasen"])
+                throw ["Projektet kunde inte tas bort från databasen"]
             }
         },
 
         async belongsToUser(ownerId, projectId) {
             try {
-            
                 const project = await this.getProject(projectId)
-                if (project && project.ownerId == ownerId) {
-                    return true 
-                }
-                return false
+                return (project.ownerId == ownerId)
 
             } catch (error) {
                 console.log(error)
-                return Promise.reject([""])
+                throw ["Kunde inte kontrollera projektets ägare"]
             }
         }
         

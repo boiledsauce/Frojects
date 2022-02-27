@@ -4,16 +4,15 @@ module.exports = () => {
 
 	return {
 
-		async createTask(title, projectId, description, creationDate){
+		async createTask(task){
 			try {
-				const task = await models.Task.create({
-					title,
-					projectId,
-					description,
-					creationDate
+				const createdTask = await models.Task.create({
+					title: task.title,
+					projectId: task.projectId,
+					description: task.description
 				})
 
-				return task.id
+				return createdTask
 
 			} catch (error) {
 				console.error(error)
@@ -31,7 +30,7 @@ module.exports = () => {
 			}
 			catch (error) {
 				console.error(error)
-				throw error
+				throw ['Kunde inte ta bort uppgiften från databasen']
 			}
 		},
 
@@ -46,7 +45,7 @@ module.exports = () => {
 
 			} catch (error) {
 				console.error(error)
-				throw error
+				throw ['Kunde inte hämta projektets uppgifter']
 			}
 		},
 
@@ -96,17 +95,16 @@ module.exports = () => {
 		
 		async completeTask(taskId) {
 			try {
-				console.log(taskId)
 				const result = await models.Task.update({ isCompleted: true }, {
 					where: {
 						id: taskId,
 					}
 				})
-				console.log("DB RESULT", result)
 				return result
+
 			} catch (error) {
 				console.error(error)
-				throw [`Tasken kunde inte färdiggöras`]
+				throw [`Uppgiften kunde inte klarmarkeras`]
 			}
 		}
 	}

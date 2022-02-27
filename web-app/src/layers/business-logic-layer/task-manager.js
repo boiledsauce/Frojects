@@ -1,20 +1,20 @@
-const projectValidator = require('./project-validator')
+const taskValidator = require('./task-validator')
 
 module.exports = ({taskRepository}) => {
 
     return {
 
         async createTask(task) {
-            const errors = projectValidator.getErrorsNewTask(task)
-            console.log(task)
+            const errors = taskValidator.getErrorsNewTask(task)
+
             if (errors.length > 0) {
-                return Promise.reject(errors)
+                throw errors
             }
 
             try {
-                return await taskRepository.createTask(task.title, task.projectId, task.description, task.creationDate)
-            } catch (error) {
-                return Promise.reject(["Din task kunde inte skapas i databasen"])
+                return await taskRepository.createTask(task)
+            } catch (errors) {
+                throw errors
             }
         },
 
@@ -23,7 +23,7 @@ module.exports = ({taskRepository}) => {
                 return await taskRepository.getAllTasksByProjectId(projectId)
             }
             catch (error) {
-                return Promise.reject(["Dina tasks kunde inte hämtas från databasen"])
+                throw ["Dina tasks kunde inte hämtas från databasen"]
             }
         },
 
@@ -32,7 +32,7 @@ module.exports = ({taskRepository}) => {
                 return await taskRepository.getTaskById(taskId)
             }
             catch (error) {
-                return Promise.reject(["Din task kunde inte hämtas från databasen"])
+                throw ["Din task kunde inte hämtas från databasen"]
             }
         },
 
@@ -40,7 +40,7 @@ module.exports = ({taskRepository}) => {
             try {
                 return await taskRepository.getTaskDeadline(taskId)
             } catch (error) {
-                return Promise.reject(["Din deadline för denna task kunde inte hämtas från databasen"])
+                throw ["Din deadline för denna task kunde inte hämtas från databasen"]
             }
         },
 
@@ -49,7 +49,7 @@ module.exports = ({taskRepository}) => {
                 return await taskRepository.completeTask(taskId)
             } catch (error) {
                 console.log(error)
-                return Promise.reject(["Tasken för denna task kunde inte färdiggöras"])
+                throw ["Uppgiften kunde inte klarmarkeras"]
             }
         }
         
