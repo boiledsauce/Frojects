@@ -1,4 +1,7 @@
 const mysql = require('mysql2/promise')
+
+const { Sequelize } = require('sequelize')
+
 const { initModels } = require('./models/init-models')
 
 const DB_HOST = 'database'
@@ -6,8 +9,6 @@ const DB_PORT = 3306
 const DB_USER = 'frojects-user'
 const DB_PASSWORD = 'iWHnm16lURvL6iHfyvcK'
 const DB_NAME = 'frojects'
-
-const { Sequelize } = require('sequelize')
 
 initialize = async () => {
 	try{

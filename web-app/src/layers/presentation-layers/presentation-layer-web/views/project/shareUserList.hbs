@@ -1,0 +1,22 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <h1>Dela projekt med användare</h1>
+            {{#if users.length}}
+                <form>
+                    <label for="userList" class="form-label">Sök användare</label>
+                    <input class="form-control mb-3" list="datalistOptions" id="userList" placeholder="Skriv för att söka">
+                        <datalist id="datalistOptions">
+                            {{#each users}}
+                                <option value="{{this.firstName}} {{this.lastName}}">
+                            {{/each}}
+                        </datalist>
+
+                        <button class="btn btn-primary" type="submit">Dela</button>
+                </form>
+            {{else}}
+                <p>Inga användare hittades</p>
+            {{/if}}
+        </div>
+    </div>
+</div>
