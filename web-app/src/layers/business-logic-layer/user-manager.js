@@ -58,6 +58,14 @@ module.exports = ({userRepository}) => {
                 throw error
             }
         },
+
+        async getUserRealNameById(id){
+            try {
+                return await userRepository.getUserRealNameById(id)
+            } catch (error) {
+                throw error
+            }
+        },
         
         async loginCredentialsMatchUser(loginCredentials, user){
             return new Promise((resolve, reject) => {

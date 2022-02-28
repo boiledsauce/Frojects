@@ -1,3 +1,4 @@
+//const { DataTypes } = require('sequelize/types')
 const { models } = require('./db')
 
 module.exports = () => {
@@ -22,13 +23,19 @@ module.exports = () => {
 		async getAllCommentsByTaskId(taskId){
 			try {
 				const comments = await models.Comment.findAll({
-					where: {
-						taskId
-					}
+
+					include: [{
+						model: models.User,
+						attributes: ['firstName', 'lastName'],
+						
+					}],
+					order: [['createdAt', 'DESC']],
+					raw: true,
+					nest: true
 				})
 				return comments
 			} catch (error) {
-				console.error(error)
+				console.log("ERROR:", error)
 				throw error
 			}
 		}

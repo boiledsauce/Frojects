@@ -53,7 +53,22 @@ module.exports = () => {
 
             }
         
-        }
+        },
 
+        async getUserRealNameById(id){
+            try{
+                const name = await models.User.findOne({
+                    attributes: [
+                        'firstName',
+                        'lastName'
+                    ],
+                    where: {
+                        id
+                    }
+                })
+            } catch (error) {
+                throw ['Kunde inte hämta användarens namn']
+            }
+        }
     }
 }

@@ -16,7 +16,7 @@
         {{#each comments}}
             <div class="list-group-item list-group-item-action" aria-current="true">
                 <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">{{this.authorId}}</h5>
+                    <h5 class="mb-1">{{this.User.firstName}} {{this.User.lastName}}</h5>
                     <small>{{this.createdAt}}</small>
                 </div>
                 <p class="mb-1">{{this.text}}</p>

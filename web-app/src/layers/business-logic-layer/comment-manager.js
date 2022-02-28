@@ -16,7 +16,7 @@ module.exports = ({commentRepository}) => {
             }
         },
         
-        async getAllCommentsByTaskId (taskId) {
+        async getAllCommentsByTaskId (taskId) { 
             try {
                 return await commentRepository.getAllCommentsByTaskId(taskId)
             } catch (error) {
