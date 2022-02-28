@@ -20,7 +20,7 @@ module.exports = ({taskManager, commentManager}) => {
     
         try {
             const insertedTaskId = await taskManager.createTask(task)
-            response.redirect(request.baseUrl + '/' + insertedTaskId)
+            response.redirect(`/app/projects/${task.projectId}`)
         }
         catch (errors) {
             const model = {
@@ -36,7 +36,7 @@ module.exports = ({taskManager, commentManager}) => {
         const taskId = request.params.taskId
     
         try {
-            const task = (await taskManager.getTaskById(taskId))[0]
+            const task = await taskManager.getTaskById(taskId)
             const model = {
                 projectId: request.params.projectId,
                 taskId: request.params.taskId,
@@ -76,10 +76,10 @@ module.exports = ({taskManager, commentManager}) => {
         }
         try{
             const insertedCommentId = await commentManager.createComment(comment)
-            response.redirect(`/app/project/${request.params.id}/task/${request.params.taskId}`)
+            response.redirect(`/app/projects/${request.params.projectId}/tasks/${request.params.taskId}`)
         } catch (errors) {
             const model = {
-                id: request.params.id,
+                id: request.params.projectId,
                 taskId: request.params.taskId,
                 errors
             }
@@ -96,7 +96,7 @@ module.exports = ({taskManager, commentManager}) => {
             const model = {
                 task,
                 comments,
-                projectId: request.params.id
+                projectId: request.params.projectId
             }
             response.render('task/view', model)
         } catch (errors) {

@@ -9,12 +9,12 @@
             Avklarad
         </div>
     {{/if}}
-  <a class="btn btn-primary mb-3" href="/app/project/{{projectId}}/tasks/{{task.id}}/comments/create">Kommentera</a>
+  <a class="btn btn-primary mb-3" href="/app/projects/{{projectId}}/tasks/{{task.id}}/create-comment">Kommentera</a>
 
 {{#if comments.length}}
   <div class="list-group">
         {{#each comments}}
-            <div class="list-group-item list-group-item-action active" aria-current="true">
+            <div class="list-group-item list-group-item-action" aria-current="true">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">{{this.authorId}}</h5>
                     <small>{{this.createdAt}}</small>
