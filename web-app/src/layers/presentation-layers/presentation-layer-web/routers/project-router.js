@@ -1,6 +1,6 @@
 const router = require("express").Router({mergeParams: true})
 
-module.exports = ({taskRouter, projectManager, taskManager}) => {
+module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
     
     router.use('/:projectId/tasks', taskRouter)
 
@@ -50,6 +50,13 @@ module.exports = ({taskRouter, projectManager, taskManager}) => {
             }
             response.render('project/create', model)
         }
+    })
+
+    router.get('/:projectId/share', async (request, response) => {
+        const projectId = request.params.projectId
+
+        const users = await userManager.getAllUsersWithAccessToProject(projectId)
+        response.render('project/shareUserList', { users })
     })
 
     router.get('/:projectId', async (request, response) => {

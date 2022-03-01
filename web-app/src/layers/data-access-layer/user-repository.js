@@ -17,7 +17,6 @@ module.exports = () => {
                 return createdUser
 
             } catch (error) {
-                console.log("Nu  blev det mega error!")
 
                 if (error.parent.code == 'ER_DUP_ENTRY'){
                     throw ['Det finns redan en användare med denna e-post']
@@ -28,6 +27,19 @@ module.exports = () => {
             }
         
         },
+        
+		async getAllUsersWithAccessToProject(projectId){
+            console.log("Projektid är: " + projectId)
+			try{
+				const users = await models.User.findAll({ model: models.Project })
+                console.log(users)
+                return users
+
+			} catch (error) {
+                console.log(error)
+                throw ['Kunde inte hämta användare tillhörande projektet']
+            }
+		},
         
         async getUserByEmail(email){
 

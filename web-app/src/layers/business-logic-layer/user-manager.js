@@ -59,6 +59,14 @@ module.exports = ({userRepository}) => {
             }
         },
 
+        async getAllUsersWithAccessToProject(projectId){
+            try{
+                return await userRepository.getAllUsersWithAccessToProject(projectId)
+            } catch (error) {
+                throw error
+            }
+        },
+
         async getUserRealNameById(id){
             try {
                 return await userRepository.getUserRealNameById(id)

@@ -4,7 +4,6 @@ const _Deadline = require("./Deadline")
 const _Project = require("./Project")
 const _Task = require("./Task")
 const _User = require("./User")
-const _UserProjectAccess = require("./UserProjectAccess")
 
 initModels = (sequelize) => {
   const Comment = _Comment(sequelize, DataTypes)
@@ -12,12 +11,9 @@ initModels = (sequelize) => {
   const Project = _Project(sequelize, DataTypes)
   const Task = _Task(sequelize, DataTypes)
   const User = _User(sequelize, DataTypes)
-  const UserProjectAccess = _UserProjectAccess(sequelize, DataTypes)
 
   Task.belongsTo(Project, { foreignKey: "projectId"})
   Project.hasMany(Task, { foreignKey: "projectId"})
-  UserProjectAccess.belongsTo(Project, { foreignKey: "projectId"})
-  Project.hasMany(UserProjectAccess, { foreignKey: "projectId"})
   Comment.belongsTo(Task, { foreignKey: "taskId"})
   Task.hasMany(Comment, { foreignKey: "taskId"})
   Deadline.belongsTo(Task, { foreignKey: "taskId"})
@@ -25,9 +21,8 @@ initModels = (sequelize) => {
   Comment.belongsTo(User, { foreignKey: "authorId"})
   User.hasMany(Comment, { foreignKey: "authorId"})
   Project.belongsTo(User, { foreignKey: "ownerId"})
-  User.hasMany(Project, { foreignKey: "ownerId"})
-  UserProjectAccess.belongsTo(User, { foreignKey: "userId"})
-  User.hasMany(UserProjectAccess, { foreignKey: "userId"})
+  Project.belongsToMany(User, { through: 'UserProjectAccess' })
+  User.belongsToMany(Project, { through: 'UserProjectAccess' })
 
   sequelize.sync()
 
@@ -37,7 +32,7 @@ initModels = (sequelize) => {
     Project,
     Task,
     User,
-    UserProjectAccess
+    //UserProjectAccess
   }
 
 }
