@@ -10,15 +10,15 @@ const user = {
 }*/
 
 function authenticateAccessToken(request, response, next) {
-	const authHeader = request.headers['authorization']
-	const token = authHeader && authHeader.split(' ')[1]
+	const authorizationHeader = request.header('Authorization')
+	const accessToken = authorizationHeader.substring("Bearer ".length)
 
-	if (token == null) return response.sendStatus(401)
+	if (accessToken == null) return response.status(401).end()
 
-	jwt.verify(token, ACCESS_TOKEN_SECRET, (error, user) => {
-		if (error) response.sendStatus(403)
+	jwt.verify(accessToken, ACCESS_TOKEN_SECRET, (error, payload) => {
+		if (error) response.status(401).end()
 
-		request.user = user
+		request.user = payload
 		next()
 	})
 }
@@ -33,31 +33,33 @@ module.exports = function createApp({mainRESTRouter, userManager}){
 
 			//Parse requests
 			app.use(express.json())
+			app.use(express.urlencoded({ extended: false }))
 			
-			app.post('/login', async (request, response) => {
+			app.post('/tokens', async (request, response) => {
 			
 				const loginCredentials = {
 					email: request.body.email,
 					password: request.body.password
 				}
-				
 				try{
 					const user = await userManager.getUserByEmail(loginCredentials.email)
 					
 					if (await userManager.loginCredentialsMatchUser(loginCredentials, user)) {
-						const accessToken = jwt.sign(user, ACCESS_TOKEN_SECRET, { expiresIn: 60 * 60 }) //1 hour
+
+						const payload = {
+							userId: user.id
+						}
+
+						const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: 60 * 60 }) //1 hour
 						response.json({ accessToken })				
 					}
 					else {
-						response.status(500).json("Internal server error")
+						response.status(500).end()
 					}
 				}
 				catch (errors) {
-					response.status(500).json("Internal server error")
-					if (errors instanceof Error){
-						console.log(errors)
-						errors = ["Ett oväntat fel uppstod"]
-					}
+					console.log(errors)
+					response.status(500).end()
 				}
 			})
 
