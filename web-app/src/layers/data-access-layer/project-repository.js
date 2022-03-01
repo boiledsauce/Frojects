@@ -18,7 +18,7 @@ module.exports = () => {
 
 			} catch (error) {
 				console.error(error)
-				throw error
+				throw ['Kunde inte skapa projekt']
 			}
 		},
 		
@@ -31,7 +31,7 @@ module.exports = () => {
 				})
 			} catch (error) {
 				console.error(error)
-				throw error
+				throw ['Kunde inte radera projekt']
 			}
 		},
 		
@@ -42,11 +42,14 @@ module.exports = () => {
 						ownerId: userId
 					}
 				})
-				return projects
+				return projects.map(
+					a => a.dataValues
+
+				)
 			}
 			catch (error) {
 				console.error(error)
-				throw error
+				throw ['Kunde inte hämta projekt tillhörande användaren']
 			}
 		},
 		
@@ -61,7 +64,7 @@ module.exports = () => {
 				return project
 			} catch (error) {
 				console.error(error)
-				throw error
+				throw ['Kunde inte hämta projekt']
 			}
 		},
 
@@ -76,9 +79,10 @@ module.exports = () => {
 				})
 
 				return project
+
 			} catch (error) {
 				console.error(error)
-				throw error
+				throw ['Kunde inte uppdatera projekt']
 			}
 		},
 	}

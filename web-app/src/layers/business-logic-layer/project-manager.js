@@ -19,7 +19,7 @@ module.exports = ({projectRepository}) => {
             
         async getAllProjectsByUserId(userId) {
             try {
-            return await projectRepository.getAllProjectsByUserId(userId)
+                return await projectRepository.getAllProjectsByUserId(userId)
             } catch (error) {
                 throw ["Projekten kunde inte hämtas från databasen"]
             }

@@ -16,7 +16,7 @@ module.exports = () => {
 				return comment.id
 			} catch (error) {
 				console.error(error)
-				throw error
+				throw ['Kunde inte skapa kommentar']
 			}
 		},
 		
@@ -36,7 +36,7 @@ module.exports = () => {
 				return comments
 			} catch (error) {
 				console.log("ERROR:", error)
-				throw error
+				throw ['Kunde inte hämta uppgiftens kommentarer']
 			}
 		}
 	}
