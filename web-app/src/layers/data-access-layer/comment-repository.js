@@ -27,7 +27,7 @@ module.exports = () => {
 					include: [{
 						model: models.User,
 						attributes: ['firstName', 'lastName'],
-						
+					
 					}],
 					order: [['createdAt', 'DESC']],
 					raw: true,

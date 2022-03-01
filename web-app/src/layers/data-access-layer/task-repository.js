@@ -7,12 +7,12 @@ module.exports = () => {
 		async createTask(task){
 			try {
 				const createdTask = await models.Task.create({
-					title: task.title,
-					projectId: task.projectId,
-					description: task.description
+						projectId: task.projectId,
+						title: task.title,
+						description: task.description,
 				})
-
-				return createdTask
+				//console.log("HEHE", createdTask.id)
+				return createdTask.id
 
 			} catch (error) {
 				console.error(error)
@@ -51,11 +51,19 @@ module.exports = () => {
 
 		async getTaskById(taskId){
 			try {
-				const task = await models.Task.findOne({
-					where: {
-						id: taskId
-					}
+				const task = await models.Task.findByPk(taskId, {
+					include: [
+					{
+							attributes: ['deadline'],
+							model: models.Deadline
+						},
+					],
+
+					//raw: true,
+					//nested: true
 				})
+				console.log("deadline: ", task["Deadlines.deadline"])
+				console.log("task: ", task)
 				return task
 
 			} catch (error) {
@@ -82,7 +90,7 @@ module.exports = () => {
 		async createTaskDeadline(taskId, taskEndingDate){
 			try {
 				const deadline = await models.Deadline.create({
-					taskId,
+					taskId: taskId,
 					deadline: taskEndingDate
 				})
 				return deadline
@@ -107,5 +115,6 @@ module.exports = () => {
 				throw [`Uppgiften kunde inte klarmarkeras`]
 			}
 		}
+
 	}
 }

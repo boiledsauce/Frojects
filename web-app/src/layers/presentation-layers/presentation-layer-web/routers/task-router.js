@@ -15,11 +15,14 @@ module.exports = ({taskManager, commentManager}) => {
             title: request.body.title,
             projectId: request.params.projectId,
             description: request.body.description,
+            date: request.body.date,
             creationDate: "2020-02-05"
         }
     
         try {
             const insertedTaskId = await taskManager.createTask(task)
+            const deadline = request.body.date
+            const insertedDeadline = await taskManager.createTaskDeadline(insertedTaskId, deadline)
             response.redirect(`/app/projects/${task.projectId}`)
         }
         catch (errors) {
@@ -92,7 +95,10 @@ module.exports = ({taskManager, commentManager}) => {
         try {
             const taskId = request.params.taskId
             const task = await taskManager.getTaskById(taskId)
+            console.log(task)
             const comments = await commentManager.getAllCommentsByTaskId(taskId)
+            console.log("task", task)
+
             const model = {
                 task,
                 comments,
