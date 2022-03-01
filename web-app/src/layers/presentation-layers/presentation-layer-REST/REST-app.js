@@ -36,6 +36,12 @@ module.exports = function createApp({mainRESTRouter, userManager}){
 			app.use(express.urlencoded({ extended: false }))
 			
 			app.post('/tokens', async (request, response) => {
+
+				const grant_type = request.body.grant_type
+
+				if (grant_type != 'password'){
+					response.status(400).end()
+				}
 			
 				const loginCredentials = {
 					email: request.body.email,
