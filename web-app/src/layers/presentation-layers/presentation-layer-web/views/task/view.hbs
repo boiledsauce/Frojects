@@ -10,6 +10,8 @@
         </div>
     {{/if}}
   <a class="btn btn-primary mb-3" href="/app/projects/{{projectId}}/tasks/{{task.id}}/create-comment">Kommentera</a>
+<h4 class="display-8">Deadline</h4>
+<p>{{task.Deadlines.deadline}}</p>
 
 {{#if comments.length}}
   <div class="list-group">
