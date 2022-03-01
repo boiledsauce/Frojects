@@ -11,16 +11,19 @@ const user = {
 
 function authenticateAccessToken(request, response, next) {
 	const authorizationHeader = request.header('Authorization')
-	const accessToken = authorizationHeader.substring("Bearer ".length)
 
-	if (accessToken == null) return response.status(401).end()
+	if (authorizationHeader == undefined){
+		response.status(400).end()
+	} else{
+		const accessToken = authorizationHeader.substring("Bearer ".length)
 
-	jwt.verify(accessToken, ACCESS_TOKEN_SECRET, (error, payload) => {
-		if (error) response.status(401).end()
-
-		request.user = payload
-		next()
-	})
+		jwt.verify(accessToken, ACCESS_TOKEN_SECRET, (error, payload) => {
+			if (error) response.status(401).end()
+	
+			request.user = payload
+			next()
+		})
+	}
 }
 
 module.exports = function createApp({mainRESTRouter, userManager}){
@@ -40,11 +43,12 @@ module.exports = function createApp({mainRESTRouter, userManager}){
 				const grant_type = request.body.grant_type
 
 				if (grant_type != 'password'){
+					console.error('Fel grant_type')
 					response.status(400).end()
 				}
 			
 				const loginCredentials = {
-					email: request.body.email,
+					email: request.body.username,
 					password: request.body.password
 				}
 				try{
@@ -56,7 +60,7 @@ module.exports = function createApp({mainRESTRouter, userManager}){
 							userId: user.id
 						}
 
-						const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: 60 * 60 }) //1 hour
+						const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: 3600 }) //milliseconds
 						response.json({ accessToken })				
 					}
 					else {
