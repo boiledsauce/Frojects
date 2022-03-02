@@ -11,8 +11,7 @@ module.exports = () => {
 						title: task.title,
 						description: task.description,
 				})
-				//console.log("HEHE", createdTask.id)
-				return createdTask.id
+				return createdTask.dataValues
 
 			} catch (error) {
 				console.error(error)
@@ -53,18 +52,14 @@ module.exports = () => {
 			try {
 				const task = await models.Task.findByPk(taskId, {
 					include: [
-					{
+						{
 							attributes: ['deadline'],
 							model: models.Deadline
 						},
-					],
-
-					//raw: true,
-					//nested: true
+					]
 				})
-				console.log("deadline: ", task["Deadlines.deadline"])
-				console.log("task: ", task)
-				return task
+				
+				console.log(task.map(it => it.dataValues))
 
 			} catch (error) {
 				console.error(error)

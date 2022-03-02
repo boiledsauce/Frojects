@@ -12,9 +12,7 @@ module.exports = () => {
 					name,
 					creationDate
 				})
-				console.log(name, ownerId, creationDate)
-				const createdId = project.id
-				return createdId
+				return project
 
 			} catch (error) {
 				console.error(error)
@@ -29,6 +27,7 @@ module.exports = () => {
 						id: projectId
 					}
 				})
+
 			} catch (error) {
 				console.error(error)
 				throw ['Kunde inte radera projekt']
@@ -42,10 +41,8 @@ module.exports = () => {
 						ownerId: userId
 					}
 				})
-				return projects.map(
-					a => a.dataValues
 
-				)
+				return projects.map(it => it.dataValues)
 			}
 			catch (error) {
 				console.error(error)
@@ -56,12 +53,14 @@ module.exports = () => {
 		async getProject(projectId){
 			try {
 				const project = await models.Project.findOne({
+					raw: true,
 					where: {
 						id: projectId 
 					}
 				})
 
 				return project
+
 			} catch (error) {
 				console.error(error)
 				throw ['Kunde inte hämta projekt']
@@ -78,7 +77,7 @@ module.exports = () => {
 					}
 				})
 
-				return project
+				return project.map(it => it.dataValues)
 
 			} catch (error) {
 				console.error(error)
