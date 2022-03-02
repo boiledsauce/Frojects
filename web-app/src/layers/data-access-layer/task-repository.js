@@ -11,7 +11,7 @@ module.exports = () => {
 						title: task.title,
 						description: task.description,
 				})
-				return createdTask.dataValues.id
+				return createdTask.id
 
 			} catch (error) {
 				console.error(error)
@@ -55,7 +55,9 @@ module.exports = () => {
 					{
 							attributes: ['deadline'],
 							model: models.Deadline,
-					}
+					},
+					raw: true,
+					nest: true
 				})
 				return task
 				
