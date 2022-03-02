@@ -11,8 +11,7 @@ module.exports = () => {
 						title: task.title,
 						description: task.description,
 				})
-				//console.log("HEHE", createdTask.id)
-				return createdTask.id
+				return createdTask.dataValues
 
 			} catch (error) {
 				console.error(error)
@@ -60,12 +59,8 @@ module.exports = () => {
 					raw: true,
 					nest: true
 				})
-				
-				console.log(task)
-				//const fixedTask = { task: task.dataValues , deadline: task.dataValues.Deadline.dataValues }
-				//console.log("the task", ok)
 				return task
-
+				
 			} catch (error) {
 				console.error(error)
 				throw [`Uppgiften kunde inte hämtas från databasen`]
