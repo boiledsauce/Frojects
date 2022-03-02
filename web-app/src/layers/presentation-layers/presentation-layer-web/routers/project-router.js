@@ -34,15 +34,13 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
 
      
     router.post('/create', async (request, response) => {
-        console.log("name", request.body.name)
         const project = {
             name: request.body.name,
-            ownerId: request.session.user.id,
-            creationDate: "2021-02-02"
+            ownerId: request.session.user.id
         }
         try {
-            const insertedProjectId = await projectManager.createProject(project)
-            response.redirect(request.baseUrl + '/' + insertedProjectId)
+            const createdProjectId = await projectManager.createProject(project)
+            response.redirect(`${request.baseUrl}/${createdProjectId}`)
         } catch (errors) {
             const model = {
                 id: request.params.id,
@@ -52,30 +50,49 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
         }
     })
 
-    router.get('/:projectId/share', async (request, response) => {
-        const projectId = request.params.projectId
+    //Make projectId available to all views
+    router.use('/:projectId', (request, response, next) => {
+        response.locals.projectId = request.params.projectId
+        next()
+    })
 
-        const users = await userManager.getAllUsersWithAccessToProject(projectId)
+    router.get('/:projectId/share', async (request, response) => {
+        const users = await userManager.getAllUsers()
         response.render('project/shareUserList', { users })
     })
 
-    router.get('/:projectId', async (request, response) => {
-        const projectId = request.params.projectId
-        
+    router.post('/:projectId/share', async (request, response) => {
+        try{
+            const userId = request.body.userId
+            const projectId = request.body.projectId
+
+            await projectManager.giveUserAccessToProject(userId, projectId)
+
+            request.flash('message', 'Användaren gavs tillgång till projektet')
+            response.redirect(`${request.baseUrl}/${projectId}`)
+
+        } catch (errors){
+            const model = {
+                userId,
+                errors
+            }
+            response.render('/project/shareUserList', model)
+        }
+
+    })
+
+    router.get('/:projectId', async (request, response) => {  
         try {
-            const project = await projectManager.getProject(projectId)
-            const tasks = await taskManager.getAllTasksByProjectId(projectId)
-            const model = { 
+            const project = await projectManager.getProjectById(response.locals.projectId)
+            const tasks = await taskManager.getAllTasksByProjectId(response.locals.projectId)
+            const model = {
                 project,
                 tasks
             }
             response.render('project/view', model)
     
         } catch (errors) {
-            const model = {
-                errors
-            }
-            response.render('project/view', model)
+            response.render('project/view', {errors})
         }
     })
   

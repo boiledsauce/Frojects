@@ -85,8 +85,12 @@ module.exports = ({mainRouter}) => {
 				if (error.code !== "EBADCSRFTOKEN"){
 					return next(error)
 				}
-			
-				response.status(403).render("errors/403", {layout: "empty"})
+				const model = {
+					layout: 'empty', 
+					message: 'Formulärdatans usprung kunde inte verifieras'
+				}
+
+				response.status(403).render('errors/403', model)
 			})
 
 			/*

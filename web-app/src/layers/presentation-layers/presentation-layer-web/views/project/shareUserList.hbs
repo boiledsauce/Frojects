@@ -3,16 +3,22 @@
         <div class="col-lg-6">
             <h1>Dela projekt med användare</h1>
             {{#if users.length}}
-                <form>
-                    <label for="userList" class="form-label">Sök användare</label>
-                    <input class="form-control mb-3" list="datalistOptions" id="userList" placeholder="Skriv för att söka">
-                        <datalist id="datalistOptions">
-                            {{#each users}}
-                                <option value="{{this.firstName}} {{this.lastName}}">
-                            {{/each}}
-                        </datalist>
+                <form method="POST">
+                    {{> csrfToken}}
 
-                        <button class="btn btn-primary" type="submit">Dela</button>
+                    <input type="hidden" name="projectId" value="{{projectId}}">
+
+                    <label for="userList" class="form-label">Sök användare</label>
+                    <input class="form-control" list="userList" id="userId" name="userId" placeholder="Skriv för att söka..." value="{{userId}}">   
+                    <div class="form-text mb-3">Du kan söka med antingen namn eller användarens ID</div> 
+                    
+                    <datalist id="userList" name="allUsers">
+                        {{#each users}}
+                            <option value="{{this.id}}">{{this.firstName}} {{this.lastName}}</option>
+                        {{/each}}
+                    </datalist>
+
+                    <button class="btn btn-primary" type="submit">Dela</button>
                 </form>
             {{else}}
                 <p>Inga användare hittades</p>

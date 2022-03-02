@@ -4,19 +4,31 @@ module.exports = () => {
 
 	return {
 		
-		async createProject(name, ownerId, creationDate){
+		async createProject(project){
 			try {
-				creationDate = "2012-02-20"
-				const project = await models.Project.create({
-					ownerId,
-					name,
-					creationDate
+				const createdProject = await models.Project.create({
+					ownerId: project.ownerId,
+					name: project.name
 				})
-				return project
+				return createdProject.id
 
 			} catch (error) {
-				console.error(error)
+				console.log(error)
 				throw ['Kunde inte skapa projekt']
+			}
+		},
+
+		async giveUserAccessToProject(userId, projectId){
+			
+			try{
+				await models.UserProjectAccess.create({
+					userId,
+					projectId
+				})
+
+			} catch (error){
+				console.log(error)
+				throw ['Kunde inte ge användaren tillgång till projektet']
 			}
 		},
 		
@@ -29,7 +41,7 @@ module.exports = () => {
 				})
 
 			} catch (error) {
-				console.error(error)
+				console.log(error)
 				throw ['Kunde inte radera projekt']
 			}
 		},
@@ -49,7 +61,7 @@ module.exports = () => {
 			}
 		},
 		
-		async getProject(projectId){
+		async getProjectById(projectId){
 			try {
 				const project = await models.Project.findOne({
 					where: {
@@ -60,7 +72,7 @@ module.exports = () => {
 				return project
 
 			} catch (error) {
-				console.error(error)
+				console.log(error)
 				throw ['Kunde inte hämta projekt']
 			}
 		},

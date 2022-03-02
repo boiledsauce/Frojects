@@ -7,9 +7,9 @@ module.exports = () => {
 		async createTask(task){
 			try {
 				const createdTask = await models.Task.create({
-						projectId: task.projectId,
-						title: task.title,
-						description: task.description,
+					projectId: task.projectId,
+					title: task.title,
+					description: task.description,
 				})
 				return createdTask.dataValues.id
 

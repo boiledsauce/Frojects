@@ -27,9 +27,17 @@ module.exports = () => {
             }
         
         },
+
+        async getAllUsers(){
+            try{
+				return await models.User.findAll()
+			} catch (error) {
+                console.log(error)
+                throw ['Kunde inte hämta alla användare']
+            }
+        },
         
 		async getAllUsersWithAccessToProject(projectId){
-            console.log("Projektid är: " + projectId)
 			try{
 				const users = await models.User.findAll({ model: models.Project })
                 console.log(users)
@@ -40,6 +48,25 @@ module.exports = () => {
                 throw ['Kunde inte hämta användare tillhörande projektet']
             }
 		},
+
+        async getUserById(id){
+            try{
+                const user = await models.User.findOne({
+                    where: {
+                        id: id
+                    }
+                })
+                if (user) return user
+
+                throw ['Ingen användare med eftersökt ID hittades']
+
+            } catch (error) {
+                if (error instanceof Error){
+                    throw ['Kunde inte hämta användare utifrån ID, ett problem uppstod.']
+                }
+                throw error
+            }
+        },
         
         async getUserByEmail(email){
 
@@ -50,9 +77,8 @@ module.exports = () => {
                     }
                 })
 
-                if (user){
-                    return user
-                }
+                if (user) return user
+
                 throw ['Ingen användare med e-posten hittades']
 
             } catch (error) {
@@ -79,6 +105,7 @@ module.exports = () => {
                     }
                 })
             } catch (error) {
+                console.log(error)
                 throw ['Kunde inte hämta användarens namn']
             }
         }

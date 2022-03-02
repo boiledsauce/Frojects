@@ -1,9 +1,9 @@
-//const { DataTypes } = require('sequelize/types')
 const { models } = require('./db')
 
 module.exports = () => {
 
 	return {
+		
 		async createComment(text, taskId, authorId, creationDate){
 			try {
 				const comment = await models.Comment.create({
