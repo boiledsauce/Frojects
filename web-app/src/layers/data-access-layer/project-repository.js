@@ -42,10 +42,8 @@ module.exports = () => {
 						ownerId: userId
 					}
 				})
-				return projects.map(
-					a => a.dataValues
-
-				)
+				console.log(projects)
+				return projects
 			}
 			catch (error) {
 				console.error(error)
@@ -60,8 +58,8 @@ module.exports = () => {
 						id: projectId 
 					}
 				})
-
-				return project
+				console.log(project)
+				return project.dataValues
 			} catch (error) {
 				console.error(error)
 				throw ['Kunde inte hämta projekt']

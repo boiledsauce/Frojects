@@ -17,7 +17,8 @@ initModels = (sequelize) => {
   Comment.belongsTo(Task, { foreignKey: "taskId"})
   Task.hasMany(Comment, { foreignKey: "taskId"})
   Deadline.belongsTo(Task, { foreignKey: "taskId"})
-  Task.hasMany(Deadline, { foreignKey: "taskId"})
+  Task.hasOne(Deadline, { foreignKey: "taskId"})
+
   Comment.belongsTo(User, { foreignKey: "authorId"})
   User.hasMany(Comment, { foreignKey: "authorId"})
   Project.belongsTo(User, { foreignKey: "ownerId"})

@@ -34,7 +34,10 @@ try{
 		host: DB_HOST,
 		port: DB_PORT,
 		dialect: 'mysql',
-		logging: false
+		logging: false,
+		query: {
+			raw: true, 
+		}
 	})
 
 	const models = initModels(sequelize)

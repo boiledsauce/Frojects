@@ -39,7 +39,7 @@ module.exports = () => {
 				const tasks = await models.Task.findAll({
 					where: {
 						projectId: projectId
-					}
+					},
 				})
 				return tasks
 
@@ -52,18 +52,18 @@ module.exports = () => {
 		async getTaskById(taskId){
 			try {
 				const task = await models.Task.findByPk(taskId, {
-					include: [
+					include: 
 					{
 							attributes: ['deadline'],
-							model: models.Deadline
-						},
-					],
-
-					//raw: true,
-					//nested: true
+							model: models.Deadline,
+					},
+					raw: true,
+					nest: true
 				})
-				console.log("deadline: ", task["Deadlines.deadline"])
-				console.log("task: ", task)
+				
+				console.log(task)
+				//const fixedTask = { task: task.dataValues , deadline: task.dataValues.Deadline.dataValues }
+				//console.log("the task", ok)
 				return task
 
 			} catch (error) {
@@ -76,7 +76,7 @@ module.exports = () => {
 			try {
 				const deadline = await models.Deadline.findOne({
 					where: {
-						taskId
+						taskId,
 					}
 				})
 				return deadline

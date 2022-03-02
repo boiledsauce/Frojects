@@ -95,9 +95,7 @@ module.exports = ({taskManager, commentManager}) => {
         try {
             const taskId = request.params.taskId
             const task = await taskManager.getTaskById(taskId)
-            console.log(task)
             const comments = await commentManager.getAllCommentsByTaskId(taskId)
-            console.log("task", task)
 
             const model = {
                 task,
