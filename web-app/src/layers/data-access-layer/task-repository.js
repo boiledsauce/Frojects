@@ -59,6 +59,7 @@ module.exports = () => {
 					raw: true,
 					nest: true
 				})
+				console.log(task)
 				return task
 				
 			} catch (error) {

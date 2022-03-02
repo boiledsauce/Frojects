@@ -27,5 +27,13 @@ exports.getErrorsNewTask = (task) => {
         errors.push(`Uppgiftens beskrivning måste vara mellan ${MIN_TASK_DESCRIPTION_LENGTH} och ${MAX_TASK_DESCRIPTION_LENGTH}`)
     }
 
+    if (!validator.isDate(task.date)){
+        errors.push(`Välj ett datum`)
+    }
+
+    else if (!validator.isAfter(task.date)){
+        errors.push(`Välj ett datum som ligger i framtiden`)
+    }
+
     return errors
 }
