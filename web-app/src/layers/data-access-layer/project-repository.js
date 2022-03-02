@@ -75,7 +75,7 @@ module.exports = () => {
 					}
 				})
 
-				return project.map(it => it.dataValues)
+				return project
 
 			} catch (error) {
 				console.error(error)
