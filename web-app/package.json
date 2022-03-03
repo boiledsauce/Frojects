@@ -18,16 +18,13 @@
     "express": "^4.17.2",
     "express-flash": "^0.0.2",
     "express-handlebars": "^6.0.2",
-    "express-openid-connect": "^2.7.0",
     "express-session": "^1.17.2",
     "jsonwebtoken": "^8.5.1",
-    "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "node-gyp": "^8.4.1",
     "nodemon": "^2.0.15",
     "redis": "^4.0.3",
     "sequelize": "^6.16.1",
-    "sequelize-auto": "^0.8.8",
     "validator": "^13.7.0"
   }
 }
