@@ -1,5 +1,5 @@
 const awilix = require('awilix')
-const express = require('express')
+
 const container = awilix.createContainer()
 // repositories
 container.register(
