@@ -50,21 +50,19 @@ module.exports = () => {
 
 		async getTaskById(taskId){
 			try {
-				const task = await models.Task.findByPk(taskId, {
+				return await models.Task.findByPk(taskId, {
 					include: 
 					{
-							attributes: ['deadline'],
-							model: models.Deadline,
+						attributes: ['deadline'],
+						model: models.Deadline,
 					},
 					raw: true,
 					nest: true
 				})
-				console.log(task)
-				return task
 				
 			} catch (error) {
-				console.error(error)
-				throw [`Uppgiften kunde inte hämtas från databasen`]
+				console.log(error)
+				throw ['Uppgiften kunde inte hämtas från databasen']
 			}
 		},
 
@@ -78,8 +76,8 @@ module.exports = () => {
 				return deadline
 
 			} catch (error) {
-				console.error(error)
-				throw [`Deadlinen kunde inte hämtas från databasen`]
+				console.log(error)
+				throw ['Deadlinen kunde inte hämtas från databasen']
 			}
 		},
 
@@ -92,8 +90,8 @@ module.exports = () => {
 				return deadline
 
 			} catch (error) {
-				console.error(error)
-				throw [`Deadlinen kunde inte skapas`]
+				console.log(error)
+				throw ['Deadlinen kunde inte skapas']
 			}
 		},
 		
@@ -107,8 +105,8 @@ module.exports = () => {
 				return result
 
 			} catch (error) {
-				console.error(error)
-				throw [`Uppgiften kunde inte klarmarkeras`]
+				console.log(error)
+				throw ['Uppgiften kunde inte klarmarkeras']
 			}
 		}
 

@@ -1,6 +1,12 @@
 const router = require("express").Router({mergeParams: true})
 
 module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
+
+    //Make projectId available to all views
+    router.use('/:projectId', (request, response, next) => {
+        response.locals.projectId = request.params.projectId
+        next()
+    })
     
     router.use('/:projectId/tasks', taskRouter)
 
@@ -50,12 +56,6 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
             }
             response.render('project/create', model)
         }
-    })
-
-    //Make projectId available to all views
-    router.use('/:projectId', (request, response, next) => {
-        response.locals.projectId = request.params.projectId
-        next()
     })
 
     router.get('/:projectId/share', async (request, response) => {

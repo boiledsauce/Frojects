@@ -23,6 +23,9 @@ module.exports = ({mainRouter}) => {
 
 			const app = express()
 
+			//Breadcrumbs
+			const breadcrumb = require('express-url-breadcrumb')
+
 			//View configuration
 			app.engine('hbs', expressHandlebars.engine({
 				extname: 'hbs'
@@ -72,6 +75,11 @@ module.exports = ({mainRouter}) => {
 				response.locals.csrfToken = request.csrfToken()
 				next()
 			})
+
+			//Capitalize bread crumbs
+			app.use(breadcrumb(async (item, index) => {
+				item.label = item.label.charAt(0).toUpperCase() + item.label.slice(1)
+			}))
 
 			app.use('/', mainRouter)
 

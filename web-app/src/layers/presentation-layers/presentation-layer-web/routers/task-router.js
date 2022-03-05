@@ -92,23 +92,28 @@ module.exports = ({taskManager, commentManager}) => {
     })
 
     router.get('/:taskId', async (request, response) => {
+        let model = {}
+
         try {
             const taskId = request.params.taskId
             const task = await taskManager.getTaskById(taskId)
             const comments = await commentManager.getAllCommentsByTaskId(taskId)
-            console.log("DL", task.Deadline)
-            const model = {
+
+            model = {
                 task,
                 comments,
                 projectId: request.params.projectId
             }
-            response.render('task/view', model)
+
         } catch (errors) {
-            const model = {
-                errors
-            }
-            response.render('task/view', model)
+            model = {errors}
         }
+
+        response.render('task/view', model)
+    })
+
+    router.get('/', async (request, response) => {
+        response.redirect(`/app/projects/${response.locals.projectId}`)
     })
     
     return router

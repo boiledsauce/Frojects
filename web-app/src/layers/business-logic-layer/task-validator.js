@@ -16,7 +16,7 @@ exports.getErrorsNewTask = (task) => {
 
     if (!validator.isLength(task.title, {min: MIN_TASK_TITLE_LENGTH, max: MAX_TASK_TITLE_LENGTH}))
     {
-        errors.push(`Uppgiftens namn måste vara mellan ${MIN_TASK_TITLE_LENGTH} och ${MAX_TASK_TITLE_LENGTH}`)
+        errors.push(`Uppgiftens namn måste ha mellan ${MIN_TASK_TITLE_LENGTH} och ${MAX_TASK_TITLE_LENGTH} tecken`)
     }
 
     if (validator.isEmpty(task.description)){
@@ -24,7 +24,7 @@ exports.getErrorsNewTask = (task) => {
     }
 
     if (!validator.isLength(task.description, {min: MIN_TASK_DESCRIPTION_LENGTH, max: MAX_TASK_DESCRIPTION_LENGTH})){
-        errors.push(`Uppgiftens beskrivning måste vara mellan ${MIN_TASK_DESCRIPTION_LENGTH} och ${MAX_TASK_DESCRIPTION_LENGTH}`)
+        errors.push(`Uppgiftens beskrivning måste ha mellan ${MIN_TASK_DESCRIPTION_LENGTH} och ${MAX_TASK_DESCRIPTION_LENGTH} tecken`)
     }
 
     if (!validator.isDate(task.date)){
