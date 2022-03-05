@@ -94,5 +94,24 @@ module.exports = () => {
 				throw ['Kunde inte uppdatera projekt']
 			}
 		},
+
+		async getUsersWithAccessToProject(projectId){
+			try{
+				return await models.User.findAll({
+					include: [{
+						model: models.Project,
+						where: {
+							id: projectId
+						}
+					}],
+					raw: true,
+					nest: true
+				})
+
+			} catch (error) {
+				console.log(error)
+				throw ["Kunde inte hämta användare med tillgång till projektet"]
+			}
+		}
 	}
 }

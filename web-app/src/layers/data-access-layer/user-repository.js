@@ -36,18 +36,6 @@ module.exports = () => {
                 throw ['Kunde inte hämta alla användare']
             }
         },
-        
-		async getAllUsersWithAccessToProject(projectId){
-			try{
-				const users = await models.User.findAll({ model: models.Project })
-                console.log(users)
-                return users
-
-			} catch (error) {
-                console.log(error)
-                throw ['Kunde inte hämta användare tillhörande projektet']
-            }
-		},
 
         async getUserById(id){
             try{

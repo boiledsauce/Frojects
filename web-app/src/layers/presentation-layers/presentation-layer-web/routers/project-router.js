@@ -57,8 +57,20 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
     })
 
     router.get('/:projectId/share', async (request, response) => {
-        const users = await userManager.getAllUsers()
-        response.render('project/shareUserList', { users })
+
+        let model = {}
+
+        try{
+            const users = await userManager.getAllUsers()
+            const usersWithAccess = await projectManager.getUsersWithAccessToProject(response.locals.projectId)
+    
+            model = { users }
+
+        } catch (errors) {
+            model = { errors }
+        }
+
+        response.render('project/shareUserList', model)
     })
 
     router.post('/:projectId/share', async (request, response) => {

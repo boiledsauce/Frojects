@@ -67,6 +67,14 @@ module.exports = ({projectRepository}) => {
             Check that logged un user is project owner 
             */ 
             await projectRepository.giveUserAccessToProject(userId, projectId)
+        },
+
+        async getUsersWithAccessToProject(projectId){
+            try{
+                return await projectRepository.getUsersWithAccessToProject(projectId)
+            } catch (error) {
+                throw error
+            }
         }
         
     }

@@ -3,7 +3,7 @@
         <div class="col-lg-6">
             <h1>Dela projekt med användare</h1>
             {{#if users.length}}
-                <form method="POST">
+                <form method="POST" class="mb-3">
                     {{> csrfToken}}
 
                     <input type="hidden" name="projectId" value="{{projectId}}">
@@ -23,6 +23,8 @@
             {{else}}
                 <p>Inga användare hittades</p>
             {{/if}}
+
+            <h2>Användare med tillgång</h2>
         </div>
     </div>
 </div>

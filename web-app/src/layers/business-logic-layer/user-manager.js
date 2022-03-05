@@ -54,24 +54,16 @@ module.exports = ({userRepository}) => {
             try{
                 return await userRepository.getUserByEmail(email)
             }
-            catch (error) {
-                throw error
+            catch (errors) {
+                throw errors
             }
         },
 
         async getAllUsers(){
             try{
                 return await userRepository.getAllUsers()
-            } catch (error) {
-                throw error
-            }
-        },
-
-        async getAllUsersWithAccessToProject(projectId){
-            try{
-                return await userRepository.getAllUsersWithAccessToProject(projectId)
-            } catch (error) {
-                throw error
+            } catch (errors) {
+                throw errors
             }
         },
 
@@ -86,8 +78,8 @@ module.exports = ({userRepository}) => {
         async getUserRealNameById(id){
             try{
                 return await userRepository.getUserRealNameById(id)
-            } catch (error) {
-                throw error
+            } catch (errors) {
+                throw errors
             }
         },
         
