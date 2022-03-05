@@ -19,16 +19,30 @@ module.exports = () => {
 		},
 
 		async giveUserAccessToProject(userId, projectId){
-			
 			try{
 				await models.UserProjectAccess.create({
 					userId,
 					projectId
 				})
 
-			} catch (error){
+			} catch (error) {
 				console.log(error)
 				throw ['Kunde inte ge användaren tillgång till projektet']
+			}
+		},
+
+		async revokeUserAccessToProject(userId, projectId){
+			try{
+				return await models.UserProjectAccess.destroy({
+					where: {
+						projectId,
+						userId
+					}
+				})
+
+			} catch (error) {
+				console.log(error)
+				throw['Kunde inte återkalla användarens tillgång till projektet']
 			}
 		},
 		

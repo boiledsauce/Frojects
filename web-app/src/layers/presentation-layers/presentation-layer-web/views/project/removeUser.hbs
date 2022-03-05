@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+
+            <h1 class="mb-3">Ta bort användare från projekt</h1>
+
+            <p>Är du säker på att du vill återkalla tillgången till projektet för {{user.firstName}} {{user.lastName}}</p>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 d-flex flex-row justify-content-end">
+            <a class="btn btn-secondary me-3" href="../usersWithAccess">Avbryt</a>
+            <form method="POST">
+                {{> csrfToken}}
+                <input type="hidden" value="{{user.id}}" name="userId">
+                <button class="btn btn-danger" type="submit">Bekräfta</button>
+            </form>
+        </div>
+    </div>
+</div>

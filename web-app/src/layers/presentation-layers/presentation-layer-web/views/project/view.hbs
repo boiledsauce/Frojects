@@ -6,15 +6,16 @@
                 <h1 class="mb-3">{{project.name}}</h1>
             </div>
             <div class="col-md-6 d-flex justify-content-md-end align-items-center">
-                <a class="btn btn-primary" href="/app/projects/{{project.id}}/share">Dela</a>
+                <a class="btn btn-primary me-3" href="/app/projects/{{project.id}}/usersWithAccess"><i class="bi bi-people me-2"></i>Användare med tillgång</a>
+                <a class="btn btn-primary" href="/app/projects/{{project.id}}/share"><i class="bi bi-person-plus-fill me-2"></i>Dela</a>
             </div>
         </div>
         <div class="row mb-3">
             <div class="col-md-6 d-flex justify-content-between">
-                <h2 class="display-5 mb-3">Uppgifter</h2>
+                <h2 class="mb-3">Uppgifter</h2>
             </div>
             <div class="col-md-6 d-flex align-items-center justify-content-md-end">
-                <a class="btn btn-primary" href="/app/projects/{{project.id}}/tasks/create">Skapa uppgift</a>
+                <a class="btn btn-primary" href="/app/projects/{{project.id}}/tasks/create"><i class="bi bi-plus-circle me-2"></i>Skapa uppgift</a>
             </div>
         </div>
         <div class="row">
@@ -26,7 +27,7 @@
                         {{#each tasks}}
                             <a href="/app/projects/{{projectId}}/tasks/{{this.id}}" class="list-group-item list-group-item-action" aria-current="true">
                             <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">{{this.title}}</h5>
+                                <h3 class="mb-1">{{this.title}}</h3>
                                 <small>3 days ago</small>
                             </div>
                             <p class="mb-1">{{this.description}}</p>

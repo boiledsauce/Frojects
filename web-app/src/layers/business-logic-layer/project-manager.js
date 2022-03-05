@@ -69,6 +69,13 @@ module.exports = ({projectRepository}) => {
             await projectRepository.giveUserAccessToProject(userId, projectId)
         },
 
+        async revokeUserAccessToProject(userId, projectId){
+            /*TODO
+            Check so user performing action is project owner
+            */
+            await projectRepository.revokeUserAccessToProject(userId, projectId)
+        },
+
         async getUsersWithAccessToProject(projectId){
             try{
                 return await projectRepository.getUsersWithAccessToProject(projectId)

@@ -34,13 +34,15 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
 
      
     router.post('/create', async (request, response) => {
-        const project = {
-            name: request.body.name,
-            ownerId: request.session.user.id
-        }
         try {
+            const project = {
+                name: request.body.name,
+                ownerId: request.session.user.id
+            }
+
             const createdProjectId = await projectManager.createProject(project)
             response.redirect(`${request.baseUrl}/${createdProjectId}`)
+
         } catch (errors) {
             const model = {
                 id: request.params.id,
@@ -57,14 +59,12 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
     })
 
     router.get('/:projectId/share', async (request, response) => {
-
         let model = {}
 
         try{
             const users = await userManager.getAllUsers()
-            const usersWithAccess = await projectManager.getUsersWithAccessToProject(response.locals.projectId)
     
-            model = { users }
+            model = { users}
 
         } catch (errors) {
             model = { errors }
@@ -81,31 +81,73 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
             await projectManager.giveUserAccessToProject(userId, projectId)
 
             request.flash('message', 'Användaren gavs tillgång till projektet')
-            response.redirect(`${request.baseUrl}/${projectId}`)
+            response.redirect(`${request.baseUrl}/${projectId}/usersWithAccess`)
 
         } catch (errors){
             const model = {
                 userId,
                 errors
             }
-            response.render('/project/shareUserList', model)
+            response.render('project/shareUserList', model)
         }
 
     })
 
-    router.get('/:projectId', async (request, response) => {  
+    router.get('/:projectId/usersWithAccess', async (request, response) => {
+        try{
+            const usersWithAccess = await projectManager.getUsersWithAccessToProject(response.locals.projectId)
+
+            response.render('project/usersWithAccess', {usersWithAccess})
+
+        } catch (errors) {
+            response.render('project/usersWithAccess', {errors})
+        }
+    })
+
+    router.get('/:projectId/removeUser/:userId', async (request, response) => {
+        let model = {}
+
+        try{
+            const user = await userManager.getUserById(request.params.userId)
+
+            model = {user}
+
+        } catch (errors) {
+            model = {errors}
+        }
+
+        response.render('project/removeUser', model)
+    })
+
+    router.post('/:projectId/removeUser/:userId', async (request, response) => {
+        try{
+            const userId = request.body.userId
+            const projectId = response.locals.projectId
+
+            await projectManager.revokeUserAccessToProject(userId, projectId)
+
+            request.flash('message', 'Användaren togs bort från projektet')
+            response.redirect(`${request.baseUrl}/${projectId}/usersWithAccess`)
+
+        } catch (errors) {
+            response.render('project/removeUser', {errors})
+        }
+    })
+
+    router.get('/:projectId', async (request, response) => {
+        let model = {}
+
         try {
             const project = await projectManager.getProjectById(response.locals.projectId)
             const tasks = await taskManager.getAllTasksByProjectId(response.locals.projectId)
-            const model = {
-                project,
-                tasks
-            }
-            response.render('project/view', model)
+
+            model = {project, tasks}
     
         } catch (errors) {
-            response.render('project/view', {errors})
+            model = {errors}
         }
+
+        response.render('project/view', model)
     })
   
     return router
