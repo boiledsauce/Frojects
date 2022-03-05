@@ -11,22 +11,20 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
     router.use('/:projectId/tasks', taskRouter)
 
     router.get('/', async (request, response) => {
+        let model = {}
+
         try {
             const userId = request.session.user.id
             const projects = await projectManager.getAllProjectsByUserId(userId)
+            const sharedProjects = await projectManager.getProjectsSharedWithUser(userId)
     
-            const model = {
-                projects,
-                id: userId
-            }
+            model = {projects, sharedProjects}
 
-            response.render('project/projectList', model)
         } catch (errors) {
-            const model = {
-                errors
-            }
-            response.render('project/projectList', model)
+            model = {errors}
         }
+        response.render('project/projectList', model)
+
     })
 
     router.get('/create', (request, response) => {

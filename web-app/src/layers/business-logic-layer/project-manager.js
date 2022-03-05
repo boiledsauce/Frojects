@@ -12,8 +12,7 @@ module.exports = ({projectRepository}) => {
 
             try {
                 return await projectRepository.createProject(project)
-            } catch (error) {
-                console.log(error)
+            } catch (errors) {
                 throw ["Projektet kunde inte skapas i databasen"]
             }
         },
@@ -21,7 +20,7 @@ module.exports = ({projectRepository}) => {
         async getAllProjectsByUserId(userId) {
             try {
                 return await projectRepository.getAllProjectsByUserId(userId)
-            } catch (error) {
+            } catch (errors) {
                 throw ["Projekten kunde inte hämtas från databasen"]
             }
         },
@@ -29,7 +28,7 @@ module.exports = ({projectRepository}) => {
         async getProjectById(projectId) {
             try {
                 return await projectRepository.getProjectById(projectId)
-            } catch (error) {
+            } catch (errors) {
                 throw ["Projektet kunde inte hämtas från databasen"]
             }
         },
@@ -37,7 +36,7 @@ module.exports = ({projectRepository}) => {
         async updateProject(project) {
             try {
                 return await projectRepository.updateProject(project.id, project.name)
-            } catch (error) {
+            } catch (errors) {
                 throw ["Projektet kunde inte hämtas från databasen"]
             }
         },
@@ -45,7 +44,7 @@ module.exports = ({projectRepository}) => {
         async deleteProject(projectId) {
             try {
                 return await projectRepository.deleteProject(projectId)
-            } catch (error) {
+            } catch (errors) {
                 throw ["Projektet kunde inte tas bort från databasen"]
             }
         },
@@ -55,13 +54,21 @@ module.exports = ({projectRepository}) => {
                 const project = await projectRepository.getProjectById(projectId)
                 return (project.ownerId == ownerId)
 
-            } catch (error) {
-                console.log(error)
+            } catch (errors) {
+                console.log(errors)
                 throw ["Kunde inte kontrollera projektets ägare"]
             }
         },
+
+        async getProjectsSharedWithUser(userId) {
+            try{
+                return await projectRepository.getProjectsSharedWithUser(userId)
+            } catch (errors) {
+                throw errors
+            }
+        },
         
-        async giveUserAccessToProject(userId, projectId){
+        async giveUserAccessToProject(userId, projectId) {
             /*TODO
             Check that userId is not same as project.ownerId
             Check that logged un user is project owner 
@@ -69,14 +76,14 @@ module.exports = ({projectRepository}) => {
             await projectRepository.giveUserAccessToProject(userId, projectId)
         },
 
-        async revokeUserAccessToProject(userId, projectId){
+        async revokeUserAccessToProject(userId, projectId) {
             /*TODO
             Check so user performing action is project owner
             */
             await projectRepository.revokeUserAccessToProject(userId, projectId)
         },
 
-        async getUsersWithAccessToProject(projectId){
+        async getUsersWithAccessToProject(projectId) {
             try{
                 return await projectRepository.getUsersWithAccessToProject(projectId)
             } catch (error) {

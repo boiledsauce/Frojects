@@ -45,6 +45,28 @@ module.exports = () => {
 				throw['Kunde inte återkalla användarens tillgång till projektet']
 			}
 		},
+
+		async getProjectsSharedWithUser(userId){
+			try{
+				const projects = await models.Project.findAll({
+					include: [{
+						model: models.User,
+						as: 'usersWithAccess',
+						where: {
+							id: userId
+						}
+					}],
+					raw: true,
+					nest: true
+				})
+				console.log(projects)
+				return projects
+
+			} catch (error) {
+				console.log(error)
+				throw['Kunde inte hämta projekt delade med användaren']
+			}
+		},
 		
 		async deleteProject(projectId){
 			try {
@@ -114,6 +136,7 @@ module.exports = () => {
 				return await models.User.findAll({
 					include: [{
 						model: models.Project,
+						as: 'accessibleProjects',
 						where: {
 							id: projectId
 						}

@@ -5,6 +5,11 @@ const _Project = require("./project")
 const _Task = require("./task")
 const _User = require("./user")
 
+const sequelizeConstants = {
+    USERS_WITH_ACCESS: 'usersWithAccess',
+    ACCESSIBLE_PROJECTS: 'accessibleProjects'
+}
+
 initModels = (sequelize) => {
   const Comment = _Comment(sequelize, DataTypes)
   const Deadline = _Deadline(sequelize, DataTypes)
@@ -23,8 +28,8 @@ initModels = (sequelize) => {
   Comment.belongsTo(User, { foreignKey: "authorId"})
   User.hasMany(Comment, { foreignKey: "authorId"})
   Project.belongsTo(User, { foreignKey: "ownerId"})
-  Project.belongsToMany(User, { through: UserProjectAccess, foreignKey: 'projectId' })
-  User.belongsToMany(Project, { through: UserProjectAccess, foreignKey: 'userId' })
+  Project.belongsToMany(User, { through: UserProjectAccess, foreignKey: 'projectId', as: sequelizeConstants.USERS_WITH_ACCESS })
+  User.belongsToMany(Project, { through: UserProjectAccess, foreignKey: 'userId', as: sequelizeConstants.ACCESSIBLE_PROJECTS })
 
   sequelize.sync()
 
@@ -39,4 +44,4 @@ initModels = (sequelize) => {
 
 }
 
-module.exports = { initModels }
+module.exports = { initModels, sequelizeConstants }
