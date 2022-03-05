@@ -16,7 +16,6 @@ module.exports = ({taskManager, commentManager}) => {
             projectId: request.params.projectId,
             description: request.body.description,
             date: request.body.date,
-            creationDate: "2020-02-05"
         }
     
         try {
@@ -27,8 +26,10 @@ module.exports = ({taskManager, commentManager}) => {
         }
         catch (errors) {
             const model = {
-                id: request.params.id,
-                errors
+                errors,
+                title: task.title,
+                description: task.description,
+                date: task.date
             }
             response.render('task/create', model)
         }

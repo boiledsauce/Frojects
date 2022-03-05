@@ -2,7 +2,7 @@ const mysql = require('mysql2/promise')
 
 const { Sequelize } = require('sequelize')
 
-const { initModels } = require('./models/init-models')
+const { initModels, sequelizeConstants } = require('./models/init-models')
 
 const DB_HOST = 'database'
 const DB_PORT = 3306
@@ -42,7 +42,7 @@ try{
 
 	const models = initModels(sequelize)
 
-	module.exports = { models }
+	module.exports = { models, sequelizeConstants }
 
 } catch (error) {
 	console.log(error)

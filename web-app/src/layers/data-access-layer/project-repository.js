@@ -1,4 +1,4 @@
-const { models } = require('./db')
+const { models, sequelizeConstants } = require('./db')
 
 module.exports = () => {
 
@@ -51,7 +51,7 @@ module.exports = () => {
 				const projects = await models.Project.findAll({
 					include: [{
 						model: models.User,
-						as: 'usersWithAccess',
+						as: sequelizeConstants.USERS_WITH_ACCESS,
 						where: {
 							id: userId
 						}
@@ -136,7 +136,7 @@ module.exports = () => {
 				return await models.User.findAll({
 					include: [{
 						model: models.Project,
-						as: 'accessibleProjects',
+						as: sequelizeConstants.ACCESSIBLE_PROJECTS,
 						where: {
 							id: projectId
 						}

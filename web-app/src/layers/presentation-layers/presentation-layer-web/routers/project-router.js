@@ -49,8 +49,8 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
 
         } catch (errors) {
             const model = {
-                id: request.params.id,
-                errors
+                errors,
+                name: request.body.name
             }
             response.render('project/create', model)
         }

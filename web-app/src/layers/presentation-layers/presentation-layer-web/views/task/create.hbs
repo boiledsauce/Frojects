@@ -1,18 +1,18 @@
 <h1>Skapa uppgift</h1>
 
 <form action="" method="POST">
-{{> csrfToken}}
+    {{> csrfToken}}
     <div class="form-group">
-        <label for="exampleInputEmail1">Titel</label>
-        <input type="text" class="form-control" name="title" placeholder="Ange titel">
+        <label for="title">Titel</label>
+        <input type="text" class="form-control" name="title" id="title" placeholder="Ange titel" value="{{title}}">
     </div>
     <div class="form-group mt-3">
-        <label for="exampleInputEmail1">Beskrivning</label>
-        <input type="text" class="form-control" name="description" placeholder="Ange beskrivning">
+        <label for="description">Beskrivning</label>
+        <input type="text" class="form-control" name="description" id="description" placeholder="Ange beskrivning" value="{{description}}">
     </div>
     <div class="form-group mt-3">
-        <label class="form-label" for="fromDate">Deadline</label>
-        <input class="form-control ml-2" type="date" id="fromDate" name="date">
+        <label class="form-label" for="deadline">Deadline</label>
+        <input class="form-control ml-2" type="date" name="date" id="deadline" value="{{date}}">
     </div>
     <button type="submit" class="btn btn-primary mt-3">Spara</button>
 </form>

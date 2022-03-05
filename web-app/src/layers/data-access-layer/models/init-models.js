@@ -6,8 +6,8 @@ const _Task = require("./task")
 const _User = require("./user")
 
 const sequelizeConstants = {
-    USERS_WITH_ACCESS: 'usersWithAccess',
-    ACCESSIBLE_PROJECTS: 'accessibleProjects'
+  USERS_WITH_ACCESS: 'usersWithAccess',
+  ACCESSIBLE_PROJECTS: 'accessibleProjects'
 }
 
 initModels = (sequelize) => {

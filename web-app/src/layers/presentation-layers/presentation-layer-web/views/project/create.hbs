@@ -8,9 +8,8 @@
                     {{> csrfToken}}
                     <div class="form-group mb-3">
                         <label for="name">Projektnamn</label>
-                        <input type="text" class="form-control" name="name" placeholder="Ange projektnamn...">
+                        <input type="text" class="form-control" name="name" placeholder="Ange projektnamn..." value="{{name}}">
                     </div>
-                    {{> errors}}
                     <button type="submit" class="btn btn-primary">Skapa</button>
                 </form>
                 
