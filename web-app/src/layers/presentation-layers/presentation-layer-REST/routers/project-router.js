@@ -7,8 +7,11 @@ module.exports = ({taskRouter, projectManager, taskManager}) => {
     router.get('/', async (request, response) => {
         try {
             const user = request.user
-            const projects = await projectManager.getAllProjectsByUserId(user.id)
-            response.json(projects)
+            console.log(user)
+            const projects = await projectManager.getAllProjectsByUserId(user.userId)
+            const sharedProjects = await projectManager.getProjectsSharedWithUser(user.userId)
+
+            response.json({projects, sharedProjects})
         } catch (errors) {
             response.json(errors)
         }
@@ -19,7 +22,7 @@ module.exports = ({taskRouter, projectManager, taskManager}) => {
             const project = {
                 name: request.body.projectName,
                 ownerId: request.user.id,
-                creationDate: "2021-02-20"
+                //creationDate: "2021-02-20"
             }
 
             const createdProject = await projectManager.createProject(project)
@@ -37,7 +40,7 @@ module.exports = ({taskRouter, projectManager, taskManager}) => {
                 id: request.params.id,
                 name: request.body.projectName,
                 ownerId: request.user.id,
-                creationDate: "2021-02-20"
+                //creationDate: "2021-02-20"
             }
             
             const updatedProject = await projectManager.updateProject(project)
