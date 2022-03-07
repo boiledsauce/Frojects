@@ -1,12 +1,16 @@
+import Home from './views/home.js'
+import Projects from './views/projects.js'
+
 const navigateTo = url => {
     history.pushState(null, null, url)
     router()
 }
 
 const router = async () => {
+    
     const routes = [
-        { path: '/', view: () => console.log("Viewing home") },
-        { path: '/projects', view: () => console.log("Viewing projects") }
+        { path: '/', view: Home },
+        { path: '/projects', view: Projects }
     ]
 
     const potentialMatches = routes.map(route => {
@@ -25,6 +29,9 @@ const router = async () => {
         }
     }
 
+    const view = new match.route.view()
+
+    document.querySelector('#app').innerHTML = await view.getHtml()
     console.log(match.route.view())
 }
 

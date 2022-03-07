@@ -1,7 +1,8 @@
-import AbstractView from "./abstractView"
+import AbstractView from "./abstractView.js"
 
-export class Home extends AbstractView {
+export default class Home extends AbstractView {
     constructor() {
+        super()
         this.setTitle('Home')
     }
 
