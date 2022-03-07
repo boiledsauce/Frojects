@@ -11,6 +11,12 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+  "single-page-application":
+    build: "./single-page-application"
+    ports: 
+    - "4000:4000"
+    volumes:
+    - "./single-page-application/frontend:/single-page-application/frontend"
   "database":
     build: "./database"
     environment:

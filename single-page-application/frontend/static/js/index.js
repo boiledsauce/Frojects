@@ -7,7 +7,7 @@ const navigateTo = url => {
 }
 
 const router = async () => {
-    
+
     const routes = [
         { path: '/', view: Home },
         { path: '/projects', view: Projects }
@@ -32,7 +32,6 @@ const router = async () => {
     const view = new match.route.view()
 
     document.querySelector('#app').innerHTML = await view.getHtml()
-    console.log(match.route.view())
 }
 
 document.addEventListener('DOMContentLoaded', () => {
