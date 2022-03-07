@@ -35,15 +35,19 @@ module.exports = ({projectRepository}) => {
 
         async updateProject(project) {
             try {
-                return await projectRepository.updateProject(project.id, project.name)
+                if (await projectManager.belongsToUser(project.ownerId, project.id)) {
+                    return await projectRepository.updateProject(project.id, project.name)
+                }
             } catch (errors) {
                 throw ["Projektet kunde inte hämtas från databasen"]
             }
         },
 
-        async deleteProject(projectId) {
+        async deleteProject(project) {
             try {
-                return await projectRepository.deleteProject(projectId)
+                if (await projectManager.belongsToUser(project.ownerId, project.id)) {
+                    return await projectRepository.deleteProject(projectId)
+                }
             } catch (errors) {
                 throw ["Projektet kunde inte tas bort från databasen"]
             }
@@ -52,7 +56,7 @@ module.exports = ({projectRepository}) => {
         async belongsToUser(ownerId, projectId) {
             try {
                 const project = await projectRepository.getProjectById(projectId)
-                return (project.ownerId == ownerId)
+                return project.ownerId == ownerId
 
             } catch (errors) {
                 console.log(errors)
@@ -68,19 +72,32 @@ module.exports = ({projectRepository}) => {
             }
         },
         
-        async giveUserAccessToProject(userId, projectId) {
-            /*TODO
-            Check that userId is not same as project.ownerId
-            Check that logged un user is project owner 
-            */ 
-            await projectRepository.giveUserAccessToProject(userId, projectId)
+        async giveUserAccessToProject(userActionPerformerId, userId, projectId) {
+           try {
+                const project = await this.getProjectById(projectId)
+                if (project.ownerId == userId) {
+                    throw ["Användaren kan inte bjuda in sig själv"]
+                }
+                if (project.ownerId != userActionPerformerId) {
+                    throw ["Användaren måste äga projektet för att kunna utföra denna åtgärd"]
+                }
+
+                await projectRepository.giveUserAccessToProject(userId, projectId)
+           } catch (errors) {
+               console.log(errors)
+                throw errors
+           }
         },
 
         async revokeUserAccessToProject(userId, projectId) {
-            /*TODO
-            Check so user performing action is project owner
-            */
-            await projectRepository.revokeUserAccessToProject(userId, projectId)
+            try {
+                if (this.getProjectById(projectId).ownerId == userId) {
+                    await projectRepository.revokeUserAccessToProject(userId, projectId)
+                } 
+            } catch (errors) {
+                throw ["Kunde inte återkalla behörighet"]
+            }
+
         },
 
         async getUsersWithAccessToProject(projectId) {

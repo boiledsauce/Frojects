@@ -26,7 +26,6 @@ module.exports = () => {
 				})
 
 			} catch (error) {
-				console.log(error)
 				throw ['Kunde inte ge användaren tillgång till projektet']
 			}
 		},

@@ -62,7 +62,7 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
         try{
             const users = await userManager.getAllUsers()
     
-            model = { users}
+            model = { users }
 
         } catch (errors) {
             model = { errors }
@@ -72,11 +72,12 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
     })
 
     router.post('/:projectId/share', async (request, response) => {
-        try{
-            const userId = request.body.userId
-            const projectId = request.body.projectId
+        const userId = request.body.userId
 
-            await projectManager.giveUserAccessToProject(userId, projectId)
+        try{
+            const projectId = request.body.projectId
+            const userActionPerformerId = request.session.user.id
+            await projectManager.giveUserAccessToProject(userActionPerformerId, userId, projectId)
 
             request.flash('message', 'Användaren gavs tillgång till projektet')
             response.redirect(`${request.baseUrl}/${projectId}/usersWithAccess`)
