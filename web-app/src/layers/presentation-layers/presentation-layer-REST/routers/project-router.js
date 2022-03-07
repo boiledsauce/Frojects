@@ -3,7 +3,6 @@ const router = require("express").Router({mergeParams: true})
 module.exports = ({taskRouter, projectManager, taskManager}) => {
     
     router.use('/:id/task', taskRouter)
-    //http://localhost:3000/project/35/task/49
     
     router.get('/', async (request, response) => {
         try {
@@ -22,7 +21,6 @@ module.exports = ({taskRouter, projectManager, taskManager}) => {
                 ownerId: request.user.id,
                 creationDate: "2021-02-20"
             }
-            console.log("projeid", project.ownerId)
 
             const createdProject = await projectManager.createProject(project)
             response.json(createdProject)
@@ -42,13 +40,9 @@ module.exports = ({taskRouter, projectManager, taskManager}) => {
                 creationDate: "2021-02-20"
             }
             
-            if (await projectManager.belongsToUser(project.ownerId, project.id)) {
-                const updatedProject = await projectManager.updateProject(project)
-                response.json(updatedProject)
-            }
-            else {
-                console.log("Invalid project")
-            }
+            const updatedProject = await projectManager.updateProject(project)
+            response.json(updatedProject)
+          
         } catch (errors) {
             console.log(errors)
             response.status(403).json("Bad request")
@@ -61,13 +55,9 @@ module.exports = ({taskRouter, projectManager, taskManager}) => {
                 id: request.params.id,
                 ownerId: request.user.id
             }
-            console.log(project)
-                if (await projectManager.belongsToUser(project.ownerId, project.id)){
-                    const deletedResult = await projectManager.deleteProject(project.id)
-                    response.json(deletedResult)
-                } else {
-                    response.status(403).json("Bad request")
-                }
+                const deletedResult = await projectManager.deleteProject(project.ownerId, project.id)
+                response.json(deletedResult)
+                
 
             } catch (errors) {
                 console.log(errors)
