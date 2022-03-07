@@ -33,14 +33,16 @@ module.exports = ({taskRouter, projectManager, taskManager}) => {
         }
     })
 
+    router.get('/:id', async (request, response) => {
+        //TODO
+    })
 
     router.put('/:id', async (request, response) => {
         try {
             const project = {
                 id: request.params.id,
                 name: request.body.projectName,
-                ownerId: request.user.id,
-                //creationDate: "2021-02-20"
+                ownerId: request.user.id
             }
             
             const updatedProject = await projectManager.updateProject(project)
