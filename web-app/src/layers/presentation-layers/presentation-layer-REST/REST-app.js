@@ -45,8 +45,6 @@ module.exports = function createApp({mainRESTRouter, userManager}){
 				if (grant_type != 'password'){
 					response.status(400).end()
 				}
-
-				console.log("username: " + request.body.username)
 			
 				const loginCredentials = {
 					email: request.body.username,
