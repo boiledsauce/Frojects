@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "awilix": "^6.1.0",
+    "axios": "^0.26.0",
     "bcrypt": "^5.0.1",
     "connect-redis": "^6.1.0",
     "csurf": "^1.11.0",
@@ -25,6 +26,7 @@
     "mysql2": "^2.3.3",
     "node-gyp": "^8.4.1",
     "nodemon": "^2.0.15",
+    "querystring": "^0.2.1",
     "redis": "^4.0.3",
     "sequelize": "^6.16.1",
     "validator": "^13.7.0"
