@@ -9,11 +9,12 @@ const user = {
 	password: "abc123"
 }*/
 
-function authenticateAccessToken(request, response, next) {
+authenticateAccessToken = (request, response, next) => {
 	const authorizationHeader = request.header('Authorization')
 
 	if (authorizationHeader == undefined){
 		response.status(400).end()
+		
 	} else{
 		const accessToken = authorizationHeader.substring("Bearer ".length)
 
@@ -37,13 +38,18 @@ module.exports = function createApp({mainRESTRouter, userManager}){
 			//Parse requests
 			app.use(express.json())
 			app.use(express.urlencoded({ extended: false }))
+
+			//Allow Cross-origin Resource Sharing
+			app.use((request, response, next) => {
+				response.setHeader('Access-Control-Allow-Origin', '*')
+				next()
+			})
 			
 			app.post('/tokens', async (request, response) => {
 
 				const grant_type = request.body.grant_type
 
 				if (grant_type != 'password'){
-					console.error('Fel grant_type')
 					response.status(400).end()
 				}
 			
@@ -77,8 +83,7 @@ module.exports = function createApp({mainRESTRouter, userManager}){
 
 			//404 Page not found error handler
 			app.use((request, response) => {
-				response.status(404).json("Sidan hittades inte")
-				//response.status(404).render("errors/404")
+				response.status(404).end()
 			})
 
 			//CSRF error handler
@@ -87,7 +92,7 @@ module.exports = function createApp({mainRESTRouter, userManager}){
 					return next(error)
 				}
 			
-				response.status(403).send("ok").json()
+				response.status(403).end()
 			})
 
 			/*
@@ -96,7 +101,7 @@ module.exports = function createApp({mainRESTRouter, userManager}){
 			*/
 			app.use((error, request, response, next) => {
 				console.log(error)
-				response.status(500).json("Internal server error")
+				response.status(500).end()
 			})
 			
 			return app
