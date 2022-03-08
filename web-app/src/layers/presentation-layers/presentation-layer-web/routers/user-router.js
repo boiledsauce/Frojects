@@ -1,6 +1,5 @@
 const router = require("express").Router({mergeParams: true})
-const axios = require("axios")
-const qs = require("querystring")
+
 
 module.exports = ({userManager}) => {
     
@@ -13,7 +12,7 @@ module.exports = ({userManager}) => {
         const user = {
             firstName: request.body.firstName,
             lastName: request.body.lastName,
-            email: request.body.email,
+            email: request.body.email, 
             password: request.body.password,
             confirmPassword: request.body.confirmPassword
         }
@@ -42,38 +41,30 @@ module.exports = ({userManager}) => {
     })
     
     router.get('/google-login', async (request, response) => {
-      response.redirect("https://accounts.google.com/o/oauth2/auth?client_id=845630289985-h1s1qhcu7h78kmi7mogcqeplqbtta4nb.apps.googleusercontent.com&redirect_uri=http://localhost:3000/user/google-login-response&response_type=code&scope=openid")  
+      response.redirect("https://accounts.google.com/o/oauth2/auth?client_id=845630289985-h1s1qhcu7h78kmi7mogcqeplqbtta4nb.apps.googleusercontent.com&redirect_uri=http://localhost:3000/user/google-login-response&response_type=code&scope=openid%20profile%20email")  
     })
 
     router.get('/google-login-response', async (request, response) => {
-        const authorizationCode = request.query.code
         try {
-            const authResponse = await axios.post("https://www.googleapis.com/oauth2/v4/token",
-            {
-                headers: {'content-type' : 'application/x-www-form-urlencoded'},
-                params: {
-                    code: authorizationCode,
-                    client_id: "845630289985-h1s1qhcu7h78kmi7mogcqeplqbtta4nb.apps.googleusercontent.com",
-                    client_secret: "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",
-                    redirect_uri: "http://localhost:3000/user/google-login-response",
-                    grant_type: "authorization_code"
-                
+            const authorizationCode = request.query.code
+            const authResponse = await userManager.getGoogleAuthCodeResponse(authorizationCode)
+            const ticket = await userManager.getIdTicket(authResponse.data.id_token)
+            const payload = ticket.payload
+            const openId = payload.sub
+
+            let user = await userManager.getUserByOpenId(openId)
+            if (! user ){
+                const userDetails = {
+                    firstName: payload.given_name,
+                    lastName: payload.family_name,
+                    openId,
+                    email: payload.email, 
                 }
-              })
-              console.log(authResponse)
+                user = await userManager.createUser(userDetails)
+            } 
+            request.session.user = user
+            response.redirect('/app')
 
-              /*
-            const authResponse = await fetch('https://www.googleapis.com/oauth2/v4/token', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                }
-            })*/
-
-        
-
-            //console.log(await authResponse.json())
-            response.send(await authResponse)
         } catch (errors) {
             console.log(errors)
             response.sendStatus(404)

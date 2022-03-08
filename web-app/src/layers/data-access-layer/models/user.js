@@ -20,9 +20,13 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: "Email"
       },
+      openId: {
+        type: DataTypes.STRING(50),
+        allowNull: true,
+      },
       hashedPassword: {
         type: DataTypes.CHAR(60),
-        allowNull: false
+        allowNull: true
       }
 
   })

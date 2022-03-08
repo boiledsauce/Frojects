@@ -11,6 +11,7 @@ module.exports = () => {
                     firstName: user.firstName,
                     lastName: user.lastName,
                     email: user.email,
+                    openId: user.openId,
                     hashedPassword: user.hashedPassword
                 })
                 
@@ -56,6 +57,20 @@ module.exports = () => {
             }
         },
         
+        async getUserByOpenId(openId){
+            try{
+                const user = await models.User.findOne({
+                    where: {
+                        openId: openId
+                    }
+                })
+                return user
+
+            } catch (error) {
+                throw ['Kunde inte hämta användare utifrån OpenId']
+            }
+        },
+
         async getUserByEmail(email){
 
             try{

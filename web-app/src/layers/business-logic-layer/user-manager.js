@@ -2,6 +2,17 @@ const bcrypt = require('bcrypt')
 const saltRounds = 10
 
 const userValidator = require('./user-validator')
+const axios = require("axios")
+const qs = require("querystring")
+
+const CLIENT_ID = "845630289985-h1s1qhcu7h78kmi7mogcqeplqbtta4nb.apps.googleusercontent.com"
+const CLIENT_SECRET = "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"
+const REDIRECT_URI = "http://localhost:3000/user/google-login-response"
+const GRANT_TYPE = "authorization_code"
+const GOOGLE_AUTH_TOKEN_URL = "https://www.googleapis.com/oauth2/v4/token"
+
+const { OAuth2Client } = require('google-auth-library')
+const client = new OAuth2Client(CLIENT_ID)
 
 getHashFromPassword = async (password) => {
     return new Promise((resolve, reject) => {
@@ -22,22 +33,72 @@ getHashFromPassword = async (password) => {
         })
     })
 }
+/*
+getGoogleAuthCodeResponse() = async() => {
+    try {
+        return await axios.post(GOOGLE_AUTH_TOKEN_URL, qs.stringify({            
+            client_id: CLIENT_ID,
+            client_secret: CLIENT_SECRET,
+            grant_type: GRANT_TYPE,             
+            code: authorizationCode,
+            redirect_uri: REDIRECT_URI,   
+        }), {
+            headers: {'Content-Type' : 'application/x-www-form-urlencoded'},
+        })
+    } catch (errors) {
+        console.log(errors)
+        throw errors
+    }
+}*/
 
 module.exports = ({userRepository}) => {
 
     return {
 
+        async getGoogleAuthCodeResponse(authorizationCode){
+            try {
+                return await axios.post(GOOGLE_AUTH_TOKEN_URL, qs.stringify({            
+                    client_id: CLIENT_ID,
+                    client_secret: CLIENT_SECRET,
+                    grant_type: GRANT_TYPE,             
+                    code: authorizationCode,
+                    redirect_uri: REDIRECT_URI,   
+                }), {
+                    headers: {'Content-Type' : 'application/x-www-form-urlencoded'},
+                })
+            } catch (errors) {
+                console.log(errors)
+                throw errors
+            }
+        },
+
+        async getIdTicket(idToken){
+            try {
+                const ticket = await client.verifyIdToken({
+                    idToken,
+                    audience: CLIENT_ID
+                })
+
+                return ticket
+            } catch (errors) {
+                throw errors
+            }
+        },
+
         async createUser(user){
             try{
-                const validationErrors = userValidator.getErrorsNewUser(user)
-        
-                if (validationErrors.length > 0){
-                    throw validationErrors
-                }
+                console.log(user.openId)
+                if (!user.openId){
+                    console.log("OPENID")
+                    const validationErrors = userValidator.getErrorsNewUser(user)
             
-                user.hashedPassword = await getHashFromPassword(user.password)
-                delete user.password
-        
+                    if (validationErrors.length > 0){
+                        throw validationErrors
+                    }
+                
+                    user.hashedPassword = await getHashFromPassword(user.password)
+                    delete user.password
+                }
                 return await userRepository.createUser(user)
             }
             catch (errors) {
@@ -50,6 +111,14 @@ module.exports = ({userRepository}) => {
         
         },
         
+        async getUserByOpenId(openId){
+            try {
+                return await userRepository.getUserByOpenId(openId)
+            } catch (errors) {
+                throw errors
+            }
+        },
+
         async getUserByEmail(email){
             try{
                 return await userRepository.getUserByEmail(email)
