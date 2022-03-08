@@ -11,7 +11,7 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
     router.use('/:projectId/tasks', taskRouter)
 
     router.get('/', async (request, response) => {
-        let model = {}
+        let model
 
         try {
             const userId = request.session.user.id
@@ -57,7 +57,7 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
     })
 
     router.get('/:projectId/share', async (request, response) => {
-        let model = {}
+        let model
 
         try{
             const users = await userManager.getAllUsers()
@@ -104,7 +104,7 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
     })
 
     router.get('/:projectId/removeUser/:userId', async (request, response) => {
-        let model = {}
+        let model
 
         try{
             const user = await userManager.getUserById(request.params.userId)
@@ -134,7 +134,7 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
     })
 
     router.get('/:projectId', async (request, response) => {
-        let model = {}
+        let model
 
         try {
             const project = await projectManager.getProjectById(response.locals.projectId)

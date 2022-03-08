@@ -93,7 +93,7 @@ module.exports = ({taskManager, commentManager}) => {
     })
 
     router.get('/:taskId', async (request, response) => {
-        let model = {}
+        let model
 
         try {
             const taskId = request.params.taskId
