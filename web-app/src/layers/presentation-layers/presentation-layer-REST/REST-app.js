@@ -4,17 +4,34 @@ const cors = require('cors')
 
 const ACCESS_TOKEN_SECRET = 'd52b08e837b9ec2f937b734c5563daefc7a83b28fdf1864ea7f0e1c7f2c3eb6eb216fed8f06ee8fcc96f7224f1c98a61f9ebf27bc67cc09cd4452d60583e9a9f'
 
+const ISSUING_AUTHORITY = 'https://localhost:3000.com'
+
+const REQUIRED_CONTENT_TYPE = 'application/x-www-form-urlencoded'
+
+getIdToken = (user) => {
+	delete user.hashedPassword
+	delete user.openId
+	//Populate id_token
+	const idTokenPayload = user
+	idTokenPayload.iss = ISSUING_AUTHORITY
+	idTokenPayload.aud = user.id
+
+	return jwt.sign(idTokenPayload, ACCESS_TOKEN_SECRET, {expiresIn: '1 hour'})
+}
+
 authenticateAccessToken = (request, response, next) => {
 	const authorizationHeader = request.header('Authorization')
 
 	if (authorizationHeader == undefined){
-		return response.status(400).end()
+		return response.status(400).json({error: 'invalid_request'})
 
 	} else{
 		const accessToken = authorizationHeader.substring('Bearer '.length)
 
 		jwt.verify(accessToken, ACCESS_TOKEN_SECRET, (error, payload) => {
-			if (error) return response.status(401).end()
+			if (error){
+				return response.status(401).end({error: 'invalid_token'})
+			}
 	
 			request.user = payload
 			next()
@@ -37,6 +54,16 @@ module.exports = ({mainRESTRouter, userManager}) => {
 
 			//Allow Cross-Origin Resource Sharing
 			app.use(cors())
+
+			//Validate Content Type
+			app.use((request, response, next) => {
+				const contentType = request.header('Content-Type')
+
+				if (contentType != REQUIRED_CONTENT_TYPE){
+					return response.status(400).json({error: 'invalid_request'})
+				}
+
+			})
 			
 			app.post('/tokens', async (request, response) => {
 
@@ -61,13 +88,16 @@ module.exports = ({mainRESTRouter, userManager}) => {
 					
 				if (await userManager.loginCredentialsMatchUser(loginCredentials, user)) {
 
-					const payload = {
+					const accessTokenPayload = {
 						userId: user.id
 					}
 
-					const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: 3600 }) //1 hour
+					const accessToken = jwt.sign(accessTokenPayload, ACCESS_TOKEN_SECRET, {expiresIn: '1 hour'})
 
-					return response.json({ accessToken })	
+					return response.json({ 
+						access_token: accessToken,
+						id_token: getIdToken(user)
+					})	
 
 				} else {
 					return response.status(401).json({error: 'invalid_client'})

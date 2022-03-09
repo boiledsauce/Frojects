@@ -31,6 +31,6 @@ Content-Type: application/json
 
 {
     "grant_type": "password",
-    "username": "tenniswille96@live.se",
-    "password": "dinmamma1"
+    "username": "matts@svinarp.se",
+    "password": "test123"
 }
