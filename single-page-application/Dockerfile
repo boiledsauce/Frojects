@@ -8,6 +8,4 @@ RUN npm install
 
 COPY frontend frontend
 
-COPY server.js server.js
-
 CMD npm run start

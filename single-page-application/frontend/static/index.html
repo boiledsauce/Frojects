@@ -6,17 +6,40 @@
     <title>Frojects Single Page Application</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/layout.css">
+    <script src="/js/loginPage.js"></script>
+    <script src="/js/projectsPage.js"></script>
+    <script src="/js/navigation.js"></script>
 </head>
 <body>
 
     <nav class="nav">
-        <a href="/" class="nav-item" data-link>Home</a>
-        <a href="/projects" class="nav-item" data-link>Projects</a>
+        <a href="/" class="nav-item">Home</a>
+        <a href="/projects" class="nav-item">Projects</a>
     </nav>
 
-    <div id="app"></div>
+    <main>
+
+        <div class="page" id="login-page">
+            <h1>Login</h1>
+            <p>This is the login page</p>
+        </div>
+
+        <div class="page" id="projects-page">
+            <h2>Projects</h2>
+            <p>This is the projects page</p>
+            <ul id="all-projects">
+
+            </ul>
+        </div>
+
+        <div class="page" id="not-found-page">
+            <h1>Not Found</h1>
+            <p>The requested resource could not be found.</p>
+        </div>
+
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script type="module" src="/static/js/index.js"></script>
 </body>
 </html>

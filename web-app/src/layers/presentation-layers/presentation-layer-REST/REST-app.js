@@ -8,13 +8,13 @@ authenticateAccessToken = (request, response, next) => {
 	const authorizationHeader = request.header('Authorization')
 
 	if (authorizationHeader == undefined){
-		response.status(400).end()
+		return response.status(400).end()
 
 	} else{
-		const accessToken = authorizationHeader.substring("Bearer ".length)
+		const accessToken = authorizationHeader.substring('Bearer '.length)
 
 		jwt.verify(accessToken, ACCESS_TOKEN_SECRET, (error, payload) => {
-			if (error) response.status(401).end()
+			if (error) return response.status(401).end()
 	
 			request.user = payload
 			next()
@@ -43,32 +43,34 @@ module.exports = function createApp({mainRESTRouter, userManager}){
 				const grant_type = request.body.grant_type
 
 				if (grant_type != 'password'){
-					response.status(400).end()
+					return response.status(400).end()
 				}
 			
 				const loginCredentials = {
 					email: request.body.username,
 					password: request.body.password
 				}
+
+				let user
+
 				try{
-					const user = await userManager.getUserByEmail(loginCredentials.email)
-					
-					if (await userManager.loginCredentialsMatchUser(loginCredentials, user)) {
-
-						const payload = {
-							userId: user.id
-						}
-
-						const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: 3600 }) //milliseconds
-						response.json({ accessToken })				
-					}
-					else {
-						response.status(500).end()
-					}
+					user = await userManager.getUserByEmail(loginCredentials.email)
+				} catch (errors) {
+					return response.status(401).json('Ingen användare med eposten hittades')
 				}
-				catch (errors) {
-					console.log(errors)
-					response.status(500).end()
+					
+				if (await userManager.loginCredentialsMatchUser(loginCredentials, user)) {
+
+					const payload = {
+						userId: user.id
+					}
+
+					const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: 3600 }) //1 hour
+
+					return response.json({ accessToken })	
+
+				} else {
+					return response.status(401).json('Felaktiga inloggningsuppgifter')
 				}
 			})
 
@@ -76,7 +78,7 @@ module.exports = function createApp({mainRESTRouter, userManager}){
 
 			//404 Page not found error handler
 			app.use((request, response) => {
-				response.status(404).end()
+				return response.status(404).end()
 			})
 
 			/*
@@ -85,7 +87,7 @@ module.exports = function createApp({mainRESTRouter, userManager}){
 			*/
 			app.use((error, request, response, next) => {
 				console.log(error)
-				response.status(500).end()
+				return response.status(500).end()
 			})
 			
 			return app
