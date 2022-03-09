@@ -22,7 +22,7 @@ authenticateAccessToken = (request, response, next) => {
 	}
 }
 
-module.exports = function createApp({mainRESTRouter, userManager}){
+module.exports = ({mainRESTRouter, userManager}) => {
 
 	return {
 
@@ -43,7 +43,7 @@ module.exports = function createApp({mainRESTRouter, userManager}){
 				const grant_type = request.body.grant_type
 
 				if (grant_type != 'password'){
-					return response.status(400).end()
+					return response.status(400).json({error: 'unsupported_grant_type'})
 				}
 			
 				const loginCredentials = {
@@ -56,7 +56,7 @@ module.exports = function createApp({mainRESTRouter, userManager}){
 				try{
 					user = await userManager.getUserByEmail(loginCredentials.email)
 				} catch (errors) {
-					return response.status(401).json('Ingen användare med eposten hittades')
+					return response.status(401).json({error: 'invalid_client'})
 				}
 					
 				if (await userManager.loginCredentialsMatchUser(loginCredentials, user)) {
@@ -70,7 +70,7 @@ module.exports = function createApp({mainRESTRouter, userManager}){
 					return response.json({ accessToken })	
 
 				} else {
-					return response.status(401).json('Felaktiga inloggningsuppgifter')
+					return response.status(401).json({error: 'invalid_client'})
 				}
 			})
 
@@ -78,7 +78,7 @@ module.exports = function createApp({mainRESTRouter, userManager}){
 
 			//404 Page not found error handler
 			app.use((request, response) => {
-				return response.status(404).end()
+				return response.status(404)
 			})
 
 			/*
@@ -87,7 +87,7 @@ module.exports = function createApp({mainRESTRouter, userManager}){
 			*/
 			app.use((error, request, response, next) => {
 				console.log(error)
-				return response.status(500).end()
+				return response.status(500)
 			})
 			
 			return app
