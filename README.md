@@ -5,8 +5,13 @@
   <li>Run <code>git clone https://github.com/boiledsauce/Frojects</code></li>
   <li>Navigate to <code>/Frojects/</code></li>
   <li>Run <code>docker-compose up</code></li>
-  <li>Visit <code>localhost:3000</code> with your browser</li>
 </ol>
+
+<h2>Interfaces</h2>
+<ul>
+  <li>Visit <code>localhost:3000</code> to access web application</li>
+  <li>Visit <code>localhost:4000</code> to access Single Page Application</li>
+</ul>
 
 <h2>Requirements</h2>
 <ul>
