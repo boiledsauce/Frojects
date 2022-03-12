@@ -4,7 +4,7 @@
     "nodemon": "^2.0.15"
   },
   "scripts": {
-    "start": "nodemon frontend/app.js",
+    "start": "nodemon src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }

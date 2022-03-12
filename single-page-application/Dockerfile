@@ -6,6 +6,6 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY frontend frontend
+COPY src src
 
 CMD npm run start

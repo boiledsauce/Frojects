@@ -43,6 +43,10 @@ showPage = (url) => {
             loadProjectsPage()
             break
 
+        case '/register':
+            nextPageId = 'register-page'
+            break
+
         default:
             if (url.startsWith('/projects')){
                 const [empty, projects, id] = url.split('/')

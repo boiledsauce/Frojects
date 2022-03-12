@@ -16,7 +16,7 @@ services:
     ports: 
     - "4000:4000"
     volumes:
-    - "./single-page-application/frontend:/single-page-application/frontend"
+    - "./single-page-application/src:/single-page-application/src"
   "database":
     build: "./database"
     environment:
