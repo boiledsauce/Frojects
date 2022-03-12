@@ -20,6 +20,10 @@ loadProjectsPage = async () => {
 
     const accessToken = await getAccessToken()
 
+    sessionStorage.setItem('accessToken', JSON.stringify(accessToken))
+
+    const decodedAccessToken = JSON.parse(sessionStorage.accessToken)
+
     const resourceResponse = await fetch(`${API_URL}/projects/1`, {
         method: 'GET',
         headers: {

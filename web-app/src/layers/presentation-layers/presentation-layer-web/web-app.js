@@ -7,24 +7,18 @@ module.exports = ({mainRouter}) => {
 			const express = require('express')
 			const expressHandlebars = require('express-handlebars')
 			const path = require('path')
-
-			//Use Redis database for sessions
+			const flash = require('express-flash')
+			const csrf = require("csurf")
+			const breadcrumb = require('express-url-breadcrumb')
 			const session = require('express-session')
 			const RedisStore = require("connect-redis")(session)
 			const { createClient } = require("redis")
+
 			const redisClient = createClient({ legacyMode: true, url: 'redis://redis:6379' })
 			redisClient.connect().catch(console.error)
 
-			//Middleware for passing message with redirect
-			const flash = require('express-flash')
-
-			//CSRF Protection
-			const csrf = require("csurf")
-
 			const app = express()
 
-			//Breadcrumbs
-			const breadcrumb = require('express-url-breadcrumb')
 
 			//View configuration
 			app.engine('hbs', expressHandlebars.engine({
@@ -35,12 +29,10 @@ module.exports = ({mainRouter}) => {
 
 			app.set('views', path.join(__dirname, 'views'))
 
-			//Parse requests
 			app.use(express.urlencoded({
 				extended: false
 			}))
 
-			//Session configuration
 			app.use(session({
 				secret: "tdffZDd>DASD",
 				store: new RedisStore({ client: redisClient }),
@@ -51,6 +43,7 @@ module.exports = ({mainRouter}) => {
 				}
 			}))
 
+			//Middleware for passing message with redirect
 			app.use(flash())
 
 			//Public folder for static resources.
@@ -68,6 +61,7 @@ module.exports = ({mainRouter}) => {
 				next()
 			})
 
+			//CSRF Protection
 			app.use(csrf())
 
 			//Make CSRF token available to all views
@@ -76,9 +70,41 @@ module.exports = ({mainRouter}) => {
 				next()
 			})
 
-			//Capitalize bread crumbs
+			//Generate and translate breadcrumbs
 			app.use(breadcrumb(async (item, index) => {
-				item.label = item.label.charAt(0).toUpperCase() + item.label.slice(1)
+
+				switch(item.label){
+
+					case 'app':
+						item.label = 'App'
+					case 'create':
+						item.label = 'Skapa'
+						break
+
+					case 'projects':
+						item.label = 'Projekt'
+						break
+
+					case 'usersWithAccess':
+						item.label = 'Användare med tillgång'
+						break
+
+					case 'share':
+						item.label = 'Dela'
+						break
+
+					case 'tasks':
+						item.label = 'Uppgifter'
+						break
+
+					case 'create comment':
+						item.label = 'Skapa kommentar'
+
+					default:
+						break
+						
+				}
+
 			}))
 
 			app.use('/', mainRouter)
@@ -111,6 +137,9 @@ module.exports = ({mainRouter}) => {
 			})
 
 			return app
+
 		}
+
 	}
+
 }

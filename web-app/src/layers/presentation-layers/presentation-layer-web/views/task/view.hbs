@@ -1,22 +1,29 @@
 <h1>{{task.title}}</h1>
+
 <p>{{task.description}}</p>
-  <h4 class="display-8">Skapad</h1>
-      <p>{{task.createdAt}}</p>
-  </ul>
-  <h4 class="display-8">Status</h5>
-    {{#if task.isCompleted}}
-        <div class="alert alert-success" role="alert">
-            Avklarad
-        </div>
-    {{/if}}
-  <a class="btn btn-primary mb-3" href="/app/projects/{{projectId}}/tasks/{{task.id}}/create-comment">Kommentera</a>
-<h4 class="display-8">Deadline</h4>
+
+<h2 class="display-8">Skapad</h2>
+
+<p>{{task.createdAt}}</p>
+
+<h3 class="display-8">Status</h3>
+
+{{#if task.isCompleted}}
+    <div class="alert alert-success" role="alert">
+        Avklarad
+    </div>
+{{/if}}
+
+<a class="btn btn-primary mb-3" href="/app/projects/{{projectId}}/tasks/{{task.id}}/create-comment">Kommentera</a>
+
+<h3 class="display-8">Deadline</h3>
+
 <p>{{task.Deadline.deadline}}</p>
 
 {{#if comments.length}}
-  <div class="list-group">
+  <div class="list-group mb-3">
         {{#each comments}}
-            <div class="list-group-item list-group-item-action" aria-current="true">
+            <div class="list-group-item" aria-current="true">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">{{this.User.firstName}} {{this.User.lastName}}</h5>
                     <small>{{this.createdAt}}</small>
@@ -27,10 +34,10 @@
   </div>
 {{/if}}
 
-    {{#unless task.isCompleted}}
-        <form action="./{{task.id}}/complete-task" method="POST">
-            {{> csrfToken}}
-            <button type="submit" class="btn btn-primary">Klarmarkera</button>
-        </form>
-    {{/unless}}
+{{#unless task.isCompleted}}
+    <form action="./{{task.id}}/complete-task" method="POST">
+        {{> csrfToken}}
+        <button type="submit" class="btn btn-primary">Klarmarkera</button>
+    </form>
+{{/unless}}
  
