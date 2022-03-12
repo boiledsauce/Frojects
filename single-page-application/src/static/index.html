@@ -12,6 +12,7 @@
 
     <script src="/js/sidebar.js"></script>
     <script src="/js/api.js"></script>
+    <script src="/js/registerPage.js"></script>
     <script src="/js/loginPage.js"></script>
     <script src="/js/projectsPage.js"></script>
     <script src="/js/navigation.js"></script>
@@ -91,7 +92,7 @@
             
                         <div class="page" id="register-page">
             
-                            <form method="POST" style="width:300px" class="my-3 text-center">
+                            <form id="register-form" method="POST" style="width:300px" class="my-3 text-center">
                         
                                 <img class="mb-4 text-center" src="/img/frojectsBG_Dark_Low.webp" alt="" width="72" height="72">
                                 <h1 class="h3 mb-3 fw-normal">Skapa konto</h1>
@@ -121,8 +122,8 @@
                                     <label for="confirmPassword">Upprepa lösenord</label>
                                 </div>
                         
-                                <ul id="register-errors">
-                                    
+                                <ul class="errors" id="register-errors">
+
                                 </ul>
                         
                                 <button class="w-100 btn btn-lg btn-primary mb-3" type="submit">Registrera</button>

@@ -30,7 +30,7 @@ authenticateAccessToken = (request, response, next) => {
 
 		jwt.verify(accessToken, ACCESS_TOKEN_SECRET, (error, payload) => {
 			if (error){
-				return response.status(401).end({error: 'invalid_token'})
+				return response.status(401).json({error: 'invalid_token'})
 			}
 	
 			request.user = payload

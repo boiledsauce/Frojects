@@ -6,6 +6,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const toggleButton = document.querySelector("#sidebar-toggler")
 
+    const sideBarAnchors = document.querySelectorAll('#sidebar a')
+
+    for (const anchor of sideBarAnchors){
+        anchor.addEventListener('click', (event) => {
+            if (userHasSmallScreen()){
+                hideSidebar()
+            }
+        })
+    }
+
     adjustSidebarToNavbar()
 
     if (userHasSmallScreen()) {

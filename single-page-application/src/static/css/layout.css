@@ -25,6 +25,11 @@
     background-color: var(--bs-gray-800);
 }
 
+.errors{
+    text-align: left;
+    color: red;
+}
+
 /* CSS for large screens / Desktops */
 @media screen and (min-width: 992px){
     :root {

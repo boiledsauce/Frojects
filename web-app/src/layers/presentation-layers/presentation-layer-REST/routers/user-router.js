@@ -2,11 +2,7 @@ const router = require("express").Router({mergeParams: true})
 
 module.exports = ({userManager}) => {
     
-    router.get('/register', (request, response) => {
-        response.render('user/register')
-    })
-    
-    router.post('/register', async (request, response) => {
+    router.post('/create', async (request, response) => {
     
         const user = {
             firstName: request.body.firstName,
@@ -19,18 +15,10 @@ module.exports = ({userManager}) => {
         try{
             user.id = await userManager.createUser(user)
 
-            createUserSession(request.session, user)
-
-            request.flash('message', 'Ditt konto har skapats. Välkommen till Frojects!')
-            response.redirect('/app')
+            response.status(201).json()
     
         } catch (errors) {
-    
-            const model = {
-                user,
-                errors
-            }
-            response.render('user/register', model)
+            response.status(400).json({ errors })
         }
     
     })

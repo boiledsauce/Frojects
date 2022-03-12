@@ -1,6 +1,22 @@
 const GRANT_TYPE = 'password'
 const API_URL = 'http://localhost:3000/api'
 
+const DEFAULT_HEADERS = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Accept': 'application/json',
+}
+
+saveAccessToken = async (accessToken) => {
+    sessionStorage.setItem('accessToken', JSON.stringify(accessToken))
+}
+
+getSavedAccessToken = async () => {
+    return JSON.parse(sessionStorage.getItem('accessToken'))
+}
+
+userIsLoggedIn = async () => {
+    return sessionStorage.getItem('user') !== null
+}
 
 const api = {
     
@@ -23,12 +39,47 @@ const api = {
             throw (await response.json()).error
         }
     },
-    
-    saveAccessToken: async (accessToken) => {
-        sessionStorage.setItem('accessToken', JSON.stringify(accessToken))
-    },
-    
-    getSavedAccessToken: async () => {
-        return JSON.parse(sessionStorage['accessToken'])
+
+    /**
+     * 
+     * @param {string} uri The endpoint uri
+     * @param {string} method The HTTP method
+     * @param {object} bodyParams Optional object containing key-value pairs
+     * @param {Boolean} includeAuthHeader Indicate if access token should be used 
+     * @returns {response} A response promise
+     */
+    makeCall: async ({uri, method, bodyParams = undefined, includeAuthHeader = true}) => {
+
+        if (!(await userIsLoggedIn())){
+            throw ['Du måste logga in för att kunna hämta resurser från API:n']
+        }
+
+        const headers = DEFAULT_HEADERS
+        if (includeAuthHeader){
+            headers['Authorization'] = `Bearer ${await getSavedAccessToken()}`
+        }
+
+        const requestOptions = {
+            method,
+            headers
+        }
+
+        let body = ''
+
+        if (bodyParams != undefined){
+
+            for (const [key, value] of Object.entries(bodyParams)){
+                body += `${key}=${value}&`
+            }
+
+            body = body.slice(0, -1)
+
+            requestOptions.body = body
+        }
+
+        console.log("REquestOptions:", requestOptions)
+
+        return await fetch(`${API_URL}${uri}`, requestOptions)
     }
+
 }

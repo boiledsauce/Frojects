@@ -3,9 +3,9 @@ loadProjectsPage = async () => {
     try{
         const accessToken = await api.getAccessToken('matts@svinarp.se', 'test123')
 
-        await api.saveAccessToken(accessToken)
+        await saveAccessToken(accessToken)
     
-        const decodedAccessToken = await api.getSavedAccessToken()
+        const decodedAccessToken = await getSavedAccessToken()
     
         const resourceResponse = await fetch(`${API_URL}/projects/1`, {
             method: 'GET',

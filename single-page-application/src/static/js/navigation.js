@@ -45,6 +45,7 @@ showPage = (url) => {
 
         case '/register':
             nextPageId = 'register-page'
+            loadRegisterPage()
             break
 
         default:
