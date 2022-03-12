@@ -7,3 +7,37 @@
 .page.current-page{
     display: block;
 }
+
+:root{
+    --sidebar-width: 0px
+}
+
+#sidebar{
+    visibility: hidden;
+    height: 100vh;
+    overflow: hidden;
+    transition:margin-left 0.4s ease-in-out;
+    z-index: 2;
+    width: 70%;
+}
+
+#sidebar .nav-link:hover{
+    background-color: var(--bs-gray-800);
+}
+
+/* CSS for large screens / Desktops */
+@media screen and (min-width: 992px){
+    :root {
+        --sidebar-width: 280px
+    }
+    #sidebar{
+        margin-left: 0px;
+        width: var(--sidebar-width)
+    }
+    .desktop-hide{
+        display: none;
+    }
+    main{
+        margin-left: var(--sidebar-width)
+    }
+}

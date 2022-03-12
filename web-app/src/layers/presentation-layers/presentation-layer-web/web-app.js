@@ -77,6 +77,8 @@ module.exports = ({mainRouter}) => {
 
 					case 'app':
 						item.label = 'App'
+						break
+						
 					case 'create':
 						item.label = 'Skapa'
 						break

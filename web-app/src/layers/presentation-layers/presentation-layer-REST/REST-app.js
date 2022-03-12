@@ -61,6 +61,8 @@ module.exports = ({mainRESTRouter, userManager}) => {
 
 				if (contentType != REQUIRED_CONTENT_TYPE){
 					return response.status(400).json({error: 'invalid_request'})
+				} else {
+					next()
 				}
 
 			})
@@ -83,6 +85,7 @@ module.exports = ({mainRESTRouter, userManager}) => {
 				try{
 					user = await userManager.getUserByEmail(loginCredentials.email)
 				} catch (errors) {
+					console.log(errors)
 					return response.status(401).json({error: 'invalid_client'})
 				}
 					
@@ -108,7 +111,7 @@ module.exports = ({mainRESTRouter, userManager}) => {
 
 			//404 Page not found error handler
 			app.use((request, response) => {
-				return response.status(404)
+				return response.status(404).json()
 			})
 
 			/*
@@ -117,7 +120,7 @@ module.exports = ({mainRESTRouter, userManager}) => {
 			*/
 			app.use((error, request, response, next) => {
 				console.log(error)
-				return response.status(500)
+				return response.status(500).json()
 			})
 			
 			return app

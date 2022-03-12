@@ -7,7 +7,7 @@ module.exports = ({webApp, RESTapp}) => {
         async start() {
             app.use('/api', await RESTapp.getApp())
             app.use('/', await webApp.getApp())
-            .listen(PORT)
+                .listen(PORT)
         }
     }
 }
