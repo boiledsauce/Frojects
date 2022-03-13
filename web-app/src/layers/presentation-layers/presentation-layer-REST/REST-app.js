@@ -1,30 +1,7 @@
 const express = require('express')
-const jwt = require('jsonwebtoken')
 const cors = require('cors')
 
-const ACCESS_TOKEN_SECRET = 'd52b08e837b9ec2f937b734c5563daefc7a83b28fdf1864ea7f0e1c7f2c3eb6eb216fed8f06ee8fcc96f7224f1c98a61f9ebf27bc67cc09cd4452d60583e9a9f'
-
 const REQUIRED_CONTENT_TYPE = 'application/x-www-form-urlencoded'
-
-authenticateAccessToken = (request, response, next) => {
-	const authorizationHeader = request.header('Authorization')
-
-	if (authorizationHeader == undefined){
-		return response.status(400).json({error: 'invalid_request'})
-
-	} else{
-		const accessToken = authorizationHeader.substring('Bearer '.length)
-
-		jwt.verify(accessToken, ACCESS_TOKEN_SECRET, (error, payload) => {
-			if (error){
-				return response.status(401).json({error: 'invalid_token'})
-			}
-	
-			request.user = payload
-			next()
-		})
-	}
-}
 
 module.exports = ({mainRESTRouter}) => {
 

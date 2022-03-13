@@ -1,6 +1,8 @@
 loadRegisterPage = async () => {
 
     try{
+        toolbox.setTitle('Skapa konto')
+
         const form = document.getElementById('register-form')
         
         form.addEventListener('submit', registerFormHandler)
@@ -50,9 +52,22 @@ registerFormHandler = async (event) => {
             if (tokenResponse.status == 200){
                 const tokens = await tokenResponse.json()
 
-                saveAccessToken(tokens.access_token)
+                await toolbox.saveAccessToken(tokens.access_token)
 
-                createUserSession(tokens.id_token)
+                const user = await toolbox.parseJwt(tokens.id_token)
+
+                await toolbox.createUserSession(user)
+
+                toolbox.toggleProjectsMenuLink()
+
+                toolbox.setSidebarName(user.firstName, user.lastName)
+
+                const userSession = await toolbox.getUserSession()
+
+                console.log("User session:", userSession)
+
+                hideCurrentPage()
+                showPage('/')
             } else{
                 console.log('Kunde inte hämta tokens')
             }
@@ -61,8 +76,6 @@ registerFormHandler = async (event) => {
 
         } else{
             const data = await createUserResponse.json()
-
-            console.log("Fel i api-call:", data)
 
             throw data.errors
         }

@@ -26,6 +26,24 @@ const toolbox = {
 
     },
 
+    hideMenuLink: async (menuLinkId) => {
+        const link = document.getElementById(menuLinkId)
+
+        link.classList.add('hidden')
+    },
+
+    showMenuLink: async (menuLinkId) => {
+        const link = document.getElementById(menuLinkId)
+
+        link.classList.remove('hidden')
+    },
+
+    setSidebarName: async (firstName = '', lastName = '') => {
+        const nameTag = document.getElementById('users-name')
+
+        nameTag.innerText = `${firstName} ${lastName}`
+    },
+
     saveAccessToken: async (accessToken) => {
         sessionStorage.setItem('accessToken', JSON.stringify(accessToken))
     },
@@ -35,11 +53,27 @@ const toolbox = {
     },
 
     createUserSession: async (id_token) => {
-        sessionStorage.setItem('idToken', JSON.stringify(id_token))
+        sessionStorage.setItem('user', JSON.stringify(id_token))
+    },
+
+    getUserSession: async () => {
+        return JSON.parse(sessionStorage.getItem('user'))
     },
     
     userIsLoggedIn: async () => {
-        return sessionStorage.getItem('idToken') !== null
+        return sessionStorage.getItem('user') !== null
+    },
+
+    parseJwt: async (token) => {
+        try {
+            return JSON.parse(atob(token.split('.')[1]))
+        } catch (error) {
+            console.log('En base64-sträng kunde inte tolkas')
+        }
+    },
+
+    setTitle: async (title) => {
+        document.title = `${title} - Frojects Single Page Application`
     }
 
 }

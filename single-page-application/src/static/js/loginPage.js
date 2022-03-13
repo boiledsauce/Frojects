@@ -1,9 +1,17 @@
 loadLoginPage = async () => {
-    const h2 = document.createElement('h2')
-    h2.innerText = "Hejsan hoppsan!"
+    try{
+        toolbox.setTitle('Logga in')
 
-    const loginPage = document.getElementById('login-page')
-    loginPage.innerHTML = ''
+        const form = document.getElementById('login-form')
+        
+        form.addEventListener('submit', loginFormHandler)
+        
+    } catch (error) {
+        console.log(error)
+    }
 
-    loginPage.appendChild(h2)
+}
+
+loginFormHandler = async (event) => {
+    event.preventDefault()
 }

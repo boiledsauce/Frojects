@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
     const anchors = document.querySelectorAll('a')
 
@@ -17,6 +17,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     showPage(location.pathname)
 
+    if (!(await toolbox.userIsLoggedIn())){
+        toolbox.hideMenuLink('projects-menu-link')
+    } else {
+        const user = toolbox.getUserSession()
+        toolbox.setSidebarName(user.firstName, user.lastName)
+    }
+
 })
 
 window.addEventListener('popstate', () => {
@@ -34,8 +41,8 @@ showPage = (url) => {
     switch (url){
 
         case '/':
-            nextPageId = 'login-page'
-            loadLoginPage()
+            nextPageId = 'start-page'
+            toolbox.setTitle('Start')
             break
 
         case '/projects':
@@ -48,8 +55,10 @@ showPage = (url) => {
             loadRegisterPage()
             break
 
-        case '/start':
-            nextPageId = 'start-page'
+        case '/login':
+            nextPageId = 'login-page'
+            loadLoginPage()
+            break
 
         default:
             if (url.startsWith('/projects')){

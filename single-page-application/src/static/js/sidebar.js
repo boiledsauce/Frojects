@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const toggleButton = document.querySelector("#sidebar-toggler")
 
-    const sideBarAnchors = document.querySelectorAll('#sidebar a')
+    const sideBarAnchors = document.querySelectorAll('#sidebar .nav a')
 
     for (const anchor of sideBarAnchors){
         anchor.addEventListener('click', (event) => {

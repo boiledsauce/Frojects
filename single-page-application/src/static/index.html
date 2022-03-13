@@ -20,43 +20,52 @@
 
 </head>
     <body>
+
         <nav class="navbar navbar-dark bg-dark border-bottom border-1 border-secondary">
             <div class="container-fluid">
                 <button id="sidebar-toggler" class="desktop-hide navbar-toggler" type="button" aria-label="Toggle sidebar">
                     <i class="bi bi-list"></i>
                 </button>
-                <a class="navbar-brand" href="/app">
+                <a class="navbar-brand" href="/">
                     <img src="/img/frojectsBG_Low.webp" alt="" width="24" height="24" class="d-inline-block align-text-top mx-2">
                     Frojects SPA
                 </a>
             </div>
         </nav>
+
         <aside id="sidebar" class="text-white bg-dark fixed-top">
             <div class="p-3 h-100 d-flex flex-column">
                 <ul class="nav nav-pills flex-column mb-auto">
 
-                    <li class="nav-item">
+                    <li class="nav-item" id="projects-menu-link">
                         <a href="/projects" class="nav-link text-white">
-                            <i class="bi bi-kanban"></i>
+                            <i class="bi bi-kanban me-2"></i>
                             Projekt
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a href="/register" class="nav-link text-white">
-                            <i class="bi bi-kanban"></i>
-                            Registrera
+                            <i class="bi bi-person-plus-fill me-2"></i>
+                            Skapa konto
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/login" class="nav-link text-white">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>
+                            Logga in
                         </a>
                     </li>
 
                 </ul>
                 <hr>
                 <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://github.com/boiledsauce.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                        <strong>Förnamn Efternamn</strong>
+                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle me-2"></i>
+                        <strong id="users-name"></strong>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser">
                         <li><a class="dropdown-item" href="#">New project...</a></li>
                         <li><a class="dropdown-item" href="#">Settings</a></li>
                         <li><a class="dropdown-item" href="#">Profile</a></li>
@@ -77,11 +86,6 @@
             <div class="container">
                 <div class="row">
                     <div class="col d-flex justify-content-center" id="content-column">
-
-                        <div class="page" id="login-page">
-                            <h1>Login</h1>
-                            <p>This is the login page</p>
-                        </div>
                 
                         <div class="page" id="projects-page">
                             <h2>Projects</h2>
@@ -109,12 +113,12 @@
                                 </div>
                         
                                 <div class="form-floating mb-3">
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
+                                    <input type="email" class="form-control" name="email" placeholder="name@example.com">
                                     <label for="email">E-post</label>
                                 </div>
                                 
                                 <div class="form-floating mb-3">
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                                    <input type="password" class="form-control" name="password" placeholder="Password">
                                     <label for="password">Lösenord</label>
                                 </div>
                         
@@ -128,7 +132,37 @@
                                 </ul>
                         
                                 <button class="w-100 btn btn-lg btn-primary mb-3" type="submit">Registrera</button>
-                                <p class="small">Har du redan ett konto? <a href="login">Logga in</a></p>
+                                <p class="small">Har du redan ett konto? <a href="/login">Logga in</a></p>
+                        
+                                <p class="mt-5 mb-3 text-muted">© Frojects 2022</p>
+                        
+                          </form>
+            
+                        </div>
+
+                        <div class="page" id="login-page">
+            
+                            <form id="login-form" method="POST" style="width:300px" class="my-3 text-center">
+                        
+                                <img class="mb-4 text-center" src="/img/frojectsBG_Dark_Low.webp" alt="" width="72" height="72">
+                                <h1 class="h3 mb-3 fw-normal">Logga in</h1>
+                        
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" name="email" placeholder="name@example.com">
+                                    <label for="email">E-post</label>
+                                </div>
+                                
+                                <div class="form-floating mb-3">
+                                    <input type="password" class="form-control" name="password" placeholder="Password">
+                                    <label for="password">Lösenord</label>
+                                </div>
+                        
+                                <ul class="errors">
+
+                                </ul>
+                        
+                                <button class="w-100 btn btn-lg btn-primary mb-3" type="submit">Logga in</button>
+                                <p class="small">Saknar du ett konto? <a href="/register">Skapa konto</a></p>
                         
                                 <p class="mt-5 mb-3 text-muted">© Frojects 2022</p>
                         
@@ -137,13 +171,18 @@
                         </div>
 
                         <div class="page" id="start-page">
-                            <h1>This is the startpage</h1>
-                            <p>Welcome</p>
+                            <h1>Start</h1>
+                            <p>Välkommen till Frojects Single Page Application. Genom denna plattform kan du skapa konto och logga in för att hantera dina projekt.</p>
                         </div>
                 
                         <div class="page" id="not-found-page">
                             <h1>Not Found</h1>
                             <p>The requested resource could not be found.</p>
+                        </div>
+
+                        <div class="page" id="error-page">
+                            <h1></h1>
+                            <p></p>
                         </div>
                         
                     </div>

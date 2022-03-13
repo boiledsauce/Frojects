@@ -38,7 +38,7 @@ const api = {
      */
     makeCall: async ({uri, method, bodyParams = undefined, includeAuthHeader = true}) => {
 
-        if (!(await userIsLoggedIn()) && includeAuthHeader){
+        if (!(await toolbox.userIsLoggedIn()) && includeAuthHeader){
             throw ['Du måste logga in för att få tillgång till resurserna på API:n']
         }
 
