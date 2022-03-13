@@ -87,9 +87,7 @@ module.exports = ({userRepository}) => {
 
         async createUser(user){
             try{
-                console.log(user.openId)
                 if (!user.openId){
-                    console.log("OPENID")
                     const validationErrors = userValidator.getErrorsNewUser(user)
             
                     if (validationErrors.length > 0){

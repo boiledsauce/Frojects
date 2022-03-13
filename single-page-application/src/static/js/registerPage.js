@@ -16,12 +16,10 @@ registerFormHandler = async (event) => {
 
     const formData = Object.fromEntries(new FormData(document.getElementById('register-form')).entries())
 
-    console.log(formData)
-
     const {firstName, lastName, email, password, confirmPassword} = formData
 
     try{
-        const response = await api.makeCall({
+        const createUserResponse = await api.makeCall({
             uri: '/users/create', 
             method: 'POST',
             bodyParams: {
@@ -30,26 +28,46 @@ registerFormHandler = async (event) => {
                 email,
                 password,
                 confirmPassword
-            }
+            },
+            includeAuthHeader: false
         })
 
-        const data = await response.json()
+        if (createUserResponse.status == 201){
+            toolbox.clearFormInput()
 
-        if (response.status == 400 ){
+            //Sign in user
+            const tokenResponse = await api.makeCall({
+                uri: '/tokens',
+                method: 'POST',
+                bodyParams: {
+                    grant_type: 'password',
+                    username: email,
+                    password
+                },
+                includeAuthHeader: false
+            })
+
+            if (tokenResponse.status == 200){
+                const tokens = await tokenResponse.json()
+
+                saveAccessToken(tokens.access_token)
+
+                createUserSession(tokens.id_token)
+            } else{
+                console.log('Kunde inte hämta tokens')
+            }
+
+
+
+        } else{
+            const data = await createUserResponse.json()
+
+            console.log("Fel i api-call:", data)
+
             throw data.errors
-        } else if (response.status == 200){
-            console.log("API-call actually succeeded")
-        } else {
-            console.log("Fel i api-called", data)
         }
 
     } catch (errors) {
-        const errorList = document.getElementById('register-errors')
-
-        for (const error of errors){
-            const li = document.createElement('li')
-            li.innerText = error
-            errorList.appendChild(li)
-        }
+        toolbox.printErrors(errors)
     }
 }

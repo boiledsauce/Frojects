@@ -6,18 +6,6 @@ const DEFAULT_HEADERS = {
     'Accept': 'application/json',
 }
 
-saveAccessToken = async (accessToken) => {
-    sessionStorage.setItem('accessToken', JSON.stringify(accessToken))
-}
-
-getSavedAccessToken = async () => {
-    return JSON.parse(sessionStorage.getItem('accessToken'))
-}
-
-userIsLoggedIn = async () => {
-    return sessionStorage.getItem('user') !== null
-}
-
 const api = {
     
     getAccessToken: async (email, password) => {
@@ -45,13 +33,13 @@ const api = {
      * @param {string} uri The endpoint uri
      * @param {string} method The HTTP method
      * @param {object} bodyParams Optional object containing key-value pairs
-     * @param {Boolean} includeAuthHeader Indicate if access token should be used 
+     * @param {Boolean} includeAuthHeader Indicate whether access token should be used 
      * @returns {response} A response promise
      */
     makeCall: async ({uri, method, bodyParams = undefined, includeAuthHeader = true}) => {
 
-        if (!(await userIsLoggedIn())){
-            throw ['Du måste logga in för att kunna hämta resurser från API:n']
+        if (!(await userIsLoggedIn()) && includeAuthHeader){
+            throw ['Du måste logga in för att få tillgång till resurserna på API:n']
         }
 
         const headers = DEFAULT_HEADERS
