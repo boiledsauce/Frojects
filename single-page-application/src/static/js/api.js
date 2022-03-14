@@ -44,7 +44,7 @@ const api = {
 
         const headers = DEFAULT_HEADERS
         if (includeAuthHeader){
-            headers['Authorization'] = `Bearer ${await getSavedAccessToken()}`
+            headers['Authorization'] = `Bearer ${await toolbox.getSavedAccessToken()}`
         }
 
         const requestOptions = {
@@ -65,7 +65,7 @@ const api = {
             requestOptions.body = body
         }
 
-        console.log("REquestOptions:", requestOptions)
+        console.log("RequestOptions:", requestOptions)
 
         return await fetch(`${API_URL}${uri}`, requestOptions)
     }

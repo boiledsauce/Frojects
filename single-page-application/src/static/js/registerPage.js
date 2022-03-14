@@ -58,7 +58,9 @@ registerFormHandler = async (event) => {
 
                 await toolbox.createUserSession(user)
 
-                toolbox.toggleProjectsMenuLink()
+                toolbox.showMenuLink('projects-menu-link')
+
+                toolbox.hideMenuLink('login-menu-link')
 
                 toolbox.setSidebarName(user.firstName, user.lastName)
 
