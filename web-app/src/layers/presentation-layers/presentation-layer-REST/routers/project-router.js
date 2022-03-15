@@ -23,11 +23,11 @@ module.exports = ({taskRouter, projectManager}) => {
                 ownerId: request.user.id
             }
 
-            const createdProject = await projectManager.createProject(project)
-            response.status(201).json(createdProject)
+            const createdProjectId = await projectManager.createProject(project)
+            response.json(createdProjectId)
         } catch (errors) {
             console.log(errors)
-            response.status(500).json("Internal server error")
+            response.status(403).json()
         }
     })
 
