@@ -37,6 +37,10 @@ try{
 		logging: false,
 		query: {
 			raw: true, 
+		},
+		dialectOptions: {
+			dateStrings: true,
+			typeCast: true
 		}
 	})
 

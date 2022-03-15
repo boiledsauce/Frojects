@@ -24,10 +24,10 @@ module.exports = ({taskRouter, projectManager}) => {
             }
 
             const createdProject = await projectManager.createProject(project)
-            response.json(createdProject)
+            response.status(201).json(createdProject)
         } catch (errors) {
             console.log(errors)
-            response.status(403).json("Bad request")
+            response.status(500).json("Internal server error")
         }
     })
 
@@ -36,6 +36,7 @@ module.exports = ({taskRouter, projectManager}) => {
             const project = await projectManager.getProjectById(request.params.id)
             response.json(project)
         } catch (errors) {
+            response.status(400)
             console.log(errors)
             throw ['Kunde inte hämta projekt']
         }
