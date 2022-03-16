@@ -37,9 +37,25 @@ module.exports = () => {
 				})
 				return comments
 			} catch (error) {
-				console.log("ERROR:", error)
+				console.log(error)
 				throw ['Kunde inte hämta uppgiftens kommentarer']
 			}
+		},
+
+		async deleteComment(commentId) {
+			await models.Comment.destroy({
+				where: {
+					id: commentId
+				}
+			})
+		},
+
+		async updateComment(authorId, text) {
+			await models.Comment.update({
+				where: {
+					authorId
+				}
+			})
 		}
 	}
 }

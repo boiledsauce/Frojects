@@ -96,9 +96,10 @@ module.exports = ({taskManager, commentManager}) => {
         let model
 
         try {
+            const userId = request.session.user.id
             const taskId = request.params.taskId
             const task = await taskManager.getTaskById(taskId)
-            const comments = await commentManager.getAllCommentsByTaskId(taskId)
+            const comments = await commentManager.getAllCommentsByTaskId(taskId, userId) 
 
             model = {
                 task,
