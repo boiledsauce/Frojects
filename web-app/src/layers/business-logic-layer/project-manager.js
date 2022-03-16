@@ -114,6 +114,29 @@ module.exports = ({projectRepository}) => {
             } catch (error) {
                 throw error
             }
+        },
+
+        async userHasAccessToProject(userId, projectId) {
+            try{
+                const usersWithAccess = await this.getUsersWithAccessToProject(projectId)
+
+                const project = await this.getProjectById(projectId)
+
+                if (project.ownerId == userId){
+                    return true
+                }
+
+                for (const user in usersWithAccess){
+                    if (userId == user.id){
+                        return true
+                    }
+                }
+                return false
+
+            } catch (errors) {
+                throw errors
+            }
+
         }
         
     }

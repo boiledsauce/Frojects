@@ -16,6 +16,7 @@
     <script src="/js/registerPage.js"></script>
     <script src="/js/loginPage.js"></script>
     <script src="/js/projectsPage.js"></script>
+    <script src="/js/projectPage.js"></script>
     <script src="/js/navigation.js"></script>
 
 </head>
@@ -61,10 +62,10 @@
                 </ul>
                 <hr>
                 <div class="dropdown" id="user-profile">
-                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div id="name-badge-container" class="d-inline-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-person-circle me-2"></i>
                         <strong id="users-name"></strong>
-                    </a>
+                    </div>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser">
                         <li>
                             <form id="logout-form" action="/logout" method="POST">
@@ -94,12 +95,32 @@
                 <div class="row">
                     <div class="col d-flex align-items-center" id="content-column">
                 
-                        <div class="page" id="projects-page">
-                            <h1>Projekt</h1>
-                            <p>Dina projekt</p>
-                            <div class="list-group" id="your-projects">
+                        <div class="page w-100" id="projects-page">
+                            <div class="p-5 mb-4 bg-light border rounded-3">
+                                <div class="container-fluid py-5">
+                                  <h1 class="display-5 fw-bold">Projekt</h1>
+                                  <p class="col-md-12 fs-4">Dina projekt</p>
+                                  <a href="/projects/create" class="btn btn-primary" type="button">Skapa projekt</a>
+                                </div>
+                              </div>
+                            <div id="your-projects" class="list-group">
                                 
                             </div>
+                        </div>
+
+                        <div class="page w-100" id="project-page">
+                            <div class="p-5 mb-4 bg-light border rounded-3">
+                                <div class="container-fluid py-5">
+                                  <h1 class="display-5 fw-bold mb-3"></h1>
+                                  <button class="btn btn-primary" type="button">Uppdatera</button>
+                                  <button class="btn btn-danger ms-sm-3" type="button">Ta bort</button>
+                                </div>
+                              </div>
+
+                              <h2>Uppgifter</h2>
+                              <div id="project-tasks" class="list-group">
+
+                              </div>
                         </div>
             
                         <div class="page mx-auto" id="register-page">
@@ -185,11 +206,6 @@
                         <div class="page" id="not-found-page">
                             <h1>Not Found</h1>
                             <p>The requested resource could not be found.</p>
-                        </div>
-
-                        <div class="page" id="error-page">
-                            <h1>Ett fel uppstod</h1>
-                            <p></p>
                         </div>
                         
                     </div>

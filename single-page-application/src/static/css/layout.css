@@ -21,6 +21,10 @@
     width: 70%;
 }
 
+#name-badge-container:hover{
+    cursor: pointer;
+}
+
 #sidebar .nav-link:hover{
     background-color: var(--bs-gray-800);
 }

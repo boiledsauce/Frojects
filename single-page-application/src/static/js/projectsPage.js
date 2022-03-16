@@ -3,17 +3,17 @@ loadProjectsPage = async () => {
     try{
         toolbox.setTitle('Projekt')
 
-        if ((await toolbox.userIsLoggedIn())){
+        if (await toolbox.userIsLoggedIn()){
 
             const response = await api.makeCall({
-                uri: '/projects',
-                method: 'GET'
+                uri: '/projects'
             })
 
-            if (response.status = 200){
+            if (response.status == 200){
                 const data = await response.json()
 
                 const list = document.getElementById('your-projects')
+                list.innerHTML = ''
 
                 for (const project of data.projects){
                     const listItem = document.createElement('a')
@@ -23,12 +23,13 @@ loadProjectsPage = async () => {
                     list.appendChild(listItem)
                 }
 
-            } else {
-                console.log('Kunde ej hämta projekt')
+            }
+            else {
+                toolbox.flashMessage('Kunde ej hämta projekt')
             }
 
         } else {
-            alert('Du måste logga in för att få tillgång till dina projekt')
+            toolbox.flashMessage('Du måste logga in för att få tillgång till dina projekt')
         }
 
     } catch (error) {

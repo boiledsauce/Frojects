@@ -75,7 +75,8 @@ showPage = (url) => {
         default:
             if (url.startsWith('/projects')){
                 const [empty, projects, id] = url.split('/')
-                nextPageId = ''
+                nextPageId = 'project-page'
+                loadProjectPage(id)
             } else {
                 nextPageId = 'not-found-page'
             }

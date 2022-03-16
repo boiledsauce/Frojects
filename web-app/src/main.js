@@ -91,11 +91,6 @@ container.register(
 )
 
 container.register(
-	'userRESTRouter',
-	awilix.asFunction(require('./layers/presentation-layers/presentation-layer-REST/routers/user-router'))
-)
-
-container.register(
 	'RESTapp',
 	awilix.asFunction(require('./layers/presentation-layers/presentation-layer-REST/REST-app'))
 )

@@ -1,8 +1,6 @@
 const router = require("express").Router({mergeParams: true})
 
-module.exports = ({taskRouter, projectManager}) => {
-    
-    router.use('/:id/tasks', taskRouter)
+module.exports = ({taskRESTRouter, projectManager}) => {
     
     router.get('/', async (request, response) => {
         try {
@@ -12,7 +10,7 @@ module.exports = ({taskRouter, projectManager}) => {
 
             response.json({projects, sharedProjects})
         } catch (errors) {
-            response.json(errors)
+            response.status(400).json(errors)
         }
     })
 
@@ -31,14 +29,14 @@ module.exports = ({taskRouter, projectManager}) => {
         }
     })
 
+    router.use('/:projectId/tasks', taskRESTRouter)
+
     router.get('/:id', async (request, response) => {
         try{
             const project = await projectManager.getProjectById(request.params.id)
             response.json(project)
         } catch (errors) {
-            response.status(400)
-            console.log(errors)
-            throw ['Kunde inte hämta projekt']
+            response.status(400).json(['Kunde inte hämta projekt'])
         }
     })
 

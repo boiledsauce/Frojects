@@ -36,7 +36,7 @@ const api = {
      * @param {Boolean} includeAuthHeader Indicate whether access token should be used 
      * @returns {response} A response promise
      */
-    makeCall: async ({uri, method, bodyParams = undefined, includeAuthHeader = true}) => {
+    makeCall: async ({uri, method = 'GET', bodyParams = undefined, includeAuthHeader = true}) => {
 
         if (!(await toolbox.userIsLoggedIn()) && includeAuthHeader){
             throw ['Du måste logga in för att få tillgång till resurserna på API:n']
@@ -64,8 +64,6 @@ const api = {
 
             requestOptions.body = body
         }
-
-        console.log("RequestOptions:", requestOptions)
 
         return await fetch(`${API_URL}${uri}`, requestOptions)
     }
