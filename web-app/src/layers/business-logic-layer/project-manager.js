@@ -36,7 +36,7 @@ module.exports = ({projectRepository}) => {
 
         async updateProject(project) {
             try {
-                if (await projectManager.belongsToUser(project.ownerId, project.id)) {
+                if (await this.belongsToUser(project.ownerId, project.id)) {
                     return await projectRepository.updateProject(project.id, project.name)
                 }
             } catch (errors) {

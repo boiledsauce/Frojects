@@ -5,8 +5,9 @@
             <div class="col-md-6">
                 <h1 class="mb-3">{{project.name}}</h1>
             </div>
-            <div class="col-md-6 d-flex justify-content-md-end align-items-center">
+            <div class="col-md-12 d-flex justify-content-md-end align-items-center">
                 <a class="btn btn-primary me-3" href="/app/projects/{{project.id}}/delete"><i class="bi bi-trash"></i>Ta bort projekt</a>
+                <a class="btn btn-primary me-3" href="/app/projects/{{project.id}}/update"><i class="bi bi-trash"></i>Uppdatera projekt</a>
                 <a class="btn btn-primary me-3" href="/app/projects/{{project.id}}/usersWithAccess"><i class="bi bi-people me-2"></i>Användare med tillgång</a>
                 <a class="btn btn-primary" href="/app/projects/{{project.id}}/share"><i class="bi bi-person-plus-fill me-2"></i>Dela</a>
             </div>

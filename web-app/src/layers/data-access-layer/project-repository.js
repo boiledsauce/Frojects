@@ -117,15 +117,13 @@ module.exports = () => {
 				const project = await models.Project.update({ name }, {
 					where: {
 						id,
-						//ownerId: 4,
-						//creationDate: "2012-02-20" 
 					}
 				})
 
 				return project
 
 			} catch (error) {
-				console.error(error)
+				console.log(error)
 				throw ['Kunde inte uppdatera projekt']
 			}
 		},
