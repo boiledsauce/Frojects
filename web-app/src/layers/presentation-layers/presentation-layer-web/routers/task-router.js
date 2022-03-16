@@ -113,6 +113,71 @@ module.exports = ({taskManager, commentManager}) => {
         response.render('task/view', model)
     })
 
+    router.get('/:taskId/update', async (request, response) => {
+        let model
+
+        try {
+            const taskId = request.params.taskId
+            const task = await taskManager.getTaskById(taskId)
+            model = {
+                task,
+                projectId: request.params.projectId
+            }
+
+        } catch (errors) {
+            model = {errors}
+        }
+
+        response.render('task/update', model)
+    })
+
+    router.post('/:taskId/update', async (request, response) => {
+        let model
+
+        try {
+
+            const task = {
+                taskId: request.params.taskId,
+                title: request.body.title,
+                description: request.body.description,
+                date: request.body.date
+            }
+            await taskManager.updateTask(task)
+            response.redirect(request.baseUrl)
+
+        } catch (errors) {
+            model = {errors}
+            response.render('task/update', model)
+        }
+    })
+
+    router.get('/:taskId/delete', async (request, response) => {
+        let model
+
+        try {
+            const task = await taskManager.getTaskById(request.params.taskId)
+            model = {task}
+            response.render('task/delete', model)
+
+        } catch (errors) {
+            model = {errors}
+            response.render('task/delete', model)
+        }
+    })
+
+    router.post('/:taskId/delete', async (request, response) => {
+        let model
+
+        try {
+            await taskManager.deleteTask(request.params.taskId)
+            response.redirect(request.baseUrl)
+
+        } catch (errors) {
+            model = {errors}
+            response.render('task/delete', model)
+        }
+    })
+
     router.get('/', async (request, response) => {
         response.redirect(`/app/projects/${response.locals.projectId}`)
     })

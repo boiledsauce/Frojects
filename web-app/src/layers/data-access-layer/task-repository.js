@@ -1,4 +1,4 @@
-const { models } = require('./db')
+const { models, sequelizeConstants, sequelize } = require('./db')
 
 module.exports = () => {
 
@@ -23,7 +23,7 @@ module.exports = () => {
 			try {
 				models.Task.destroy({
 					where: {
-						Id: taskId
+						id: taskId
 					}
 				})
 			}
@@ -108,7 +108,32 @@ module.exports = () => {
 				console.log(error)
 				throw ['Uppgiften kunde inte klarmarkeras']
 			}
-		}
+		},
 
+		async updateTask(taskId, title, description, deadline) {
+			const queryTransaction = await sequelize.transaction()
+
+			try {
+				const resultTask = await models.Task.update({ title, description }, {
+					where: {
+						id: taskId
+					},
+				})
+
+				const resultDeadline = await models.Deadline.update({ deadline }, {
+					where: {
+						taskId
+					},
+				})
+
+				await queryTransaction.commit()
+				return resultTask
+
+			} catch (error) {
+				console.log(error)
+				await queryTransaction.rollback()
+				throw ['Uppgiften kunde inte uppdateras']
+			}
+		},
 	}
 }

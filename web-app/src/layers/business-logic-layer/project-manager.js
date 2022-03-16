@@ -35,12 +35,18 @@ module.exports = ({projectRepository}) => {
         },
 
         async updateProject(project) {
+            const errors = projectValidator.getErrorsNewProject(project)
+            if (errors.length > 0) {
+                throw errors
+            }
+
             try {
-                if (await this.belongsToUser(project.ownerId, project.id)) {
+                if (await this.belongsToUser(project.ownerId, project.id)) {   
                     return await projectRepository.updateProject(project.id, project.name)
                 }
             } catch (errors) {
-                throw ["Projektet kunde inte hämtas från databasen"]
+                console.log(errors)
+                throw ["Projektet kunde inte uppdateras i databasen"]
             }
         },
 

@@ -19,10 +19,10 @@ initModels = (sequelize) => {
   const UserProjectAccess = sequelize.define('UserProjectAccess', {}, {})
 
   Task.belongsTo(Project, { foreignKey: "projectId"})
-  Project.hasMany(Task, { foreignKey: "projectId"})
+  Project.hasMany(Task, { foreignKey: "projectId", onDelete: "CASCADE"})
   Comment.belongsTo(Task, { foreignKey: "taskId"})
-  Task.hasMany(Comment, { foreignKey: "taskId"})
-  Deadline.belongsTo(Task, { foreignKey: "taskId"})
+  Task.hasMany(Comment, { foreignKey: "taskId", onDelete: "CASCADE"})
+  Deadline.belongsTo(Task, { foreignKey: "taskId" })
   Task.hasOne(Deadline, { foreignKey: "taskId"})
 
   Comment.belongsTo(User, { foreignKey: "authorId"})
