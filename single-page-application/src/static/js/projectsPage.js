@@ -4,10 +4,8 @@ loadProjectsPage = async () => {
         toolbox.setTitle('Projekt')
 
         if ((await toolbox.userIsLoggedIn())){
-            
-            const user = await toolbox.getUserSession()
 
-            const response = api.makeCall({
+            const response = await api.makeCall({
                 uri: '/projects',
                 method: 'GET'
             })
@@ -15,7 +13,15 @@ loadProjectsPage = async () => {
             if (response.status = 200){
                 const data = await response.json()
 
-                console.log("Projekt:", data)
+                const list = document.getElementById('your-projects')
+
+                for (const project of data.projects){
+                    const listItem = document.createElement('a')
+                    listItem.classList.add('list-group-item', 'list-group-item-action')
+                    listItem.setAttribute('href', `/projects/${project.id}`)
+                    listItem.innerText = project.name
+                    list.appendChild(listItem)
+                }
 
             } else {
                 console.log('Kunde ej hämta projekt')

@@ -1,4 +1,8 @@
 
+const USER_SESSION_KEY = 'user'
+
+const ACCESS_TOKEN_KEY = 'accessToken'
+
 const toolbox = {
 
     printErrors: async (errors) => {
@@ -42,26 +46,38 @@ const toolbox = {
         const nameTag = document.getElementById('users-name')
 
         nameTag.innerText = `${firstName} ${lastName}`
+
+        const userProfile = document.getElementById('user-profile')
+
+        if (firstName == '' && lastName == ''){
+            userProfile.classList.add('hidden')
+        } else {
+            userProfile.classList.remove('hidden')
+        }
     },
 
     saveAccessToken: async (accessToken) => {
-        sessionStorage.setItem('accessToken', JSON.stringify(accessToken))
+        sessionStorage.setItem(ACCESS_TOKEN_KEY, JSON.stringify(accessToken))
     },
     
     getSavedAccessToken: async () => {
-        return JSON.parse(sessionStorage.getItem('accessToken'))
+        return JSON.parse(sessionStorage.getItem(ACCESS_TOKEN_KEY))
     },
 
     createUserSession: async (id_token) => {
-        sessionStorage.setItem('user', JSON.stringify(id_token))
+        sessionStorage.setItem(USER_SESSION_KEY, JSON.stringify(id_token))
     },
 
     getUserSession: async () => {
-        return JSON.parse(sessionStorage.getItem('user'))
+        return JSON.parse(sessionStorage.getItem(USER_SESSION_KEY))
+    },
+
+    destroyUserSession: async () => {
+        sessionStorage.removeItem(USER_SESSION_KEY)
     },
     
     userIsLoggedIn: async () => {
-        return sessionStorage.getItem('user') !== null
+        return sessionStorage.getItem(USER_SESSION_KEY) !== null
     },
 
     parseJwt: async (token) => {
@@ -74,6 +90,21 @@ const toolbox = {
 
     setTitle: async (title) => {
         document.title = `${title} - Frojects Single Page Application`
+    },
+
+    flashMessage: async (message) => {
+        const flashMessage = document.getElementById('flash-message')
+        
+        const messageText = flashMessage.querySelector('p')
+        messageText.innerText = message
+
+        flashMessage.classList.remove('invisible')
+
+        setTimeout(() => {
+            flashMessage.classList.add('invisible')
+        }, 5000)
+
+
     }
 
 }
