@@ -61,12 +61,9 @@ registerFormHandler = async (event) => {
                 toolbox.showMenuLink('projects-menu-link')
 
                 toolbox.hideMenuLink('login-menu-link')
+                toolbox.hideMenuLink('register-menu-link')
 
                 toolbox.setSidebarName(user.firstName, user.lastName)
-
-                const userSession = await toolbox.getUserSession()
-
-                console.log("User session:", userSession)
 
                 hideCurrentPage()
                 showPage('/')

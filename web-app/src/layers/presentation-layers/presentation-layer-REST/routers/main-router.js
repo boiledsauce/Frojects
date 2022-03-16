@@ -79,7 +79,6 @@ module.exports = ({projectRESTRouter, userRESTRouter, userManager}) => {
         try{
             user = await userManager.getUserByEmail(loginCredentials.email)
         } catch (errors) {
-            console.log(errors)
             return response.status(401).json({error: 'invalid_client'})
         }
             
