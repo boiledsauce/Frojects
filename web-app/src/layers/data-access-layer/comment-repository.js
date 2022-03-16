@@ -27,8 +27,10 @@ module.exports = () => {
 					include: [{
 						model: models.User,
 						attributes: ['firstName', 'lastName'],
-					
 					}],
+					where: {
+						taskId
+					},
 					order: [['createdAt', 'DESC']],
 					raw: true,
 					nest: true

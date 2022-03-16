@@ -23,7 +23,7 @@ module.exports = () => {
 			try {
 				models.Task.destroy({
 					where: {
-						Id: taskId
+						id: taskId
 					}
 				})
 			}
@@ -134,7 +134,6 @@ module.exports = () => {
 				await queryTransaction.rollback()
 				throw ['Uppgiften kunde inte uppdateras']
 			}
-		}
-
+		},
 	}
 }

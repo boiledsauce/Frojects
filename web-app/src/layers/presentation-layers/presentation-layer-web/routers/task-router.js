@@ -140,7 +140,7 @@ module.exports = ({taskManager, commentManager}) => {
                 taskId: request.params.taskId,
                 title: request.body.title,
                 description: request.body.description,
-                deadline: request.body.date
+                date: request.body.date
             }
             await taskManager.updateTask(task)
             response.redirect(request.baseUrl)
@@ -148,6 +148,33 @@ module.exports = ({taskManager, commentManager}) => {
         } catch (errors) {
             model = {errors}
             response.render('task/update', model)
+        }
+    })
+
+    router.get('/:taskId/delete', async (request, response) => {
+        let model
+
+        try {
+            const task = await taskManager.getTaskById(request.params.taskId)
+            model = {task}
+            response.render('task/delete', model)
+
+        } catch (errors) {
+            model = {errors}
+            response.render('task/delete', model)
+        }
+    })
+
+    router.post('/:taskId/delete', async (request, response) => {
+        let model
+
+        try {
+            await taskManager.deleteTask(request.params.taskId)
+            response.redirect(request.baseUrl)
+
+        } catch (errors) {
+            model = {errors}
+            response.render('task/delete', model)
         }
     })
 

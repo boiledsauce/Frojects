@@ -53,11 +53,24 @@ module.exports = ({taskRepository}) => {
         },
         
         async updateTask(task) {
+            const errors = taskValidator.getErrorsNewTask(task)
+            if (errors.length > 0) {
+                throw errors
+            }
             try {
-                return await taskRepository.updateTask(task.taskId, task.title, task.description, task.deadline)
+                return await taskRepository.updateTask(task.taskId, task.title, task.description, task.date)
             } catch (error) {
                 console.log(error)
                 throw ["Din task kunde inte uppdateras"]
+            }
+        },
+
+        async deleteTask(taskId) {
+            try {
+                return await taskRepository.deleteTask(taskId)
+            } catch (error) {
+                console.log(error)
+                throw ["Din task kunde inte tas bort"]
             }
         },
 

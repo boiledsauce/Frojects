@@ -1,0 +1,13 @@
+<div class="container">
+    <div class="row">
+        <div class="col col-md-6">
+            <h1 class="mb-4">Är du säker att du vill ta bort denna uppgift?</h1>
+                <form action="" method="POST">
+                    {{> csrfToken}}
+                    
+                    <button type="submit" class="btn btn-primary">Ja</button>
+                    <a href = "/app/projects/{{task.id}}"></a><button type="submit" class="btn btn-primary">Nej</button>
+                </form>
+        </div>
+    </div>
+</div>
