@@ -46,10 +46,11 @@ module.exports = ({projectRepository}) => {
 
         async deleteProject(project) {
             try {
-                if (await projectManager.belongsToUser(project.ownerId, project.id)) {
-                    return await projectRepository.deleteProject(projectId)
+                if (await this.belongsToUser(project.ownerId, project.id)) {
+                    return await projectRepository.deleteProject(project.id)
                 }
             } catch (errors) {
+                console.log(errors)
                 throw ["Projektet kunde inte tas bort från databasen"]
             }
         },

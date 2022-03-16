@@ -148,6 +148,35 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
 
         response.render('project/view', model)
     })
+
+    router.get('/:projectId/delete', async (request, response) => {
+        let model
+
+        try {
+            const project = await projectManager.getProjectById(response.locals.projectId)
+            model = {project}
+        } catch (errors) {
+            model = {errors}
+        }
+
+        response.render('project/delete', model)
+    })
+
+    router.post('/:projectId/delete', async (request, response) => {
+        const project = {
+            id: request.params.projectId,
+            ownerId: request.session.user.id
+        }
+        try {
+            await projectManager.deleteProject(project)
+            response.redirect(request.baseUrl + '/')
+
+        } catch (errors) {
+            const model = {errors}
+            response.render('project/delete', model)
+        }
+
+    })
   
     return router
 

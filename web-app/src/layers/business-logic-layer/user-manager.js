@@ -33,23 +33,7 @@ getHashFromPassword = async (password) => {
         })
     })
 }
-/*
-getGoogleAuthCodeResponse() = async() => {
-    try {
-        return await axios.post(GOOGLE_AUTH_TOKEN_URL, qs.stringify({            
-            client_id: CLIENT_ID,
-            client_secret: CLIENT_SECRET,
-            grant_type: GRANT_TYPE,             
-            code: authorizationCode,
-            redirect_uri: REDIRECT_URI,   
-        }), {
-            headers: {'Content-Type' : 'application/x-www-form-urlencoded'},
-        })
-    } catch (errors) {
-        console.log(errors)
-        throw errors
-    }
-}*/
+
 
 module.exports = ({userRepository}) => {
 

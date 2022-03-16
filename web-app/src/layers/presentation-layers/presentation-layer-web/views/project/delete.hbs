@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="row">
+        
+        <div class="col col-md-6">
+            <h1 class="mb-4">Är du säker att du vill ta bort detta projekt?</h1>
+
+                <form action="" method="POST">
+                    {{> csrfToken}}
+                    <div class="form-group mb-3">
+                        <label for="name">{{project.id}}</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Ja</button>
+                    <a href = "/app/projects/{{project.id}}"></a><button type="submit" class="btn btn-primary">Nej</button>
+                </form>
+        </div>
+    </div>
+</div>
