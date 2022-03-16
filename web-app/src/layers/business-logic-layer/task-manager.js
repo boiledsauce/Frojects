@@ -51,6 +51,15 @@ module.exports = ({taskRepository}) => {
                 throw ["Din deadline för denna task kunde inte skapas från databasen"]
             }
         },
+        
+        async updateTask(task) {
+            try {
+                return await taskRepository.updateTask(task.taskId, task.title, task.description, task.deadline)
+            } catch (error) {
+                console.log(error)
+                throw ["Din task kunde inte uppdateras"]
+            }
+        },
 
         async completeTask(taskId) {
             try {

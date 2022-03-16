@@ -46,7 +46,7 @@ try{
 
 	const models = initModels(sequelize)
 
-	module.exports = { models, sequelizeConstants }
+	module.exports = { models, sequelizeConstants, sequelize }
 
 } catch (error) {
 	console.log(error)
