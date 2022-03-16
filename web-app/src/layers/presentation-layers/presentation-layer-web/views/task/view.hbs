@@ -30,6 +30,10 @@
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">{{this.User.firstName}} {{this.User.lastName}}</h5>
                     <small>{{this.createdAt}}</small>
+                    {{#if this.isAuthor}}
+                        <a href = "/app/projects/{{task.id}}/comment/{{this.id}}/delete"></a><button type="submit" class="btn btn-primary">Radera</button>
+                        <a href = "/app/projects/{{task.id}}/comment/{{this.id}}/update"></a><button type="submit" class="btn btn-primary">Uppdatera</button>
+                    {{/if}}
                 </div>
                 <p class="mb-1">{{this.text}}</p>
             </div>
