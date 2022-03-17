@@ -17,6 +17,7 @@
     <script src="/js/loginPage.js"></script>
     <script src="/js/projectsPage.js"></script>
     <script src="/js/projectPage.js"></script>
+    <script src="/js/updateProjectPage.js"></script>
     <script src="/js/navigation.js"></script>
 
 </head>
@@ -112,7 +113,7 @@
                             <div class="p-5 mb-4 bg-light border rounded-3">
                                 <div class="container-fluid py-5">
                                   <h1 class="display-5 fw-bold mb-3"></h1>
-                                  <button class="btn btn-primary" type="button">Uppdatera</button>
+                                  <a id="update-project-button" class="btn btn-primary">Uppdatera</a>
                                   <button class="btn btn-danger ms-sm-3" type="button">Ta bort</button>
                                 </div>
                               </div>
@@ -121,6 +122,26 @@
                               <div id="project-tasks" class="list-group">
 
                               </div>
+                        </div>
+
+                        <div class="page mx-auto" id="update-project-page">
+                            <form id="update-project-form" method="POST" style="width:300px" class="my-3 text-center">
+
+                                <h1 class="h3 mb-3 fw-normal">Uppdatera projekt</h1>
+                        
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="projectName" name="projectName" placeholder="Projektnamn">
+                                    <label for="firstName">Projektnamn</label>
+                                </div>
+
+                                <ul class="errors">
+
+                                </ul>
+
+                                <button class="w-100 btn btn-primary mb-3" type="submit">Uppdatera</button>
+
+                            </form>
+
                         </div>
             
                         <div class="page mx-auto" id="register-page">
@@ -214,6 +235,6 @@
 
         </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     </body>
 </html>

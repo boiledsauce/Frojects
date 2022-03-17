@@ -42,18 +42,22 @@ module.exports = ({taskRESTRouter, projectManager}) => {
 
     router.put('/:id', async (request, response) => {
         try {
+
+            if (request.params.id != request.body.id){
+                return response.status(400).json({errors: ['Parameterar för projekt-id matchar inte']})
+            }
+
             const project = {
-                id: request.params.id,
-                name: request.body.projectName,
-                ownerId: request.user.id
+                id: request.body.id,
+                name: request.body.newName
             }
             
-            const updatedProject = await projectManager.updateProject(project)
-            response.json(updatedProject)
+            await projectManager.updateProject(project)
+            response.json()
           
         } catch (errors) {
             console.log(errors)
-            response.status(403).json("Bad request")
+            response.status(400).json(errors)
         }
     })
 
@@ -63,8 +67,8 @@ module.exports = ({taskRESTRouter, projectManager}) => {
                 id: request.params.id,
                 ownerId: request.user.id
             }
-                const deletedResult = await projectManager.deleteProject(project.ownerId, project.id)
-                response.json(deletedResult)
+                await projectManager.deleteProject(project.ownerId, project.id)
+                response.json()
                 
 
             } catch (errors) {

@@ -105,6 +105,13 @@ const toolbox = {
         }, 5000)
 
 
+    },
+
+    redirect: async (url) => {
+        history.pushState(null, "", url)
+
+        hideCurrentPage()
+        showPage(url)
     }
 
 }

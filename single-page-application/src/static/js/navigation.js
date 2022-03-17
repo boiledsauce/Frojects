@@ -74,9 +74,15 @@ showPage = (url) => {
 
         default:
             if (url.startsWith('/projects')){
-                const [empty, projects, id] = url.split('/')
-                nextPageId = 'project-page'
-                loadProjectPage(id)
+                const [empty, projects, id, action] = url.split('/')
+                if (action == undefined){
+                    nextPageId = 'project-page'
+                    loadProjectPage(id)
+                } else if (action == 'update'){
+                    nextPageId = 'update-project-page'
+                    loadUpdateProjectPage(id)
+                }
+                
             } else {
                 nextPageId = 'not-found-page'
             }

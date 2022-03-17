@@ -1,7 +1,6 @@
 loadProjectPage = async (projectId) => {
 
     try{
-        toolbox.setTitle('Projekt')
 
         if (await toolbox.userIsLoggedIn()){
 
@@ -37,7 +36,7 @@ loadProjectPage = async (projectId) => {
                         const taskTitle = document.createElement('h3')
                         taskTitle.innerText = task.title
                         const dateText = document.createElement('small')
-                        dateText.innerText = task.createdAt
+                        dateText.innerText = `${task.createdAt}`
                         titleDateDiv.appendChild(taskTitle)
                         titleDateDiv.appendChild(dateText)
                         listItem.appendChild(titleDateDiv)
@@ -47,6 +46,8 @@ loadProjectPage = async (projectId) => {
                         listItem.appendChild(description)
                         taskList.appendChild(listItem)
                     }
+
+                    document.getElementById('update-project-button').setAttribute('href', `/projects/${projectId}/update`)
 
                 } else {
                     toolbox.flashMessage('Projektets uppgifter kunde inte hämtas.')

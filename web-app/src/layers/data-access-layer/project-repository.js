@@ -1,4 +1,5 @@
 const { models, sequelizeConstants } = require('./db')
+const project = require('./models/project')
 
 module.exports = () => {
 
@@ -112,19 +113,26 @@ module.exports = () => {
 			}
 		},
 
-		async updateProject(id, name){
+		async updateProject(project){
+
 			try {
-				const project = await models.Project.update({ name }, {
+				 const updateResult = await models.Project.update({ name: project.name }, {
 					where: {
-						id,
+						id: project.id
 					}
 				})
 
-				return project
+				if (!updateResult[0]){
+					throw ['Ingen rad uppdaterades']
+				} 
 
-			} catch (error) {
-				console.log(error)
-				throw ['Kunde inte uppdatera projekt']
+			} catch (errors) {
+				if (errors instanceof Error){
+					console.log(errors)
+					throw ['Kunde inte uppdatera projekt']	
+				} else {
+					throw errors
+				}
 			}
 		},
 
