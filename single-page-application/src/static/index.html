@@ -79,7 +79,7 @@
             </div>
         </aside>
 
-        <main class="py-3">
+        <main class="py-3 position-relative">
 
             <div class="container">
 
@@ -94,7 +94,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col d-flex align-items-center" id="content-column">
+                    <div class="col d-flex align-items-center position-relative" id="content-column">
                 
                         <div class="page w-100" id="projects-page">
                             <div class="p-5 mb-4 bg-light border rounded-3">
@@ -231,6 +231,15 @@
                         
                     </div>
                 </div>
+            </div>
+
+            <div id="loading-indicator" class="position-absolute bg-dark shadow hidden">
+                <div class="d-flex justify-content-center align-items-center flex-column">
+                    <div class="spinner-border text-light" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="text-light mt-3">Laddar...</p>
+                  </div>
             </div>
 
         </main>

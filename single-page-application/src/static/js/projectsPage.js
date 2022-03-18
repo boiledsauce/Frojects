@@ -5,6 +5,7 @@ loadProjectsPage = async () => {
 
         if (await toolbox.userIsLoggedIn()){
 
+            toolbox.showLoadingIndicator()
             const response = await api.makeCall({
                 uri: '/projects'
             })
@@ -27,6 +28,8 @@ loadProjectsPage = async () => {
             else {
                 toolbox.flashMessage('Kunde ej hämta projekt')
             }
+
+            toolbox.hideLoadingIndicator()
 
         } else {
             toolbox.flashMessage('Du måste logga in för att få tillgång till dina projekt')

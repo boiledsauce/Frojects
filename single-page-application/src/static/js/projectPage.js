@@ -4,6 +4,8 @@ loadProjectPage = async (projectId) => {
 
         if (await toolbox.userIsLoggedIn()){
 
+            toolbox.showLoadingIndicator()
+
             const response = await api.makeCall({
                 uri: `/projects/${projectId}`
             })
@@ -52,6 +54,8 @@ loadProjectPage = async (projectId) => {
                 } else {
                     toolbox.flashMessage('Projektets uppgifter kunde inte hämtas.')
                 }
+
+                toolbox.hideLoadingIndicator()
 
             } else {
                 console.log(await response.json())

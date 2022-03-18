@@ -9,7 +9,8 @@
 }
 
 :root{
-    --sidebar-width: 0px
+    --sidebar-width: 0px;
+    --navbar-height: 57px;
 }
 
 #sidebar{
@@ -19,6 +20,14 @@
     transition:margin-left 0.4s ease-in-out;
     z-index: 2;
     width: 70%;
+}
+
+#loading-indicator{
+    z-index:2; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 5rem;
 }
 
 #name-badge-container:hover{
@@ -36,6 +45,10 @@
 
 .hidden{
     display: none;
+}
+
+main{
+    min-height: calc(100vh - var(--navbar-height));
 }
 
 /* CSS for large screens / Desktops */

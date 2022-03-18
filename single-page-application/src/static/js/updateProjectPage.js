@@ -4,6 +4,8 @@ loadUpdateProjectPage = async (projectId) => {
 
         if (await toolbox.userIsLoggedIn()){
 
+            toolbox.showLoadingIndicator()
+
             const response = await api.makeCall({
                 uri: `/projects/${projectId}`
             })
@@ -26,6 +28,8 @@ loadUpdateProjectPage = async (projectId) => {
                 toolbox.flashMessage('Kunde inte hämta projektet')
             }
 
+            toolbox.hideLoadingIndicator()
+
         } else {
             toolbox.flashMessage('Du måste vara inloggad för att uppdatera projekt')
         }
@@ -38,6 +42,8 @@ loadUpdateProjectPage = async (projectId) => {
 }
 
 updateProjectFormHandler = async (projectId, newName) => {
+
+    toolbox.showLoadingIndicator()
 
     const response = await api.makeCall({
         uri: `/projects/${projectId}`,
@@ -57,5 +63,7 @@ updateProjectFormHandler = async (projectId, newName) => {
 
         toolbox.printErrors(errors)
     }
+
+    toolbox.hideLoadingIndicator()
 
 }
