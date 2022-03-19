@@ -163,12 +163,8 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
     })
 
     router.post('/:projectId/delete', async (request, response) => {
-        const project = {
-            id: request.params.projectId,
-            ownerId: request.session.user.id
-        }
         try {
-            await projectManager.deleteProject(project)
+            await projectManager.deleteProject(request.params.projectId, request.session.user.id)
             response.redirect(request.baseUrl + '/')
 
         } catch (errors) {

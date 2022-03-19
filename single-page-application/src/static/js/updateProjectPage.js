@@ -2,11 +2,12 @@ loadUpdateProjectPage = async (projectId) => {
     try{
         toolbox.setTitle('Uppdatera projekt')
 
-        toolbox.clearErrors()
-
         if (await toolbox.userIsLoggedIn()){
 
             toolbox.showLoadingIndicator()
+            toolbox.activateSubmitButton()
+
+            toolbox.setAttribute('.current-page .btn-cancel', 'href', `/projects/${projectId}`)
 
             const response = await api.makeCall({
                 uri: `/projects/${projectId}`
@@ -17,6 +18,8 @@ loadUpdateProjectPage = async (projectId) => {
 
                 const nameInputField = document.getElementById('projectName')
                 nameInputField.value = project.name
+
+                toolbox.clearErrors()
 
                 const form = document.getElementById('update-project-form')
                 
@@ -59,7 +62,12 @@ updateProjectFormHandler = async (projectId, newName) => {
 
     if (response.status == 200){
         await toolbox.activateSubmitButton()
-        toolbox.redirect(`/projects/${projectId}`)
+
+        toolbox.clearErrors()
+
+        hideCurrentPage()
+        showPage(`/projects/${projectId}`)
+
         toolbox.flashMessage('Projektet uppdaterades')
 
     } else {

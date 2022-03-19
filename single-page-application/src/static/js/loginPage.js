@@ -55,6 +55,8 @@ loginFormHandler = async (event) => {
 
             await toolbox.activateSubmitButton()
 
+            toolbox.clearFormInput()
+
             hideCurrentPage()
             showPage('/')
 

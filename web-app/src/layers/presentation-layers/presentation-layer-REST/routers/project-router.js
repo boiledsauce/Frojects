@@ -56,24 +56,25 @@ module.exports = ({taskRESTRouter, projectManager}) => {
             response.json()
           
         } catch (errors) {
-            console.log(errors)
+            if (errors instanceof Error){
+                console.log(errors)
+                errors = ['Projektet uppdaterades inte']
+            }
             response.status(400).json(errors)
         }
     })
 
     router.delete('/:id', async (request, response) => {
         try {
-            const project = {
-                id: request.params.id,
-                ownerId: request.user.id
-            }
-                await projectManager.deleteProject(project.ownerId, project.id)
-                response.json()
-                
+            await projectManager.deleteProject(request.params.id, request.user.userId)
+            response.json() 
 
             } catch (errors) {
-                console.log(errors)
-                response.status(403).json("Bad request")
+                if (errors instanceof Error){
+                    console.log(errors)
+                    errors = ['Projektet kunde inte tas bort']
+                }
+                response.status(403).json(errors)
             }
     })
     

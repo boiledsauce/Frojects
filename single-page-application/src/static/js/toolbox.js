@@ -95,8 +95,15 @@ const toolbox = {
 
     parseJwt: async (token) => {
         try {
-            return JSON.parse(atob(token.split('.')[1]))
+            var base64 = token.split('.')[1]
+            var jsonPayload = decodeURIComponent(atob(base64).split('').map((c) => {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+            }).join(''))
+
+            return JSON.parse(jsonPayload)
+
         } catch (error) {
+            console.log(error)
             console.log('En base64-sträng kunde inte tolkas')
         }
     },
@@ -120,23 +127,19 @@ const toolbox = {
 
     },
 
-    redirect: async (url) => {
-        history.pushState(null, "", url)
-
-        hideCurrentPage()
-        showPage(url)
-    },
-
     deactiveSubmitButton: async () => {
         const submitButton = document.querySelector('.current-page form button')
         submitButton.disabled = true
-        console.log("Submit button deactivated")
     },
 
     activateSubmitButton: async () => {
         const submitButton = document.querySelector('.current-page form button')
         submitButton.disabled = false
-        console.log("Submit button activated")
+    },
+
+    setAttribute: async (selector, attribute, value) => {
+        const element = document.querySelector(selector)
+        element.setAttribute(attribute, value)
     }
 
 }

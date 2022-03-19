@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const url = anchor.getAttribute('href')
 
-            history.pushState(null, "", url)
-
             hideCurrentPage()
             showPage(url)
         })
@@ -45,6 +43,8 @@ hideCurrentPage = () => {
 showPage = (url) => {
     let nextPageId
 
+    history.pushState(null, "", url)
+
     switch (url){
 
         case '#':
@@ -62,6 +62,11 @@ showPage = (url) => {
             loadProjectsPage()
             break
 
+        case '/projects/create':
+            nextPageId = 'create-project-page'
+            loadCreateProjectPage()
+            break
+
         case '/register':
             nextPageId = 'register-page'
             loadRegisterPage()
@@ -75,14 +80,18 @@ showPage = (url) => {
         default:
             if (url.startsWith('/projects')){
                 const [empty, projects, id, action] = url.split('/')
+
                 if (action == undefined){
                     nextPageId = 'project-page'
                     loadProjectPage(id)
+
                 } else if (action == 'update'){
                     nextPageId = 'update-project-page'
                     loadUpdateProjectPage(id)
+
                 } else if (action == 'delete'){
                     nextPageId = 'delete-project-page'
+                    loadDeleteProjectPage(id)
                 }
                 
             } else {

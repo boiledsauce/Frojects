@@ -61,21 +61,25 @@ module.exports = ({projectRepository}) => {
             }
         },
 
-        async deleteProject(project) {
+        async deleteProject(projectId, performingUserId) {
             try {
-                if (await this.belongsToUser(project.ownerId, project.id)) {
+
+                const project = await this.getProjectById(projectId)
+
+                if (await this.belongsToUser(performingUserId, project.id)) {
                     return await projectRepository.deleteProject(project.id)
                 }
+
             } catch (errors) {
                 console.log(errors)
                 throw ["Projektet kunde inte tas bort från databasen"]
             }
         },
 
-        async belongsToUser(ownerId, projectId) {
+        async belongsToUser(userId, projectId) {
             try {
                 const project = await projectRepository.getProjectById(projectId)
-                return project.ownerId == ownerId
+                return project.ownerId == userId
 
             } catch (errors) {
                 console.log(errors)

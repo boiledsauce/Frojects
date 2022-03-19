@@ -125,7 +125,7 @@
                               </div>
                         </div>
 
-                        <div class="page mx-auto" id="update-project-page">
+                        <div class="page mx-auto px-4 border rounded bg-light" id="update-project-page">
                             <form id="update-project-form" method="POST" style="width:300px" class="my-3 text-center">
 
                                 <h1 class="h3 mb-3 fw-normal">Uppdatera projekt</h1>
@@ -139,28 +139,36 @@
 
                                 </ul>
 
-                                <button class="w-100 btn btn-primary mb-3" type="submit">Uppdatera</button>
+                                <div class="row">
+                                    <div class="col d-flex justify-content-end align-items-end">
+                                        <a class="btn-cancel btn btn-secondary">Avbryt</a>
+                                        <button class="btn btn-primary ms-3" type="submit">Uppdatera</button>
+                                    </div>
+                                </div>
+
 
                             </form>
 
                         </div>
 
-                        <div class="page mx-auto" id="delete-project-page">
+                        <div class="page mx-auto px-4 border rounded bg-light" id="delete-project-page">
                             <form id="delete-project-form" method="POST" style="width:300px" class="my-3 text-center">
 
                                 <h1 class="h3 mb-3 fw-normal">Ta bort projekt</h1>
                                 <p>Är du säker på att du vill ta bort projektet?</p>
                         
-                                <div class="form-floating mb-3">
-                                    <input type="hidden" id="projectId" name="projectId">
-                                    <label for="firstName">Projektnamn</label>
-                                </div>
+                                <input type="hidden" id="projectId" name="projectId">
 
                                 <ul class="errors">
 
                                 </ul>
 
-                                <button class="w-100 btn btn-primary mb-3" type="submit">Uppdatera</button>
+                                <div class="row">
+                                    <div class="col d-flex flex-row justify-content-end align-items-end">
+                                        <a class="btn-cancel btn btn-secondary">Avbryt</a>
+                                        <button class="btn btn-danger ms-3" type="submit">Ta bort</button>
+                                    </div>
+                                </div>
 
                             </form>
 
