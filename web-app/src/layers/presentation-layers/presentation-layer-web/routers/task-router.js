@@ -35,6 +35,69 @@ module.exports = ({taskManager, commentManager}) => {
         }
     })
     
+    router.get('/:taskId/comment/:commentId/delete', async (request, response) => {
+        let model
+        try {
+            const task = await taskManager.getTaskById(request.params.taskId)
+            const comment = await commentManager.getCommentById(request.params.commentId)
+
+            model = {task, comment}
+            response.render('comment/delete', model)
+        } catch (errors) {
+            model = {errors}
+            response.render('comment/delete', model)
+        }
+    })
+
+    router.post('/:taskId/comment/:commentId/delete', async (request, response) => {
+        let model
+        try {
+            await commentManager.deleteComment(request.params.commentId, request.session.user.id)
+            response.redirect(`/app/projects/${request.params.projectId}/tasks/${request.params.taskId}`)
+        } catch (errors) {
+            console.log(errors)
+            model = {errors}
+            response.render('comment/delete', model)
+        }
+    })
+
+    router.get('/:taskId/comment/:commentId/update', async (request, response) => {
+        let model
+
+        try {
+            const comment = await commentManager.getCommentById(request.params.commentId)
+
+            model = {
+                comment,
+                projectId: request.params.projectId
+            }
+
+        } catch (errors) {
+            model = {errors}
+        }
+
+        response.render('comment/update', model)
+    })
+
+    router.post('/:taskId/comment/:commentId/update', async (request, response) => {
+        let model
+
+        try {
+            const comment = {
+                id: request.params.commentId,
+                text: request.body.text
+            }
+            const userId = request.session.user.id
+            await commentManager.updateComment(comment, userId)
+            response.redirect(`/app/projects/${request.params.projectId}/tasks/${request.params.taskId}`)
+
+        } catch (errors) {
+            console.log(errors)
+            model = {errors}
+            response.render('comment/update', model)
+        }
+    })
+
     router.get('/:taskId/create-comment', async (request, response) => {
         
         const taskId = request.params.taskId
@@ -56,6 +119,8 @@ module.exports = ({taskManager, commentManager}) => {
             response.render('comment/create', model)
         }
     })
+
+    
     
     router.post('/:taskId/complete-task', async (request, response) => {
         const taskId = request.params.taskId
