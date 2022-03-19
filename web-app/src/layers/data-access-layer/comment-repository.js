@@ -23,7 +23,6 @@ module.exports = () => {
 		async getAllCommentsByTaskId(taskId){
 			try {
 				const comments = await models.Comment.findAll({
-
 					include: [{
 						model: models.User,
 						attributes: ['firstName', 'lastName'],
@@ -42,6 +41,18 @@ module.exports = () => {
 			}
 		},
 
+		async getCommentById(id){
+			try {
+				return await models.Comment.findOne({
+					where: {
+						id
+					}
+				})
+			}catch (error){
+				throw ["Kommentaren kunde inte hämtas från databasen"]
+			} 
+		},
+
 		async deleteComment(commentId) {
 			await models.Comment.destroy({
 				where: {
@@ -50,12 +61,17 @@ module.exports = () => {
 			})
 		},
 
-		async updateComment(authorId, text) {
-			await models.Comment.update({
-				where: {
-					authorId
-				}
-			})
+		async updateComment(id, authorId, text) {
+			try {
+				return await models.Comment.update({text}, {
+					where: {
+						id,
+						authorId
+					}
+				})
+			} catch (error){
+				throw ["Kommentaren kunde inte hämtas från databasen"]
+			}
 		}
 	}
 }

@@ -22,7 +22,6 @@ module.exports = ({commentRepository}) => {
             try {
                 const comments = await commentRepository.getAllCommentsByTaskId(taskId)
                 comments.forEach(comment => {
-                    console.log(comment)
                     comment.isAuthor = isCommentAuthorOwned(comment.authorId, userId)
                 })
                 return comments
@@ -32,9 +31,43 @@ module.exports = ({commentRepository}) => {
             }
         },
 
-        async deleteComment(comment, userId) {
-            if (comment.authorId != userId) {
-                throw ["Behörighet saknas för att ta bort kommentaren"]
+        async getCommentById(id) { 
+            try {
+                return await commentRepository.getCommentById(id)
+            } catch (error) {
+                console.log(error)
+                throw ["Kommentarerna kunde inte hämtas från databasen"]
+            }
+        },
+
+        async updateComment(comment, userId) { 
+            const errors = commentValidator.getErrorsNewComment(comment)
+            if (errors.length > 0) {
+                throw errors
+            }
+            try {
+                if ((await this.getCommentById(comment.id)).authorId != userId){
+                    throw ["Kommentaren kunde inte uppdateras i databasen"]
+                }
+                console.log(comment)
+                return await commentRepository.updateComment(comment.id, userId, comment.text)
+            } catch (error) {
+                console.log(error)
+                throw ["Kommentarerna kunde inte hämtas från databasen"]
+            }
+        },
+
+        async deleteComment(commentId, userId) {
+            try {
+                const comment = await this.getCommentById(commentId)
+                if (comment.authorId != userId) {
+                    throw ["Behörighet saknas för att ta bort kommentaren"]
+                }
+
+                commentRepository.deleteComment(commentId)
+            } catch (error) {
+                console.log(error)
+                throw ["Kunde inte ta bort kommentaren"]
             }
         }
 

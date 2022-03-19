@@ -84,7 +84,6 @@ module.exports = ({userManager}) => {
             if (await userManager.loginCredentialsMatchUser(loginCredentials, user)){
 
                 request.session.user = user
-                console.log("USER", user)
                 request.flash('message', 'Välkommen in i stugan!')
                 response.redirect('/app')
             }
