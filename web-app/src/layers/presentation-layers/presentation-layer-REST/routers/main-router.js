@@ -37,8 +37,7 @@ getIdToken = (user) => {
 	return jwt.sign(idTokenPayload, ACCESS_TOKEN_SECRET, {expiresIn: '1 hour'})
 }
 
-module.exports = ({projectRESTRouter, userRESTRouter, userManager}) => {
-
+module.exports = ({projectRESTRouter, userManager}) => {
 
     router.post('/users/create', async (request, response) => {
     
@@ -88,7 +87,7 @@ module.exports = ({projectRESTRouter, userRESTRouter, userManager}) => {
                 userId: user.id
             }
 
-            const accessToken = jwt.sign(accessTokenPayload, ACCESS_TOKEN_SECRET, {expiresIn: '1 hour'})
+            const accessToken = jwt.sign(accessTokenPayload, ACCESS_TOKEN_SECRET)
 
             return response.json({ 
                 access_token: accessToken,
@@ -102,7 +101,6 @@ module.exports = ({projectRESTRouter, userRESTRouter, userManager}) => {
 
     router.use('/', authenticateAccessToken)
     
-    router.use('/users', userRESTRouter)
     router.use('/projects', projectRESTRouter)
     
     return router

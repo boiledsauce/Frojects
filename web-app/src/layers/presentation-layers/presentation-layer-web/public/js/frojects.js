@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
     window.addEventListener("resize", function() {
+
         adjustSidebarToNavbar()
 
         if (userHasSmallScreen() && isShowingMobileSidebar){
@@ -47,6 +48,7 @@ document.addEventListener("DOMContentLoaded", function() {
         else {
             hideSidebar()
         }
+
     })
 
     function adjustSidebarToNavbar(){
@@ -81,4 +83,5 @@ document.addEventListener("DOMContentLoaded", function() {
     function userHasSmallScreen(){
         return (window.innerWidth < 992)
     }
+
 })

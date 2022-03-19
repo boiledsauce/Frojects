@@ -101,6 +101,11 @@ module.exports = ({mainRouter}) => {
 
 					case 'create comment':
 						item.label = 'Skapa kommentar'
+						break
+
+					case 'delete':
+						item.label = 'Ta bort'
+						break
 
 					default:
 						break

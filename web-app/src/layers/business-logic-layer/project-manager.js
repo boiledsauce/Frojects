@@ -41,12 +41,23 @@ module.exports = ({projectRepository}) => {
             }
 
             try {
+                const oldProject = await this.getProjectById(project.id)
+                project.ownerId = oldProject.ownerId
+
                 if (await this.belongsToUser(project.ownerId, project.id)) {   
-                    return await projectRepository.updateProject(project.id, project.name)
+                    return await projectRepository.updateProject(project)
+                } else {
+                    throw ['Projektet tillhör inte användaren']
                 }
+
             } catch (errors) {
                 console.log(errors)
-                throw ["Projektet kunde inte uppdateras i databasen"]
+                if (errors instanceof Error){
+                    throw ["Projektet kunde inte uppdateras i databasen"]
+                } else {
+                    throw errors
+                }
+                
             }
         },
 
@@ -114,6 +125,29 @@ module.exports = ({projectRepository}) => {
             } catch (error) {
                 throw error
             }
+        },
+
+        async userHasAccessToProject(userId, projectId) {
+            try{
+                const usersWithAccess = await this.getUsersWithAccessToProject(projectId)
+
+                const project = await this.getProjectById(projectId)
+
+                if (project.ownerId == userId){
+                    return true
+                }
+
+                for (const user in usersWithAccess){
+                    if (userId == user.id){
+                        return true
+                    }
+                }
+                return false
+
+            } catch (errors) {
+                throw errors
+            }
+
         }
         
     }

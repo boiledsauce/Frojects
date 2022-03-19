@@ -1,8 +1,6 @@
 const router = require("express").Router({mergeParams: true})
 
-module.exports = ({taskRouter, projectManager}) => {
-    
-    router.use('/:id/tasks', taskRouter)
+module.exports = ({taskRESTRouter, projectManager}) => {
     
     router.get('/', async (request, response) => {
         try {
@@ -12,7 +10,7 @@ module.exports = ({taskRouter, projectManager}) => {
 
             response.json({projects, sharedProjects})
         } catch (errors) {
-            response.json(errors)
+            response.status(400).json(errors)
         }
     })
 
@@ -31,31 +29,35 @@ module.exports = ({taskRouter, projectManager}) => {
         }
     })
 
+    router.use('/:projectId/tasks', taskRESTRouter)
+
     router.get('/:id', async (request, response) => {
         try{
             const project = await projectManager.getProjectById(request.params.id)
             response.json(project)
         } catch (errors) {
-            response.status(400)
-            console.log(errors)
-            throw ['Kunde inte hämta projekt']
+            response.status(400).json(['Kunde inte hämta projekt'])
         }
     })
 
     router.put('/:id', async (request, response) => {
         try {
+
+            if (request.params.id != request.body.id){
+                return response.status(400).json({errors: ['Parameterar för projekt-id matchar inte']})
+            }
+
             const project = {
-                id: request.params.id,
-                name: request.body.projectName,
-                ownerId: request.user.id
+                id: request.body.id,
+                name: request.body.newName
             }
             
-            const updatedProject = await projectManager.updateProject(project)
-            response.json(updatedProject)
+            await projectManager.updateProject(project)
+            response.json()
           
         } catch (errors) {
             console.log(errors)
-            response.status(403).json("Bad request")
+            response.status(400).json(errors)
         }
     })
 
@@ -65,8 +67,8 @@ module.exports = ({taskRouter, projectManager}) => {
                 id: request.params.id,
                 ownerId: request.user.id
             }
-                const deletedResult = await projectManager.deleteProject(project.ownerId, project.id)
-                response.json(deletedResult)
+                await projectManager.deleteProject(project.ownerId, project.id)
+                response.json()
                 
 
             } catch (errors) {

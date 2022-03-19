@@ -17,8 +17,8 @@ exports.getErrorsNewUser = (user) => {
     if (!user.firstName){
         errors.push('Förnamn saknas')
     }
-    else if (!validator.isAlpha(user.firstName, ['sv-SE'])){
-        errors.push(`Förnamnet får bara innehålla svenska bokstäver`)
+    else if (/\d/.test(user.firstName)){
+        errors.push(`Förnamnet får inte innehålla siffror`)
     }
     else if (user.firstName.length < MIN_NAME_LENGTH){
         errors.push(`Förnamnet måste ha minst  ${MIN_NAME_LENGTH} bokstäver`)
@@ -31,8 +31,8 @@ exports.getErrorsNewUser = (user) => {
     if (!user.lastName){
         errors.push('Efternamn saknas')
     } 
-    else if (!validator.isAlpha(user.lastName, ['sv-SE'])){
-        errors.push(`Efternamnet får bara innehålla svenska bokstäver`)
+    else if (/\d/.test(user.lastName)){
+        errors.push(`Efternamnet får inte innehålla siffror`)
     }
     else if (user.lastName.length < MIN_NAME_LENGTH){
         errors.push(`Efternamnet måste ha minst  ${MIN_NAME_LENGTH} bokstäver`)

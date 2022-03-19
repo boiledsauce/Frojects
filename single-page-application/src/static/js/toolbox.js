@@ -42,6 +42,14 @@ const toolbox = {
         link.classList.remove('hidden')
     },
 
+    showLoadingIndicator: async () => {
+        document.getElementById('loading-indicator').classList.remove('hidden')
+    },
+
+    hideLoadingIndicator: async () => {
+        document.getElementById('loading-indicator').classList.add('hidden')
+    },
+
     setSidebarName: async (firstName = '', lastName = '') => {
         const nameTag = document.getElementById('users-name')
 
@@ -105,6 +113,13 @@ const toolbox = {
         }, 5000)
 
 
+    },
+
+    redirect: async (url) => {
+        history.pushState(null, "", url)
+
+        hideCurrentPage()
+        showPage(url)
     }
 
 }
