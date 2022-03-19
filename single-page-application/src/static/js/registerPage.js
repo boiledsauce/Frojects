@@ -16,6 +16,9 @@ loadRegisterPage = async () => {
 registerFormHandler = async (event) => {
     event.preventDefault()
 
+    toolbox.showLoadingIndicator()
+    toolbox.deactiveSubmitButton()
+
     const formData = Object.fromEntries(new FormData(document.getElementById('register-form')).entries())
 
     const {firstName, lastName, email, password, confirmPassword} = formData
@@ -65,10 +68,13 @@ registerFormHandler = async (event) => {
 
                 toolbox.setSidebarName(user.firstName, user.lastName)
 
+                await toolbox.activateSubmitButton()
+
                 hideCurrentPage()
                 showPage('/')
             } else{
-                console.log('Kunde inte hämta tokens')
+                toolbox.flashMessage('Kunde inte hämta tokens')
+                toolbox.activateSubmitButton()
             }
 
 
@@ -81,5 +87,8 @@ registerFormHandler = async (event) => {
 
     } catch (errors) {
         toolbox.printErrors(errors)
+        toolbox.activateSubmitButton()
     }
+
+    toolbox.hideLoadingIndicator()
 }

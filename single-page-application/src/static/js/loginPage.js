@@ -15,6 +15,9 @@ loadLoginPage = async () => {
 loginFormHandler = async (event) => {
     event.preventDefault()
 
+    toolbox.showLoadingIndicator()
+    toolbox.deactiveSubmitButton()
+
     const formData = Object.fromEntries(new FormData(document.getElementById('login-form')).entries())
 
     const {email, password} = formData
@@ -50,13 +53,20 @@ loginFormHandler = async (event) => {
 
             toolbox.flashMessage('Du har loggat in. Välkommen!')
 
+            await toolbox.activateSubmitButton()
+
             hideCurrentPage()
             showPage('/')
+
         } else{
-            console.log('Kunde inte hämta tokens')
+            toolbox.flashMessage('Kunde inte hämta tokens')
+            toolbox.activateSubmitButton()
         }
 
     } catch (errors) {
-
+        toolbox.printErrors(errors)
+        toolbox.activateSubmitButton()
     }
+
+    toolbox.hideLoadingIndicator()
 }

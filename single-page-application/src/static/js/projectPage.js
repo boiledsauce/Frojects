@@ -50,6 +50,7 @@ loadProjectPage = async (projectId) => {
                     }
 
                     document.getElementById('update-project-button').setAttribute('href', `/projects/${projectId}/update`)
+                    document.getElementById('delete-project-button').setAttribute('href', `/projects/${projectId}/delete`)
 
                 } else {
                     toolbox.flashMessage('Projektets uppgifter kunde inte hämtas.')
@@ -58,7 +59,6 @@ loadProjectPage = async (projectId) => {
                 toolbox.hideLoadingIndicator()
 
             } else {
-                console.log(await response.json())
 
                 toolbox.flashMessage('Projektet kunde inte hämtas.')
             }

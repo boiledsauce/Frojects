@@ -5,12 +5,17 @@ const ACCESS_TOKEN_KEY = 'accessToken'
 
 const toolbox = {
 
+    clearErrors: async () => {
+        const errorList = document.querySelector('.current-page .errors')
+        errorList.innerHTML = ''
+    },
+
     printErrors: async (errors) => {
         if (errors instanceof Error){
             console.log(errors)
             errors = ['Ett oväntat fel inträffade']
         }
-    
+
         const errorList = document.querySelector('.current-page .errors')
         errorList.innerHTML = ''
     
@@ -120,6 +125,18 @@ const toolbox = {
 
         hideCurrentPage()
         showPage(url)
+    },
+
+    deactiveSubmitButton: async () => {
+        const submitButton = document.querySelector('.current-page form button')
+        submitButton.disabled = true
+        console.log("Submit button deactivated")
+    },
+
+    activateSubmitButton: async () => {
+        const submitButton = document.querySelector('.current-page form button')
+        submitButton.disabled = false
+        console.log("Submit button activated")
     }
 
 }

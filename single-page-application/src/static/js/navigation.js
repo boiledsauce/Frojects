@@ -81,6 +81,8 @@ showPage = (url) => {
                 } else if (action == 'update'){
                     nextPageId = 'update-project-page'
                     loadUpdateProjectPage(id)
+                } else if (action == 'delete'){
+                    nextPageId = 'delete-project-page'
                 }
                 
             } else {

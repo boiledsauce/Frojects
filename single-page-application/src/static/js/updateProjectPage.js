@@ -2,6 +2,8 @@ loadUpdateProjectPage = async (projectId) => {
     try{
         toolbox.setTitle('Uppdatera projekt')
 
+        toolbox.clearErrors()
+
         if (await toolbox.userIsLoggedIn()){
 
             toolbox.showLoadingIndicator()
@@ -44,6 +46,7 @@ loadUpdateProjectPage = async (projectId) => {
 updateProjectFormHandler = async (projectId, newName) => {
 
     toolbox.showLoadingIndicator()
+    toolbox.deactiveSubmitButton()
 
     const response = await api.makeCall({
         uri: `/projects/${projectId}`,
@@ -55,6 +58,7 @@ updateProjectFormHandler = async (projectId, newName) => {
     })
 
     if (response.status == 200){
+        await toolbox.activateSubmitButton()
         toolbox.redirect(`/projects/${projectId}`)
         toolbox.flashMessage('Projektet uppdaterades')
 
@@ -62,6 +66,8 @@ updateProjectFormHandler = async (projectId, newName) => {
         const errors = await response.json()
 
         toolbox.printErrors(errors)
+
+        toolbox.activateSubmitButton()
     }
 
     toolbox.hideLoadingIndicator()

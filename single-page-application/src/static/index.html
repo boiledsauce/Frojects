@@ -18,6 +18,7 @@
     <script src="/js/projectsPage.js"></script>
     <script src="/js/projectPage.js"></script>
     <script src="/js/updateProjectPage.js"></script>
+    <script src="/js/deleteProjectPage.js"></script>
     <script src="/js/navigation.js"></script>
 
 </head>
@@ -113,8 +114,8 @@
                             <div class="p-5 mb-4 bg-light border rounded-3">
                                 <div class="container-fluid py-5">
                                   <h1 class="display-5 fw-bold mb-3"></h1>
-                                  <a id="update-project-button" class="btn btn-primary">Uppdatera</a>
-                                  <button class="btn btn-danger ms-sm-3" type="button">Ta bort</button>
+                                  <a id="update-project-button" class="btn btn-primary mb-3">Uppdatera</a>
+                                  <a id="delete-project-button" class="btn btn-danger ms-sm-3 mb-3">Ta bort</a>
                                 </div>
                               </div>
 
@@ -131,6 +132,27 @@
                         
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="projectName" name="projectName" placeholder="Projektnamn">
+                                    <label for="firstName">Projektnamn</label>
+                                </div>
+
+                                <ul class="errors">
+
+                                </ul>
+
+                                <button class="w-100 btn btn-primary mb-3" type="submit">Uppdatera</button>
+
+                            </form>
+
+                        </div>
+
+                        <div class="page mx-auto" id="delete-project-page">
+                            <form id="delete-project-form" method="POST" style="width:300px" class="my-3 text-center">
+
+                                <h1 class="h3 mb-3 fw-normal">Ta bort projekt</h1>
+                                <p>Är du säker på att du vill ta bort projektet?</p>
+                        
+                                <div class="form-floating mb-3">
+                                    <input type="hidden" id="projectId" name="projectId">
                                     <label for="firstName">Projektnamn</label>
                                 </div>
 
