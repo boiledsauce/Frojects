@@ -9,7 +9,7 @@
 
 <h2>Interfaces</h2>
 <ul>
-  <li>Visit <code>localhost:3000</code> to access web application</li>
+  <li>Visit <code>localhost:3000</code> to access website</li>
   <li>Visit <code>localhost:4000</code> to access Single Page Application</li>
 </ul>
 
