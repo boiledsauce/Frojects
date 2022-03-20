@@ -17,6 +17,7 @@
     <script src="/js/loginPage.js"></script>
     <script src="/js/projectsPage.js"></script>
     <script src="/js/projectPage.js"></script>
+    <script src="/js/createProjectPage.js"></script>
     <script src="/js/updateProjectPage.js"></script>
     <script src="/js/deleteProjectPage.js"></script>
     <script src="/js/navigation.js"></script>
@@ -125,6 +126,32 @@
                               </div>
                         </div>
 
+                        <div class="page mx-auto px-4 border rounded bg-light" id="create-project-page">
+                            <form id="create-project-form" method="POST" style="width:300px" class="my-3 text-center">
+
+                                <h1 class="h3 mb-3 fw-normal">Skapa projekt</h1>
+                        
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="newProjectName" name="newProjectName" placeholder="Projektnamn">
+                                    <label for="firstName">Projektnamn</label>
+                                </div>
+
+                                <ul class="errors">
+
+                                </ul>
+
+                                <div class="row">
+                                    <div class="col d-flex justify-content-end align-items-end">
+                                        <a class="btn-cancel btn btn-secondary">Avbryt</a>
+                                        <button class="btn btn-primary ms-3" type="submit">Uppdatera</button>
+                                    </div>
+                                </div>
+
+
+                            </form>
+
+                        </div>
+
                         <div class="page mx-auto px-4 border rounded bg-light" id="update-project-page">
                             <form id="update-project-form" method="POST" style="width:300px" class="my-3 text-center">
 
@@ -132,7 +159,7 @@
                         
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="projectName" name="projectName" placeholder="Projektnamn">
-                                    <label for="firstName">Projektnamn</label>
+                                    <label for="projectName">Projektnamn</label>
                                 </div>
 
                                 <ul class="errors">

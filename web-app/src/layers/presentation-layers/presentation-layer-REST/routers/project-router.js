@@ -14,18 +14,21 @@ module.exports = ({taskRESTRouter, projectManager}) => {
         }
     })
 
-    router.post('/', async (request, response) => {
+    router.post('/create', async (request, response) => {
         try {
             const project = {
-                name: request.body.projectName,
-                ownerId: request.user.id
+                name: request.body.name,
+                ownerId: request.user.userId
             }
 
             const createdProjectId = await projectManager.createProject(project)
             response.json(createdProjectId)
         } catch (errors) {
             console.log(errors)
-            response.status(403).json()
+            if (errors instanceof Error){
+                errors = ['Ett oväntat fel uppstod']
+            }
+            response.status(403).json(errors)
         }
     })
 
