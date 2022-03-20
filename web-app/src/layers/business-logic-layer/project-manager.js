@@ -21,7 +21,7 @@ module.exports = ({projectRepository}) => {
             try {
                 return await projectRepository.getAllProjectsByUserId(userId)
             } catch (errors) {
-                console.log(errors, userId)
+                console.log(errors)
                 throw ["Projekten kunde inte hämtas från databasen"]
             }
         },
