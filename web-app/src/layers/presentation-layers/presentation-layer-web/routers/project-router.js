@@ -61,13 +61,11 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
 
         try{
             const users = await userManager.getAllUsers()
-    
             model = { users }
 
         } catch (errors) {
             model = { errors }
         }
-
         response.render('project/shareUserList', model)
     })
 
@@ -94,9 +92,10 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
 
     router.get('/:projectId/usersWithAccess', async (request, response) => {
         try{
+            const project = await projectManager.getProjectById(request.params.projectId)
+            const userIsOwner = request.session.user.id == project.ownerId
             const usersWithAccess = await projectManager.getUsersWithAccessToProject(response.locals.projectId)
-
-            response.render('project/usersWithAccess', {usersWithAccess})
+            response.render('project/usersWithAccess', {usersWithAccess, userIsOwner})
 
         } catch (errors) {
             response.render('project/usersWithAccess', {errors})
@@ -135,12 +134,12 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
 
     router.get('/:projectId', async (request, response) => {
         let model
-
+        const userId = request.session.user.id
         try {
             const project = await projectManager.getProjectById(response.locals.projectId)
             const tasks = await taskManager.getAllTasksByProjectId(response.locals.projectId)
-
-            model = {project, tasks}
+            const userIsOwner = userId == project.ownerId
+            model = {project, tasks, userIsOwner}
     
         } catch (errors) {
             model = {errors}
@@ -196,7 +195,7 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
         console.log(project)
         try {
             await projectManager.updateProject(project)
-            response.redirect(request.baseUrl + '/')
+            response.redirect(request.baseUrl + '/' + project.id)
 
         } catch (errors) {
             const model = {errors}

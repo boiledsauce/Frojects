@@ -7,8 +7,8 @@
                 <form action="" method="POST">
                     {{> csrfToken}}
                     
-                    <button type="submit" class="btn btn-primary">Ja</button>
-                    <a href = "/app/projects/{{project.id}}"></a><button type="submit" class="btn btn-primary">Nej</button>
+                    <a class="btn btn-secondary" href = "/app/projects/{{project.id}}">Nej</a>
+                    <button type="submit" class="btn btn-danger">Ja</button>
                 </form>
         </div>
     </div>

@@ -185,6 +185,7 @@ module.exports = ({taskManager, commentManager}) => {
         try {
             const taskId = request.params.taskId
             const task = await taskManager.getTaskById(taskId)
+            task.date = task.Deadline.deadline
             model = {
                 task,
                 projectId: request.params.projectId
@@ -199,20 +200,19 @@ module.exports = ({taskManager, commentManager}) => {
 
     router.post('/:taskId/update', async (request, response) => {
         let model
-
+        
+        const task = {
+            taskId: request.params.taskId,
+            title: request.body.title,
+            description: request.body.description,
+            date: request.body.date
+        }
         try {
-
-            const task = {
-                taskId: request.params.taskId,
-                title: request.body.title,
-                description: request.body.description,
-                date: request.body.date
-            }
             await taskManager.updateTask(task)
-            response.redirect(request.baseUrl)
+            response.redirect(request.baseUrl + '/' + task.taskId)
 
         } catch (errors) {
-            model = {errors}
+            model = {task, errors}
             response.render('task/update', model)
         }
     })

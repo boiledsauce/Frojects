@@ -114,8 +114,11 @@ module.exports = ({projectRepository}) => {
 
         async revokeUserAccessToProject(userId, projectId) {
             try {
-                if (this.getProjectById(projectId).ownerId == userId) {
+                if ((await this.getProjectById(projectId)).ownerId == userId) {
+                    console.log("YEP")
                     await projectRepository.revokeUserAccessToProject(userId, projectId)
+                } else {
+                    throw ["Endast projektägare kan återkalla behörighet"]
                 } 
             } catch (errors) {
                 throw ["Kunde inte återkalla behörighet"]

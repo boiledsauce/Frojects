@@ -9,9 +9,11 @@
         <div class="row">
             <div class="col mb-3 d-flex flex-column flex-md-row">
                 <a class="btn btn-primary me-md-3 mb-3" href="/app/projects/{{project.id}}/usersWithAccess"><i class="bi bi-people me-2"></i>Användare med tillgång</a>
-                <a class="btn btn-primary me-md-3 mb-3" href="/app/projects/{{project.id}}/share"><i class="bi bi-person-plus-fill me-2"></i>Dela</a>
-                <a class="btn btn-primary me-md-3 mb-3" href="/app/projects/{{project.id}}/update"><i class="bi bi-pencil-square me-2"></i></i>Uppdatera projekt</a>
-                <a class="btn btn-danger mb-3" href="/app/projects/{{project.id}}/delete"><i class="bi bi-trash me-2"></i>Ta bort projekt</a>
+                {{#if userIsOwner}}
+                    <a class="btn btn-primary me-md-3 mb-3" href="/app/projects/{{project.id}}/share"><i class="bi bi-person-plus-fill me-2"></i>Dela</a>
+                    <a class="btn btn-primary me-md-3 mb-3" href="/app/projects/{{project.id}}/update"><i class="bi bi-pencil-square me-2"></i></i>Uppdatera projekt</a>
+                    <a class="btn btn-danger mb-3" href="/app/projects/{{project.id}}/delete"><i class="bi bi-trash me-2"></i>Ta bort projekt</a>
+                {{/if}}
             </div>
         </div>
         <div class="row mb-3">
