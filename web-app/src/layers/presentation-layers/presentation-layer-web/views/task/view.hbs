@@ -3,8 +3,8 @@
         <h1 class="display-5 fw-bold">{{task.title}}</h1>
         <p class="col-md-8 fs-4">{{task.description}}</p>
         <div class="d-flex justify-content-end">
-            <a class="btn btn-primary me-3">Uppdatera</a>
-            <a class="btn btn-danger">Ta bort</a>
+            <a href="/app/projects/{{projectId}}/tasks/{{task.id}}/update" class="btn btn-primary me-3">Uppdatera</a>
+            <a href="/app/projects/{{projectId}}/tasks/{{task.id}}/delete" class="btn btn-danger">Ta bort</a>
         </div>
     </div>
 </div>
