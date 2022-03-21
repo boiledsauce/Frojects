@@ -107,6 +107,10 @@ module.exports = ({mainRouter}) => {
 						item.label = 'Skapa kommentar'
 						break
 
+					case 'removeUser':
+						item.label = 'Ta bort användare'
+						break
+
 					case 'delete':
 						item.label = 'Ta bort'
 						break
