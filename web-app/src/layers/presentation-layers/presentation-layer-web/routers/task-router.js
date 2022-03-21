@@ -1,6 +1,6 @@
 const router = require("express").Router({mergeParams: true})
 
-module.exports = ({taskManager, commentManager}) => {
+module.exports = ({taskManager, commentManager, projectManager}) => {
 
     router.get('/create', (request, response) => {
         const taskId = request.params.id
@@ -98,6 +98,14 @@ module.exports = ({taskManager, commentManager}) => {
         }
     })
 
+    router.get('/:taskId/comment/:commentId', async (request, response) => {
+        response.redirect(`/app/projects/${request.params.projectId}/tasks/${request.params.taskId}`)
+    })
+
+    router.get('/:taskId/comment', async (request, response) => {
+        response.redirect(`/app/projects/${request.params.projectId}/tasks/${request.params.taskId}`)
+    })
+
     router.get('/:taskId/create-comment', async (request, response) => {
         
         const taskId = request.params.taskId
@@ -119,8 +127,6 @@ module.exports = ({taskManager, commentManager}) => {
             response.render('comment/create', model)
         }
     })
-
-    
     
     router.post('/:taskId/complete-task', async (request, response) => {
         const taskId = request.params.taskId
@@ -160,9 +166,10 @@ module.exports = ({taskManager, commentManager}) => {
     router.get('/:taskId', async (request, response) => {
         let model
 
+        const userId = request.session.user.id
+        const taskId = request.params.taskId
+
         try {
-            const userId = request.session.user.id
-            const taskId = request.params.taskId
             const task = await taskManager.getTaskById(taskId)
             const comments = await commentManager.getAllCommentsByTaskId(taskId, userId) 
 
@@ -172,8 +179,10 @@ module.exports = ({taskManager, commentManager}) => {
                 projectId: request.params.projectId
             }
 
+
+
         } catch (errors) {
-            model = {errors}
+            model.errors = errors
         }
 
         response.render('task/view', model)

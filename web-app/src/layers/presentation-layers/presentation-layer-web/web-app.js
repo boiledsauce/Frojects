@@ -90,6 +90,10 @@ module.exports = ({mainRouter}) => {
 					case 'projects':
 						item.label = 'Projekt'
 						break
+					
+					case 'comment':
+						item.label = 'Kommentar'
+						break
 
 					case 'usersWithAccess':
 						item.label = 'Användare med tillgång'

@@ -14,6 +14,10 @@
     background-color: var(--bs-gray-800);
 }
 
+main{
+    padding-top: 5rem;
+}
+
 /* CSS for large screens / Desktops */
 @media screen and (min-width: 992px){
     :root {

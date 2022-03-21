@@ -1,8 +1,8 @@
 <form method="POST">
 {{> csrfToken}}
     <div class="form-group mb-3">
-        <label for="exampleInputEmail1">Uppdatera Kommentar</label>
-        <input type="text" class="form-control" name="text" aria-describedby="emailHelp" placeholder="Ange kommentar..." value="{{comment.text}}">
+        <label for="comment">Uppdatera kommentar</label>
+        <input type="text" class="form-control" name="text" id="comment" placeholder="Ange kommentar..." value="{{comment.text}}">
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Uppdatera</button>
 </form>

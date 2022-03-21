@@ -1,7 +1,7 @@
 const validator = require('validator')
 
 const MIN_TASK_TITLE_LENGTH = 3
-const MAX_TASK_TITLE_LENGTH = 15
+const MAX_TASK_TITLE_LENGTH = 50
 
 const MIN_TASK_DESCRIPTION_LENGTH = 8
 const MAX_TASK_DESCRIPTION_LENGTH = 1000
