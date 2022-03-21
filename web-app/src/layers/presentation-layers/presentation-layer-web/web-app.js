@@ -83,6 +83,10 @@ module.exports = ({mainRouter}) => {
 						item.label = 'Skapa'
 						break
 
+					case 'update':
+						item.label = 'Uppdatera'
+						break
+
 					case 'projects':
 						item.label = 'Projekt'
 						break
