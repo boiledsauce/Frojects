@@ -49,7 +49,6 @@ loadDeleteProjectPage = async (projectId) => {
         toolbox.flashMessage('Ett problem uppstod')
     }
 
-
 }
 
 deleteProjectFormHandler = async (projectId) => {
