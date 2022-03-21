@@ -6,6 +6,8 @@ loadCreateProjectPage = async () => {
 
             toolbox.activateSubmitButton()
 
+            toolbox.setAttribute('.current-page .btn-cancel', 'href', `/projects`)
+
             const form = document.querySelector('.current-page form')
 
             form.addEventListener('submit', (event) => {

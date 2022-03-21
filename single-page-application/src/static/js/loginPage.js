@@ -55,12 +55,18 @@ loginFormHandler = async (event) => {
 
             await toolbox.activateSubmitButton()
 
-            toolbox.clearFormInput()
+            await toolbox.clearFormInput()
+
+            await toolbox.clearErrors()
 
             hideCurrentPage()
             showPage('/')
 
-        } else{
+        } else if (tokenResponse.status == 401){
+            toolbox.printErrors(['Felaktiga användaruppgifter'])
+            toolbox.activateSubmitButton()
+
+        } else {
             toolbox.flashMessage('Kunde inte hämta tokens')
             toolbox.activateSubmitButton()
         }
