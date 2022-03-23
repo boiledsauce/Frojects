@@ -21,9 +21,10 @@ module.exports = ({commentRepository}) => {
         async getAllCommentsByTaskId(taskId, userId) { 
             try {
                 const comments = await commentRepository.getAllCommentsByTaskId(taskId)
-                comments.forEach(comment => {
-                    comment.isAuthor = isCommentAuthorOwned(comment.authorId, userId)
-                })
+                for (comment of comments) {
+                    comment.isAuthor = await isCommentAuthorOwned(comment.authorId, userId)
+                    console.log(comment.isAuthor)
+                }
                 return comments
             } catch (error) {
                 console.log(error)
