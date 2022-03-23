@@ -99,7 +99,7 @@ module.exports = ({projectRepository}) => {
            try {
                 const project = await this.getProjectById(projectId)
                 if (project.ownerId == userId) {
-                    throw ["Användaren kan inte bjuda in sig själv"]
+                    throw ["Hallå där! Du kan ju inte bjuda in dig själv till projektet..."]
                 }
                 if (project.ownerId != userActionPerformerId) {
                     throw ["Användaren måste äga projektet för att kunna utföra denna åtgärd"]
@@ -112,16 +112,21 @@ module.exports = ({projectRepository}) => {
            }
         },
 
-        async revokeUserAccessToProject(userId, projectId) {
+        async revokeUserAccessToProject(userToRemoveId, performingUserId, projectId) {
+
+            console.log("performer:", performingUserId)
             try {
-                if ((await this.getProjectById(projectId)).ownerId == userId) {
-                    console.log("YEP")
-                    await projectRepository.revokeUserAccessToProject(userId, projectId)
+                if ((await this.getProjectById(projectId)).ownerId == performingUserId) {
+                    await projectRepository.revokeUserAccessToProject(userToRemoveId, projectId)
                 } else {
                     throw ["Endast projektägare kan återkalla behörighet"]
                 } 
             } catch (errors) {
-                throw ["Kunde inte återkalla behörighet"]
+                if (errors instanceof Error){
+                    console.log(errors)
+                    throw ["Kunde inte återkalla behörighet"]
+                }
+                throw errors
             }
 
         },

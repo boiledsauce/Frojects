@@ -1,5 +1,6 @@
 const commentValidator = require('./comment-validator')
-isCommentAuthorOwned = async (authorId, userId) => authorId == userId
+
+isCommentAuthorOwned = (authorId, userId) => authorId == userId
 
 module.exports = ({commentRepository}) => {
 
@@ -21,11 +22,13 @@ module.exports = ({commentRepository}) => {
         async getAllCommentsByTaskId(taskId, userId) { 
             try {
                 const comments = await commentRepository.getAllCommentsByTaskId(taskId)
-                for (comment of comments) {
-                    comment.isAuthor = await isCommentAuthorOwned(comment.authorId, userId)
-                    console.log(comment.isAuthor)
-                }
+
+                comments.forEach(comment => {
+                    comment.isAuthor = isCommentAuthorOwned(comment.authorId, userId)
+                })
+
                 return comments
+
             } catch (error) {
                 console.log(error)
                 throw ["Kommentarerna kunde inte hämtas från databasen"]

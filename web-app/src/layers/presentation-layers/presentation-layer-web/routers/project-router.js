@@ -70,6 +70,7 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
     })
 
     router.post('/:projectId/share', async (request, response) => {
+        let model
         const userId = request.body.userId
 
         try{
@@ -81,10 +82,9 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
             response.redirect(`${request.baseUrl}/${projectId}/usersWithAccess`)
 
         } catch (errors){
-            const model = {
-                userId,
-                errors
-            }
+            const users = await userManager.getAllUsers()
+
+            model = { userId, errors, users }
             response.render('project/shareUserList', model)
         }
 
@@ -118,17 +118,21 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
     })
 
     router.post('/:projectId/removeUser/:userId', async (request, response) => {
-        try{
-            const userId = request.body.userId
-            const projectId = response.locals.projectId
+        const userToRemoveId = request.body.userId
 
-            await projectManager.revokeUserAccessToProject(userId, projectId)
+        try{
+            const projectId = response.locals.projectId
+            const performingUserId = request.session.user.id
+
+            await projectManager.revokeUserAccessToProject(userToRemoveId, performingUserId, projectId)
 
             request.flash('message', 'Användaren togs bort från projektet')
             response.redirect(`${request.baseUrl}/${projectId}/usersWithAccess`)
 
         } catch (errors) {
-            response.render('project/removeUser', {errors})
+            const user = await userManager.getUserById(userToRemoveId)
+
+            response.render('project/removeUser', {errors, user})
         }
     })
 

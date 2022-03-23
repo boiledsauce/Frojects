@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <a class="btn btn-primary mb-3" href="/app/projects/{{projectId}}/tasks/{{task.id}}/update">Uppdatera</a>
 <a class="btn btn-primary mb-3" href="/app/projects/{{projectId}}/tasks/{{task.id}}/delete">Ta bort</a>
 <h1>{{task.title}}</h1>
@@ -13,37 +14,69 @@
 {{#if task.isCompleted}}
     <div class="alert alert-success" role="alert">
         Avklarad
+=======
+<div class="p-5 mb-4 bg-light rounded-3">
+    <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">{{task.title}}</h1>
+        <p class="col-md-8 fs-4">{{task.description}}</p>
+        <div class="d-flex justify-content-end">
+            <a href="/app/projects/{{projectId}}/tasks/{{task.id}}/update" class="btn btn-primary me-3">Uppdatera</a>
+            <a href="/app/projects/{{projectId}}/tasks/{{task.id}}/delete" class="btn btn-danger">Ta bort</a>
+        </div>
+>>>>>>> 6f3891f096dd0b4568ebb41763e7748991bf74bd
     </div>
-{{/if}}
+</div>
 
-<a class="btn btn-primary mb-3" href="/app/projects/{{projectId}}/tasks/{{task.id}}/create-comment">Kommentera</a>
-
-<h3 class="display-8">Deadline</h3>
-
-<p>{{task.Deadline.deadline}}</p>
-
-{{#if comments.length}}
-  <div class="list-group mb-3">
-        {{#each comments}}
-            <div class="list-group-item" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">{{this.User.firstName}} {{this.User.lastName}}</h5>
-                    <small>{{this.createdAt}}</small>
-                    {{#if this.isAuthor}}
-                        <a href = "/app/projects/{{../projectId}}/tasks/{{../task.id}}/comment/{{this.id}}/update"><button type="submit" class="btn btn-primary">Uppdatera</button></a>
-                        <a href = "/app/projects/{{../projectId}}/tasks/{{../task.id}}/comment/{{this.id}}/delete"><button type="submit" class="btn btn-primary">Radera</button></a>
-                    {{/if}}
-                </div>
-                <p class="mb-1">{{this.text}}</p>
+<div class="row align-items-md-stretch">
+    <div class="col-md-6">
+        {{#if task.isCompleted}}
+            <div class="h-100 p-5 text-white bg-success rounded-3">
+                <h2>Status</h2>
+                <p>Färdigställd</p>
             </div>
-        {{/each}}
-  </div>
-{{/if}}
+        {{else}}
+            <div class="h-100 p-5 text-white bg-dark rounded-3">
+                <h2>Status</h2>
+                <p>Ej klar</p>
+                <form action="./{{task.id}}/complete-task" method="POST">
+                    {{> csrfToken}}
+                    <button type="submit" class="btn btn-outline-light">Klarmarkera</button>
+                </form>
+            </div>
+        {{/if}}
+      </div>
+      <div class="col-md-6">
+        <div class="h-100 p-5 bg-light border rounded-3">
+            <small>Skapad</small>
+            <h2>{{task.deadlineFormatted}}</h2>
+        </div>
+    </div>
+</div>
 
-{{#unless task.isCompleted}}
-    <form action="./{{task.id}}/complete-task" method="POST">
-        {{> csrfToken}}
-        <button type="submit" class="btn btn-primary">Klarmarkera</button>
-    </form>
-{{/unless}}
+<div class="my-3 p-3 bg-body rounded shadow-sm">
+    <div class="d-flex justify-content-between">
+        <h3 class="border-bottom pb-2 mb-0">Kommentarer</h3>
+        <a class="btn btn-primary mb-3" href="/app/projects/{{projectId}}/tasks/{{task.id}}/create-comment">Kommentera</a>
+    </div>
+    {{#each comments}}
+        <div class="d-flex text-muted pt-3 justify-content-between">
+            <div class="d-flex pe-1">
+                <i class="bi bi-person-circle fs-4 me-2"></i>
+
+                <p class="pb-3 mb-0 small lh-sm border-bottom">
+                    <strong class="d-block text-gray-dark">{{this.User.firstName}} {{this.User.lastName}}</strong>
+                    {{this.text}}
+                    <br>
+                    <small>{{this.createdAt}}</small>
+                </p>
+            </div>
+            {{#if this.isAuthor}}
+                <div class="d-flex justify-content-end align-items-end flex-column flex-md-row ps-1">
+                    <a class="btn btn-primary btn-sm me-md-2 mb-2" href="/app/projects/{{../projectId}}/tasks/{{../task.id}}/comment/{{this.id}}/update">Uppdatera</a>
+                    <a class="btn btn-danger btn-sm mb-2" href="/app/projects/{{../projectId}}/tasks/{{../task.id}}/comment/{{this.id}}/delete">Radera</a>
+                </div>
+            {{/if}}
+        </div>
+    {{/each}}
+</div>
  

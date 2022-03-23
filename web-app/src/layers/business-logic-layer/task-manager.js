@@ -1,3 +1,5 @@
+const DATE_STRING_LENGTH = 10
+
 const taskValidator = require('./task-validator')
 
 module.exports = ({taskRepository}) => {
@@ -20,16 +22,25 @@ module.exports = ({taskRepository}) => {
 
         async getAllTasksByProjectId(projectId) {
             try {
-                return await taskRepository.getAllTasksByProjectId(projectId)
+                const tasks = (await taskRepository.getAllTasksByProjectId(projectId)).reverse()
+
+                tasks.forEach((task, index, taskList) => {
+                    taskList[index].createdAtFormatted = task.createdAt.substring(0, DATE_STRING_LENGTH)
+                })
+                return tasks
             }
             catch (error) {
+                console.log(error)
                 throw ["Dina tasks kunde inte hämtas från databasen"]
             }
         },
 
         async getTaskById(taskId) {
             try {
-                return await taskRepository.getTaskById(taskId)
+                const task = await taskRepository.getTaskById(taskId)
+
+                task.deadlineFormatted = task.Deadline.deadline.substring(0,10)
+                return task
             }
             catch (error) {
                 throw ["Din task kunde inte hämtas från databasen"]

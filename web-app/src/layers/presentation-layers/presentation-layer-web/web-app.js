@@ -1,4 +1,4 @@
-module.exports = ({mainRouter}) => {
+module.exports = ({mainRouter, projectManager, taskManager}) => {
 
 	return {
 
@@ -83,8 +83,17 @@ module.exports = ({mainRouter}) => {
 						item.label = 'Skapa'
 						break
 
+					case 'update':
+						item.label = 'Uppdatera'
+						break
+
 					case 'projects':
 						item.label = 'Projekt'
+						previousLabelWasProject = true
+						break
+					
+					case 'comment':
+						item.label = 'Kommentar'
 						break
 
 					case 'usersWithAccess':
@@ -103,6 +112,10 @@ module.exports = ({mainRouter}) => {
 						item.label = 'Skapa kommentar'
 						break
 
+					case 'removeUser':
+						item.label = 'Ta bort användare'
+						break
+
 					case 'delete':
 						item.label = 'Ta bort'
 						break
@@ -110,6 +123,26 @@ module.exports = ({mainRouter}) => {
 					default:
 						break
 						
+				}
+
+				//Translate projectId, taskId to corresponding resources actual name/title
+
+				const lastTwoUrlSegments = item.url.split('/').slice(-2)
+
+				if (lastTwoUrlSegments.length == 2){
+					const resources = lastTwoUrlSegments[0]
+					const resourceId = lastTwoUrlSegments[1]
+					
+					if (!isNaN(resourceId)){
+						if (resources == 'projects'){
+							const project = await projectManager.getProjectById(resourceId)
+							item.label = project.name
+	
+						} else if (resources == 'tasks'){
+							const task = await taskManager.getTaskById(resourceId)
+							item.label = task.title
+						}
+					}
 				}
 
 			}))
