@@ -60,7 +60,7 @@ updateProjectFormHandler = async (projectId, newName) => {
         }
     })
 
-    if (response.status == 200){
+    if (response.status == 204){
         await toolbox.activateSubmitButton()
 
         toolbox.clearErrors()

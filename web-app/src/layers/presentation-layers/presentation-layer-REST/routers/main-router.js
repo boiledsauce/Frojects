@@ -10,7 +10,6 @@ authenticateAccessToken = (request, response, next) => {
 	const authorizationHeader = request.header('Authorization')
 
 	if (authorizationHeader == undefined){
-        console.log("Ingen authheader")
 		return response.status(400).json({error: 'invalid_request'})
 
 	} else{

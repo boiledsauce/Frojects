@@ -64,7 +64,7 @@ deleteProjectFormHandler = async (projectId) => {
         }
     })
 
-    if (response.status == 200){
+    if (response.status == 204){
         
         toolbox.activateSubmitButton()
 

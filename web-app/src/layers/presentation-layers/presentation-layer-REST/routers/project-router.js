@@ -56,7 +56,7 @@ module.exports = ({taskRESTRouter, projectManager}) => {
             }
             
             await projectManager.updateProject(project)
-            response.json()
+            response.status(204).json()
           
         } catch (errors) {
             if (errors instanceof Error){
@@ -70,7 +70,7 @@ module.exports = ({taskRESTRouter, projectManager}) => {
     router.delete('/:id', async (request, response) => {
         try {
             await projectManager.deleteProject(request.params.id, request.user.userId)
-            response.json() 
+            response.status(204).json()
 
             } catch (errors) {
                 if (errors instanceof Error){
