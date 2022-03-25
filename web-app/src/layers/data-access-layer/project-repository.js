@@ -1,5 +1,4 @@
 const { models, sequelizeConstants } = require('./db')
-const project = require('./models/project')
 
 module.exports = () => {
 
