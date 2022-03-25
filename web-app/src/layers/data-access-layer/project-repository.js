@@ -48,7 +48,7 @@ module.exports = () => {
 
 		async getProjectsSharedWithUser(userId){
 			try{
-				const projects = await models.Project.findAll({
+				return await models.Project.findAll({
 					include: [{
 						model: models.User,
 						as: sequelizeConstants.USERS_WITH_ACCESS,
@@ -59,8 +59,6 @@ module.exports = () => {
 					raw: true,
 					nest: true
 				})
-				console.log(projects)
-				return projects
 
 			} catch (error) {
 				console.log(error)
@@ -84,12 +82,11 @@ module.exports = () => {
 		
 		async getAllProjectsByUserId(userId){
 			try {
-				const projects = await models.Project.findAll({
+				return await models.Project.findAll({
 					where: {
 						ownerId: userId
 					}
 				})
-				return projects
 			}
 			catch (error) {
 				console.error(error)
