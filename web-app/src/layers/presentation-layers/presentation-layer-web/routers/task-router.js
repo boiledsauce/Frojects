@@ -150,7 +150,8 @@ module.exports = ({taskManager, commentManager, projectManager}) => {
             creationDate: "2021-02-08"
         }
         try{
-            const insertedCommentId = await commentManager.createComment(comment)
+            await commentManager.createComment(comment)
+            
             response.redirect(`/app/projects/${request.params.projectId}/tasks/${request.params.taskId}`)
         } catch (errors) {
             const model = {
