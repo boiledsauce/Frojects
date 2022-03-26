@@ -193,7 +193,7 @@ module.exports = ({taskManager, commentManager, projectManager}) => {
         try {
             const taskId = request.params.taskId
             const task = await taskManager.getTaskById(taskId)
-            task.date = task.Deadline.deadline
+            task.date = task.deadlineFormatted
             model = {
                 task,
                 projectId: request.params.projectId
