@@ -49,24 +49,15 @@ module.exports = ({mainRouter, projectManager, taskManager}) => {
 			//Public folder for static resources.
 			app.use(express.static(path.join(__dirname, 'public')))
 
-			//Make express-connect flash message available to all views
-			app.use((request, response, next) => {
-				response.locals.message = request.flash("message")
-				next()
-			})
-
-			//Make the session object available to all views
-			app.use((request, response, next) => {
-				response.locals.session = request.session
-				next()
-			})
-
 			//CSRF Protection
 			app.use(csrf())
 
-			//Make CSRF token available to all views
+			//Make variables available to all views
 			app.use((request, response, next) => {
+				response.locals.message = request.flash("message")
+				response.locals.session = request.session
 				response.locals.csrfToken = request.csrfToken()
+
 				next()
 			})
 

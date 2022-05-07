@@ -44,7 +44,7 @@ module.exports = ({projectRepository}) => {
                 const oldProject = await this.getProjectById(project.id)
                 project.ownerId = oldProject.ownerId
 
-                if (await this.belongsToUser(project.ownerId, project.id)) {   
+                if (await this.isProjectOwner(project.ownerId, project.id)) {   
                     return await projectRepository.updateProject(project)
                 } else {
                     throw ['Projektet tillhör inte användaren']
@@ -66,7 +66,7 @@ module.exports = ({projectRepository}) => {
 
                 const project = await this.getProjectById(projectId)
 
-                if (await this.belongsToUser(performingUserId, project.id)) {
+                if (await this.isProjectOwner(performingUserId, project.id)) {
                     return await projectRepository.deleteProject(project.id)
                 }
 
@@ -76,7 +76,7 @@ module.exports = ({projectRepository}) => {
             }
         },
 
-        async belongsToUser(userId, projectId) {
+        async isProjectOwner(userId, projectId) {
             try {
                 const project = await projectRepository.getProjectById(projectId)
                 return project.ownerId == userId

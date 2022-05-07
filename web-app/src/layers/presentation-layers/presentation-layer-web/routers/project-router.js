@@ -120,7 +120,10 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
     router.post('/:projectId/removeUser/:userId', async (request, response) => {
         const userToRemoveId = request.body.userId
 
+        let user
+
         try{
+            user = await userManager.getUserById(userToRemoveId)
             const projectId = response.locals.projectId
             const performingUserId = request.session.user.id
 
@@ -130,7 +133,6 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
             response.redirect(`${request.baseUrl}/${projectId}/usersWithAccess`)
 
         } catch (errors) {
-            const user = await userManager.getUserById(userToRemoveId)
 
             response.render('project/removeUser', {errors, user})
         }
@@ -196,7 +198,7 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
             ownerId: request.session.user.id,
             name: request.body.name
         }
-        console.log(project)
+
         try {
             await projectManager.updateProject(project)
             response.redirect(request.baseUrl + '/' + project.id)

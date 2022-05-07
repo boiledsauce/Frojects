@@ -51,9 +51,8 @@ module.exports = ({commentRepository}) => {
             }
             try {
                 if ((await this.getCommentById(comment.id)).authorId != userId){
-                    throw ["Kommentaren kunde inte uppdateras i databasen"]
+                    throw ["Du kan uppdatera en kommentar tillhörande en annan användare"]
                 }
-                console.log(comment)
                 return await commentRepository.updateComment(comment.id, userId, comment.text)
             } catch (error) {
                 console.log(error)

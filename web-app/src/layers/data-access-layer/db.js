@@ -10,7 +10,7 @@ const DB_USER = 'frojects-user'
 const DB_PASSWORD = 'iWHnm16lURvL6iHfyvcK'
 const DB_NAME = 'frojects'
 
-initialize = async () => {
+const initialize = async () => {
 	try{
 		const connection = await mysql.createConnection({
 			host: DB_HOST,

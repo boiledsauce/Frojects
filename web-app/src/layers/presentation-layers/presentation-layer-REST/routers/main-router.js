@@ -27,14 +27,15 @@ authenticateAccessToken = (request, response, next) => {
 }
 
 getIdToken = (user) => {
-	delete user.hashedPassword
-	delete user.openId
-	//Populate id_token
 	const idTokenPayload = user
+
+    delete idTokenPayload.hashedPassword
+    delete idTokenPayload.openId
+
 	idTokenPayload.iss = ISSUING_AUTHORITY
 	idTokenPayload.aud = user.id
 
-	return jwt.sign(idTokenPayload, ACCESS_TOKEN_SECRET, {expiresIn: '1 hour'})
+    return jwt.sign(idTokenPayload, ACCESS_TOKEN_SECRET, {expiresIn: '1 hour'})
 }
 
 module.exports = ({projectRESTRouter, userManager}) => {
@@ -89,7 +90,7 @@ module.exports = ({projectRESTRouter, userManager}) => {
 
             const accessToken = jwt.sign(accessTokenPayload, ACCESS_TOKEN_SECRET)
 
-            return response.json({ 
+            return response.json({
                 access_token: accessToken,
                 id_token: getIdToken(user)
             })	
