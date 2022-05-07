@@ -35,7 +35,7 @@ getHashFromPassword = async (password) => {
 }
 
 
-module.exports = ({userRepository}) => {
+module.exports = ({userMySQLRepository}) => {
 
     return {
 
@@ -81,7 +81,7 @@ module.exports = ({userRepository}) => {
                     user.hashedPassword = await getHashFromPassword(user.password)
                     delete user.password
                 }
-                return await userRepository.createUser(user)
+                return await userMySQLRepository.createUser(user)
             }
             catch (errors) {
                 if (errors instanceof Error){
@@ -95,7 +95,7 @@ module.exports = ({userRepository}) => {
         
         async getUserByOpenId(openId){
             try {
-                return await userRepository.getUserByOpenId(openId)
+                return await userMySQLRepository.getUserByOpenId(openId)
             } catch (errors) {
                 throw errors
             }
@@ -103,7 +103,7 @@ module.exports = ({userRepository}) => {
 
         async getUserByEmail(email){
             try{
-                return await userRepository.getUserByEmail(email)
+                return await userMySQLRepository.getUserByEmail(email)
             }
             catch (errors) {
                 throw errors
@@ -112,7 +112,7 @@ module.exports = ({userRepository}) => {
 
         async getAllUsers(){
             try{
-                return await userRepository.getAllUsers()
+                return await userMySQLRepository.getAllUsers()
             } catch (errors) {
                 throw errors
             }
@@ -120,7 +120,7 @@ module.exports = ({userRepository}) => {
 
         async getUserById(id){
             try{
-                return await userRepository.getUserById(id)
+                return await userMySQLRepository.getUserById(id)
             } catch (error) {
                 throw error
             }
@@ -128,7 +128,7 @@ module.exports = ({userRepository}) => {
 
         async getUserRealNameById(id){
             try{
-                return await userRepository.getUserRealNameById(id)
+                return await userMySQLRepository.getUserRealNameById(id)
             } catch (errors) {
                 throw errors
             }

@@ -1,4 +1,4 @@
-const { models } = require('./db')
+const { db } = require('./db')
 
 module.exports = () => {
 
@@ -30,12 +30,19 @@ module.exports = () => {
         },
 
         async getAllUsers(){
-            try{
-				return await models.User.findAll()
-			} catch (error) {
-                console.log(error)
-                throw ['Kunde inte hämta alla användare']
-            }
+            const query = "SELECT * FROM users"
+
+            return new Promise((resolve, reject) => {
+                db.query(query, (error, users, fields) => {
+                    if (error) reject(["Kunde inte hämta användare från databasen"])
+
+                    console.log("Users:", users)
+                    console.log("fields:", fields)
+
+                    resolve(users)
+                })
+            })
+        
         },
 
         async getUserById(id){

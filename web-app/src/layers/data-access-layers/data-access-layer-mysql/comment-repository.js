@@ -1,4 +1,4 @@
-const { models } = require('./db')
+const { db } = require('./db')
 
 module.exports = () => {
 
@@ -6,14 +6,15 @@ module.exports = () => {
 		
 		async createComment(text, taskId, authorId, creationDate){
 			try {
-				const comment = await models.Comment.create({
+
+				/*const comment = await models.Comment.create({
 					text,
 					taskId,
 					authorId,
 					creationDate
 				})
 
-				return comment.id
+				return comment.id*/
 			} catch (error) {
 				console.error(error)
 				throw ['Kunde inte skapa kommentar']
