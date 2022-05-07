@@ -6,26 +6,25 @@ module.exports = () => {
         
         async createUser(user){
 
-            try{
-                const createdUser = await models.User.create({
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    email: user.email,
-                    openId: user.openId,
-                    hashedPassword: user.hashedPassword
+            const query = `INSERT INTO Users 
+                            (firstName, lastName, email, openId, hashedPassword) 
+                            VALUES (?, ?, ?, ?, ?)`
+            
+            const values = [user.firstName, user.lastName, user.email, user.openId, user.hashedPassword]
+
+            return new Promise((resolve, reject) => {
+                db.query(query, values, (error, user) => {
+                    if (error) {
+                        if (error.parent.code == 'ER_DUP_ENTRY'){
+                            reject(['Det finns redan en användare med denna e-post'])
+                        }
+                        console.log(error.parent)
+                        reject(['Kunde inte skapa användaren i databasen'])
+                    }
+
+                    resolve(user)
                 })
-                
-                return createdUser
-
-            } catch (error) {
-
-                if (error.parent.code == 'ER_DUP_ENTRY'){
-                    throw ['Det finns redan en användare med denna e-post']
-                }
-                console.log(error.parent)
-                throw ['Kunde inte skapa användaren i databasen']
-
-            }
+            })
         
         },
 
@@ -33,12 +32,8 @@ module.exports = () => {
             const query = "SELECT * FROM users"
 
             return new Promise((resolve, reject) => {
-                db.query(query, (error, users, fields) => {
+                db.query(query, (error, users) => {
                     if (error) reject(["Kunde inte hämta användare från databasen"])
-
-                    console.log("Users:", users)
-                    console.log("fields:", fields)
-
                     resolve(users)
                 })
             })
@@ -46,22 +41,18 @@ module.exports = () => {
         },
 
         async getUserById(id){
-            try{
-                const user = await models.User.findOne({
-                    where: {
-                        id: id
-                    }
+
+            const query = "SELECT * FROM Users WHERE id = ?"
+
+            const values = [id]
+
+            return new Promise((resolve, reject) => {
+                db.query(query, values, (error, user) => {
+                    if (error) reject(["Ett fel uppstod när användaren skulle hämtas"])
+                    resolve(user)
                 })
-                if (user) return user
-
-                throw ['Ingen användare med eftersökt ID hittades']
-
-            } catch (error) {
-                if (error instanceof Error){
-                    throw ['Kunde inte hämta användare utifrån ID, ett problem uppstod.']
-                }
-                throw error
-            }
+            })
+            
         },
         
         async getUserByOpenId(openId){
@@ -81,6 +72,8 @@ module.exports = () => {
         async getUserByEmail(email){
 
             try{
+                
+
                 const user = await models.User.findOne({
                     where: {
                         email: email
