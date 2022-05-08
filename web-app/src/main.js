@@ -127,6 +127,6 @@ container.register(
 	awilix.asFunction(require('./layers/presentation-layers/app'))
 )
 
-
 const apps = container.resolve('setupApps')
+
 apps.start()

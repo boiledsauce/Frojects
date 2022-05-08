@@ -10,6 +10,7 @@ module.exports = () => {
 
 			let createdAt = new Date()
 			createdAt.toISOString().split('T')[0]
+			
 			const updatedAt = createdAt
 			const values = [project.name, project.ownerId, createdAt, updatedAt]
 
@@ -133,23 +134,21 @@ module.exports = () => {
 		},
 
 		async getUsersWithAccessToProject(projectId){
-			try{
-				return await models.User.findAll({
-					include: [{
-						model: models.Project,
-						as: sequelizeConstants.ACCESSIBLE_PROJECTS,
-						where: {
-							id: projectId
-						}
-					}],
-					raw: true,
-					nest: true
-				})
 
-			} catch (error) {
-				console.log(error)
-				throw ["Kunde inte hämta användare med tillgång till projektet"]
-			}
+			const query = `SELECT U.* FROM Users AS U JOIN UserProjectAccesses AS UPA ON 
+							U.id = UPA.userId WHERE UPA.projectId = ?`
+
+			const values = [projectId]
+
+			return new Promise((resolve, reject) => {
+				db.query(query, values, (error, users) => {
+					if (error) reject(['Kunde inte hämta användare med tillgång till projektet'])
+					resolve(users)
+				})
+			})
+
 		}
+
 	}
+
 }
