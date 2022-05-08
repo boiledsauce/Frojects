@@ -71,6 +71,13 @@ module.exports = () => {
 							console.log(error)
 							reject(['Kunde inte hämta kommentar'])
 						}
+						//Make data structure equivalent to the one returned by Sequelize
+						comments.forEach(comment => {
+							comment.User = {}
+							comment.User.firstName = comment.firstName
+							comment.User.lastName = comment.lastName
+						})
+
 						resolve(comments)
 					})
 				})

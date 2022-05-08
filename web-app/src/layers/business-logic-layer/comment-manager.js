@@ -59,14 +59,20 @@ module.exports = ({commentMySQLRepository, taskRepository, projectManager}) => {
 
         async updateComment(comment, userId) { 
             const errors = commentValidator.getErrorsNewComment(comment)
-            if (errors.length > 0) {
-                throw errors
-            }
+
+            if (errors.length > 0) throw errors
+            
             try {
+
+                console.log((await this.getCommentById(comment.id)).authorId)
+                console.log(userId)
+
                 if ((await this.getCommentById(comment.id)).authorId != userId){
                     throw ['Du kan inte uppdatera en kommentar tillhörande en annan användare']
                 }
+                
                 return await commentMySQLRepository.updateComment(comment.id, userId, comment.text)
+
             } catch (error) {
                 console.log(error)
                 throw ['Kommentarerna kunde inte hämtas från databasen']
