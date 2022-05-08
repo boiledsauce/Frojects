@@ -33,19 +33,26 @@ module.exports = () => {
 
 	return {
 		async createTask(task){ 
-			const query = `INSERT INTO Tasks (id, title, description) VALUES (?, ?, ?)`
+			const query = `INSERT INTO Tasks (projectId, title, description, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?)`
+			let createdAt = new Date()
+			createdAt.toISOString().split('T')[0]
+			const updatedAt = createdAt
+
             const values = [
                 task.projectId, 
                 task.title, 
-                task.description, 
+                task.description,
+				createdAt,
+				updatedAt
             ]
 
             return new Promise((resolve, reject) => {
                 db.query(query, values, (error, result) => {
                     if (error) {
+						console.log(error)
 						reject(['Tasken kunde inte skapas'])
 					}
-						resolve(result.id)
+						resolve(result.inserted)
 				})
 			})
 		},
@@ -109,7 +116,8 @@ module.exports = () => {
 			// }
 
 		async getTaskById(taskId){
-			const query = `SELECT * FROM Tasks AS t LEFT JOIN Deadlines as d ON d.taskId = t.id WHERE t.id = ?`
+			
+			const query = `SELECT t.*, d.deadline FROM Tasks AS t LEFT JOIN Deadlines as d ON d.taskId = t.id WHERE t.id = ?`
 			const values = [
 				taskId
 			]
@@ -117,8 +125,9 @@ module.exports = () => {
             return new Promise((resolve, reject) => {
                 db.query(query, values, (error, task) => {
                     if (error) {
-						reject(['Tasken kunde inte tas bort'])
+						reject(['Tasken kunde inte hämtas'])
 					}
+					console.log(task)
 					resolve(task[0])
 				})
 			})
@@ -142,18 +151,26 @@ module.exports = () => {
 		},
 
 		async createTaskDeadline(taskId, taskEndingDate){
-			const query = `INSERT INTO Deadlines (taskId, deadline) VALUES (?, ?)`
+			console.log("TASKENDING", taskEndingDate)
+			const query = `INSERT INTO Deadlines (taskId, deadline, createdAt, updatedAt) VALUES (?, ?, ?, ?)`
+			let createdAt = new Date()
+			createdAt.toISOString().split('T')[0]
+			const updatedAt = createdAt
+
 			const values = [
 				taskId,
-				taskEndingDate
+				taskEndingDate,
+				createdAt,
+				updatedAt
 			]
 
             return new Promise((resolve, reject) => {
                 db.query(query, values, (error, result) => {
                     if (error) {
+						console.log("ERROR", error)
 						reject(['Deadline kunde inte skapas'])
 					}
-					resolve(result)
+					resolve(result.insertId)
 				})
 			})
 			// try {
