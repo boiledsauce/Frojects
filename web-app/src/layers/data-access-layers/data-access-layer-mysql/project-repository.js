@@ -6,12 +6,16 @@ module.exports = () => {
 		
 		async createProject(project){
 
-			const query = 'INSERT INTO project (name, ownerId) VALUES (?, ?)'
+			const query = 'INSERT INTO Projects (name, ownerId, createdAt, updatedAt) VALUES (?, ?, ?, ?)'
 
-			const values = [project.name, project.ownerId]
+			let createdAt = new Date()
+			createdAt.toISOString().split('T')[0]
+			const updatedAt = createdAt
+			const values = [project.name, project.ownerId, createdAt, updatedAt]
 
 			return new Promise((resolve, reject) => {
 				db.query(query, values, (error, project) => {
+					console.log(error)
 					if (error) reject(['Projektet kunde inte skapas i databasen'])
 					resolve(project)
 				})
@@ -97,42 +101,35 @@ module.exports = () => {
 		},
 		
 		async getProjectById(projectId){
-			try {
-				const project = await models.Project.findOne({
-					where: {
-						id: projectId 
-					}
+
+			const query = 'SELECT * FROM Projects WHERE id = ?'
+
+			const values = [projectId]
+
+			return new Promise((resolve, reject) => {
+				db.query(query, values, (error, projects) => {
+					if (error) reject(['Ett fel inträffade när projektet skulle hämtas utifrån ID'])
+					if (projects.length) resolve(projects[0])
+					reject(['Inget projekt med angivet ID hittades'])
 				})
+			})
 
-				return project
-
-			} catch (error) {
-				console.log(error)
-				throw ['Kunde inte hämta projekt']
-			}
 		},
 
 		async updateProject(project){
 
-			try {
-				 const updateResult = await models.Project.update({ name: project.name }, {
-					where: {
-						id: project.id
-					}
+			const query = `UPDATE Projects SET name = ? WHERE id = ?`
+
+			const values = [project.name, project.id]
+
+			return new Promise((resolve, reject) => {
+				db.query(query, values, (error, result) => {
+					if (error) reject(['Ett fel inträffade när projektet skulle uppdateras'])
+					if (result.affectedRows) resolve(result)
+					reject(['Inget projekt uppdaterades'])
 				})
+			})
 
-				if (!updateResult[0]){
-					throw ['Ingen rad uppdaterades']
-				} 
-
-			} catch (errors) {
-				if (errors instanceof Error){
-					console.log(errors)
-					throw ['Kunde inte uppdatera projekt']	
-				} else {
-					throw errors
-				}
-			}
 		},
 
 		async getUsersWithAccessToProject(projectId){

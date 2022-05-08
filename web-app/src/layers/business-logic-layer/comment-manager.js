@@ -2,7 +2,7 @@ const commentValidator = require('./comment-validator')
 
 isCommentAuthorOwned = (authorId, userId) => authorId == userId
 
-module.exports = ({commentMySQLRepository, taskMySQLRepository, projectManager}) => {
+module.exports = ({commentRepository, taskRepository, projectManager}) => {
 
     return {
         
@@ -18,7 +18,7 @@ module.exports = ({commentMySQLRepository, taskMySQLRepository, projectManager})
             }
             
             try {
-                return await commentMySQLRepository.createComment(comment.text, comment.taskId, comment.authorId, comment.creationDate)
+                return await commentRepository.createComment(comment.text, comment.taskId, comment.authorId, comment.creationDate)
             } catch (error) {
                 if (error instanceof Error){
                     console.log(error)
@@ -39,7 +39,7 @@ module.exports = ({commentMySQLRepository, taskMySQLRepository, projectManager})
             }
 
             try {
-                const comments = await commentMySQLRepository.getAllCommentsByTaskId(taskId)
+                const comments = await commentRepository.getAllCommentsByTaskId(taskId)
 
                 comments.forEach(comment => {
                     comment.isAuthor = isCommentAuthorOwned(comment.authorId, userId)
@@ -55,7 +55,7 @@ module.exports = ({commentMySQLRepository, taskMySQLRepository, projectManager})
 
         async getCommentById(id) { 
             try {
-                return await commentMySQLRepository.getCommentById(id)
+                return await commentRepository.getCommentById(id)
             } catch (error) {
                 if (error instanceof Error){
                     console.log(error)
@@ -77,7 +77,7 @@ module.exports = ({commentMySQLRepository, taskMySQLRepository, projectManager})
                     throw ['Du kan inte uppdatera en kommentar tillhörande en annan användare']
                 }
                 
-                return await commentMySQLRepository.updateComment(comment.id, userId, comment.text)
+                return await commentRepository.updateComment(comment.id, userId, comment.text)
 
             } catch (error) {
                 if (error instanceof Error){
@@ -95,7 +95,7 @@ module.exports = ({commentMySQLRepository, taskMySQLRepository, projectManager})
                     throw ['Du kan inte ta bort andra användares kommentarer']
                 }
 
-                commentMySQLRepository.deleteComment(commentId)
+                commentRepository.deleteComment(commentId)
             } catch (error) {
                 console.log(error)
                 throw ['Kunde inte ta bort kommentaren']

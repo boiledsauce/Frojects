@@ -1,6 +1,6 @@
 const projectValidator = require('./project-validator')
 
-module.exports = ({projectMySQLRepository}) => {
+module.exports = ({projectRepository}) => {
 
     return {
 

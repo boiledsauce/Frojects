@@ -2,48 +2,52 @@ const awilix = require('awilix')
 
 const container = awilix.createContainer()
 
-// repositories mysql
-container.register(
-	'projectMySQLRepository',
-	awilix.asFunction(require('./layers/data-access-layers/data-access-layer-mysql/project-repository'))
-)
+const USE_ORM_DATA_ACCESS_LAYER = false
 
-container.register(
-	'taskMySQLRepository',
-	awilix.asFunction(require('./layers/data-access-layers/data-access-layer-mysql/task-repository'))
-)
+if (USE_ORM_DATA_ACCESS_LAYER){
+	//Register ORM data access layer repositories
+	container.register(
+		'projectRepository',
+		awilix.asFunction(require('./layers/data-access-layers/data-access-layer-orm/project-repository'))
+	)
+	
+	container.register(
+		'taskRepository',
+		awilix.asFunction(require('./layers/data-access-layers/data-access-layer-orm/task-repository'))
+	)
+	
+	container.register(
+		'userRepository',
+		awilix.asFunction(require('./layers/data-access-layers/data-access-layer-orm/user-repository'))
+	)
+	
+	container.register(
+		'commentRepository',
+		awilix.asFunction(require('./layers/data-access-layers/data-access-layer-orm/comment-repository'))
+	)
 
-container.register(
-	'userMySQLRepository',
-	awilix.asFunction(require('./layers/data-access-layers/data-access-layer-mysql/user-repository'))
-)
-
-container.register(
-	'commentMySQLRepository',
-	awilix.asFunction(require('./layers/data-access-layers/data-access-layer-mysql/comment-repository'))
-)
-
-
-// repositories ORM
-container.register(
-	'projectRepository',
-	awilix.asFunction(require('./layers/data-access-layers/data-access-layer-orm/project-repository'))
-)
-
-container.register(
-	'taskRepository',
-	awilix.asFunction(require('./layers/data-access-layers/data-access-layer-orm/task-repository'))
-)
-
-container.register(
-	'userRepository',
-	awilix.asFunction(require('./layers/data-access-layers/data-access-layer-orm/user-repository'))
-)
-
-container.register(
-	'commentRepository',
-	awilix.asFunction(require('./layers/data-access-layers/data-access-layer-orm/comment-repository'))
-)
+} else {
+	//Register MySQL data access layer repositories
+	container.register(
+		'projectRepository',
+		awilix.asFunction(require('./layers/data-access-layers/data-access-layer-mysql/project-repository'))
+	)
+	
+	container.register(
+		'taskRepository',
+		awilix.asFunction(require('./layers/data-access-layers/data-access-layer-mysql/task-repository'))
+	)
+	
+	container.register(
+		'userRepository',
+		awilix.asFunction(require('./layers/data-access-layers/data-access-layer-mysql/user-repository'))
+	)
+	
+	container.register(
+		'commentRepository',
+		awilix.asFunction(require('./layers/data-access-layers/data-access-layer-mysql/comment-repository'))
+	)
+}
 
 // managers
 container.register(
