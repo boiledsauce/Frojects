@@ -2,24 +2,37 @@ const commentValidator = require('./comment-validator')
 
 isCommentAuthorOwned = (authorId, userId) => authorId == userId
 
-module.exports = ({commentRepository}) => {
+module.exports = ({commentRepository, taskRepository, projectManager}) => {
 
     return {
         
         async createComment(comment) {
             const errors = commentValidator.getErrorsNewComment(comment)
-            if (errors.length > 0) {
-                throw errors
+
+            if (errors.length > 0) throw errors
+
+            const projectId = (await taskRepository.getTaskById(comment.taskId)).projectId
+
+            if (!(await userHasAccessToProject(comment.authorId, projectId))){
+                throw ['Du kan endast kommentera i ett projekt som du har tillgång till']
             }
+            
             try {
                 return await commentRepository.createComment(comment.text, comment.taskId, comment.authorId, comment.creationDate)
             } catch (error) {
-                throw ["Kommentaren kunde inte skapas i databasen"]
+                throw ['Kommentaren kunde inte skapas i databasen']
             }
         },
 
         
         async getAllCommentsByTaskId(taskId, userId) { 
+
+            const projectId = (await taskRepository.getTaskById(taskId)).projectId
+
+            if (!(await userHasAccessToProject(userId, projectId))){
+                throw ['Du kan endast se kommentarer i ett projekt som du har tillgång till']
+            }
+
             try {
                 const comments = await commentRepository.getAllCommentsByTaskId(taskId)
 
@@ -31,7 +44,7 @@ module.exports = ({commentRepository}) => {
 
             } catch (error) {
                 console.log(error)
-                throw ["Kommentarerna kunde inte hämtas från databasen"]
+                throw ['Kommentarerna kunde inte hämtas från databasen']
             }
         },
 
@@ -40,7 +53,7 @@ module.exports = ({commentRepository}) => {
                 return await commentRepository.getCommentById(id)
             } catch (error) {
                 console.log(error)
-                throw ["Kommentarerna kunde inte hämtas från databasen"]
+                throw ['Kommentarerna kunde inte hämtas från databasen']
             }
         },
 
@@ -51,12 +64,12 @@ module.exports = ({commentRepository}) => {
             }
             try {
                 if ((await this.getCommentById(comment.id)).authorId != userId){
-                    throw ["Du kan uppdatera en kommentar tillhörande en annan användare"]
+                    throw ['Du kan uppdatera en kommentar tillhörande en annan användare']
                 }
                 return await commentRepository.updateComment(comment.id, userId, comment.text)
             } catch (error) {
                 console.log(error)
-                throw ["Kommentarerna kunde inte hämtas från databasen"]
+                throw ['Kommentarerna kunde inte hämtas från databasen']
             }
         },
 
@@ -64,13 +77,13 @@ module.exports = ({commentRepository}) => {
             try {
                 const comment = await this.getCommentById(commentId)
                 if (comment.authorId != userId) {
-                    throw ["Behörighet saknas för att ta bort kommentaren"]
+                    throw ['Du kan inte ta bort andra användares kommentarer']
                 }
 
                 commentRepository.deleteComment(commentId)
             } catch (error) {
                 console.log(error)
-                throw ["Kunde inte ta bort kommentaren"]
+                throw ['Kunde inte ta bort kommentaren']
             }
         }
 
