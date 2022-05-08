@@ -5,68 +5,80 @@ module.exports = () => {
 	return {
 		
 		async createProject(project){
-			try {
-				const createdProject = await models.Project.create({
-					ownerId: project.ownerId,
-					name: project.name
-				})
-				return createdProject.id
 
-			} catch (error) {
-				console.log(error)
-				throw ['Kunde inte skapa projekt']
-			}
+			const query = 'INSERT INTO project (name, ownerId) VALUES (?, ?)'
+
+			const values = [project.name, project.ownerId]
+
+			return new Promise((resolve, reject) => {
+				db.query(query, values, (error, project) => {
+					if (error) reject(['Projektet kunde inte skapas i databasen'])
+					resolve(project)
+				})
+			})
+
 		},
 
 		async giveUserAccessToProject(userId, projectId){
-			try{
-				await models.UserProjectAccess.create({
-					userId,
-					projectId
-				})
 
-			} catch (error) {
-				throw ['Kunde inte ge användaren tillgång till projektet']
-			}
+			const query = 'INSERT INTO UserProjectAccesses (userId, projectID) VALUES (?, ?)'
+
+			const values = [userId, projectId]
+
+			return new Promise((resolve, reject) => {
+				db.query(query, values, (error, result) => {
+					if (error) reject(['Kunde inte ge användaren tillgång till projektet'])
+					resolve(result)
+				})
+			})
+
 		},
 
 		async revokeUserAccessToProject(userId, projectId){
-			try{
-				return await models.UserProjectAccess.destroy({
-					where: {
-						projectId,
-						userId
-					}
-				})
 
-			} catch (error) {
-				console.log(error)
-				throw['Kunde inte återkalla användarens tillgång till projektet']
-			}
+			const query = 'DELETE FROM UserProjectAccesses WHERE userId = ? AND projectId = ?'
+
+			const values = [userId, projectId]
+
+			return new Promise((resolve, reject) => {
+				db.query(query, values, (error, result) => {
+					if (error) reject(['Kunde inte återkalla användarens tillgång till projektet'])
+					resolve(result)
+				})
+			})
+
 		},
 
 		async getProjectsSharedWithUser(userId){
-			try{
-				return await models.Project.findAll({
-					include: [{
-						model: models.User,
-						as: sequelizeConstants.USERS_WITH_ACCESS,
-						where: {
-							id: userId
-						}
-					}],
-					raw: true,
-					nest: true
-				})
 
-			} catch (error) {
-				console.log(error)
-				throw['Kunde inte hämta projekt delade med användaren']
-			}
+			const query = `SELECT * FROM Projects 
+							JOIN UserProjectAccesses AS UPA WHERE UPA.userId = ?`
+
+			const values = [userId]
+
+			return new Promise((resolve, reject) => {
+				db.query(query, values, (error, projects) => {
+					if (error) reject(['Kunde inte hämta projekt delade med användaren'])
+					resolve(projects)
+				})
+			})
+
 		},
 		
 		async deleteProject(projectId){
-			try {
+
+			const query = 'DELETE FROM Projects WHERE id = ?'
+
+			const values = [projectId]
+
+			return new Promise((resolve, reject) => {
+				db.query(query, values, (error, projects) => {
+					if (error) reject(['Kunde inte ta bort projektet'])
+					resolve(projects)
+				})
+			})
+
+			/*try {
 				models.Project.destroy({
 					where: {
 						id: projectId
@@ -76,7 +88,7 @@ module.exports = () => {
 			} catch (error) {
 				console.log(error)
 				throw ['Kunde inte radera projekt']
-			}
+			}*/
 		},
 		
 		async getAllProjectsByUserId(userId){

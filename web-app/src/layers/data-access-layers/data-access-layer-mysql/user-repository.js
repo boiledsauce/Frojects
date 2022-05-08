@@ -35,7 +35,7 @@ module.exports = () => {
         },
 
         async getAllUsers(){
-            const query = 'SELECT * FROM users'
+            const query = 'SELECT * FROM users '
 
             return new Promise((resolve, reject) => {
                 db.query(query, (error, users) => {
