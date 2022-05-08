@@ -7,6 +7,7 @@ const MIN_TASK_DESCRIPTION_LENGTH = 8
 const MAX_TASK_DESCRIPTION_LENGTH = 1000
 
 exports.getErrorsNewTask = (task) => {
+    
     const errors = []
     
     //Validate firstName

@@ -4,6 +4,7 @@ const MIN_NAME_LENGTH = 2
 const MAX_NAME_LENGTH = 50
 
 exports.getErrorsNewProject = (project) => {
+    
     const errors = []
 
     //Validate firstName

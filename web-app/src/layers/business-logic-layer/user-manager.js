@@ -14,7 +14,7 @@ const GOOGLE_AUTH_TOKEN_URL = "https://www.googleapis.com/oauth2/v4/token"
 const { OAuth2Client } = require('google-auth-library')
 const client = new OAuth2Client(CLIENT_ID)
 
-getHashFromPassword = async (password) => {
+const getHashFromPassword = async (password) => {
     return new Promise((resolve, reject) => {
         bcrypt.genSalt(saltRounds, (error, salt) => {
             if (error){
@@ -40,6 +40,7 @@ module.exports = ({userRepository}) => {
     return {
 
         async getGoogleAuthCodeResponse(authorizationCode){
+
             try {
                 return await axios.post(GOOGLE_AUTH_TOKEN_URL, qs.stringify({            
                     client_id: CLIENT_ID,
@@ -50,13 +51,16 @@ module.exports = ({userRepository}) => {
                 }), {
                     headers: {'Content-Type' : 'application/x-www-form-urlencoded'},
                 })
+
             } catch (errors) {
                 console.log(errors)
                 throw errors
             }
+
         },
 
         async getIdTicket(idToken){
+
             try {
                 const ticket = await client.verifyIdToken({
                     idToken,
@@ -64,12 +68,15 @@ module.exports = ({userRepository}) => {
                 })
 
                 return ticket
+
             } catch (errors) {
                 throw errors
             }
+
         },
 
         async createUser(user){
+
             try{
                 if (!user.openId){
                     const validationErrors = userValidator.getErrorsNewUser(user)
@@ -81,7 +88,9 @@ module.exports = ({userRepository}) => {
                     user.hashedPassword = await getHashFromPassword(user.password)
                     delete user.password
                 }
+
                 return await userRepository.createUser(user)
+
             }
             catch (errors) {
                 if (errors instanceof Error){
@@ -94,47 +103,58 @@ module.exports = ({userRepository}) => {
         },
         
         async getUserByOpenId(openId){
+
             try {
                 return await userRepository.getUserByOpenId(openId)
             } catch (errors) {
                 throw errors
             }
+
         },
 
         async getUserByEmail(email){
+
             try{
                 return await userRepository.getUserByEmail(email)
             }
             catch (errors) {
                 throw errors
             }
+
         },
 
         async getAllUsers(){
+
             try{
                 return await userRepository.getAllUsers()
             } catch (errors) {
                 throw errors
             }
+
         },
 
         async getUserById(id){
+
             try{
                 return await userRepository.getUserById(id)
             } catch (error) {
                 throw error
             }
+
         },
 
         async getUserRealNameById(id){
+
             try{
                 return await userRepository.getUserRealNameById(id)
             } catch (errors) {
                 throw errors
             }
+
         },
         
         async loginCredentialsMatchUser(loginCredentials, user){
+
             return new Promise((resolve, reject) => {
                 bcrypt.compare(loginCredentials.password, user.hashedPassword, (error, result) => {
                     if (error){
@@ -144,6 +164,7 @@ module.exports = ({userRepository}) => {
                     resolve(result)
                 })
             })
+            
         },
         
         userIsLoggedIn(session){

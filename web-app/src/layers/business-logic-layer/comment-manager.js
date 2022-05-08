@@ -7,6 +7,7 @@ module.exports = ({commentRepository, taskRepository, projectManager}) => {
     return {
         
         async createComment(comment) {
+
             const errors = commentValidator.getErrorsNewComment(comment)
 
             if (errors.length > 0) throw errors
@@ -19,6 +20,7 @@ module.exports = ({commentRepository, taskRepository, projectManager}) => {
             
             try {
                 return await commentRepository.createComment(comment.text, comment.taskId, comment.authorId, comment.creationDate)
+            
             } catch (error) {
                 if (error instanceof Error){
                     console.log(error)
@@ -27,6 +29,7 @@ module.exports = ({commentRepository, taskRepository, projectManager}) => {
                 throw error
                 
             }
+
         },
 
         
@@ -51,11 +54,14 @@ module.exports = ({commentRepository, taskRepository, projectManager}) => {
                 console.log(error)
                 throw ['Kommentarerna kunde inte hämtas från databasen']
             }
+
         },
 
         async getCommentById(id) { 
+
             try {
                 return await commentRepository.getCommentById(id)
+
             } catch (error) {
                 if (error instanceof Error){
                     console.log(error)
@@ -64,9 +70,11 @@ module.exports = ({commentRepository, taskRepository, projectManager}) => {
                 throw error
                 
             }
+
         },
 
-        async updateComment(comment, userId) { 
+        async updateComment(comment, userId) {
+
             const errors = commentValidator.getErrorsNewComment(comment)
 
             if (errors.length > 0) throw errors
@@ -86,20 +94,25 @@ module.exports = ({commentRepository, taskRepository, projectManager}) => {
                 }
                 throw error
             }
+
         },
 
         async deleteComment(commentId, userId) {
+
             try {
                 const comment = await this.getCommentById(commentId)
+                
                 if (comment.authorId != userId) {
                     throw ['Du kan inte ta bort andra användares kommentarer']
                 }
 
                 commentRepository.deleteComment(commentId)
+
             } catch (error) {
                 console.log(error)
                 throw ['Kunde inte ta bort kommentaren']
             }
+
         }
 
     }
