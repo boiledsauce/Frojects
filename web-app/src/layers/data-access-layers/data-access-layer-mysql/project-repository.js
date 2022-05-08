@@ -72,37 +72,28 @@ module.exports = () => {
 			const values = [projectId]
 
 			return new Promise((resolve, reject) => {
-				db.query(query, values, (error, projects) => {
+				db.query(query, values, (error, result) => {
 					if (error) reject(['Kunde inte ta bort projektet'])
+					if (result.affectedRows) resolve(result)
+					reject(['Ett oväntat fel inträffade när projektet skulle tas bort'])
+				})
+			})
+
+		},
+		
+		async getAllProjectsByUserId(userId){
+
+			const query = 'SELECT * FROM Projects WHERE ownerId = ?'
+
+			const values = [userId]
+
+			return new Promise((resolve, reject) => {
+				db.query(query, values, (error, projects) => {
+					if (error) reject(['Kunde inte hämta projekt tillhörande användaren'])
 					resolve(projects)
 				})
 			})
 
-			/*try {
-				models.Project.destroy({
-					where: {
-						id: projectId
-					}
-				})
-
-			} catch (error) {
-				console.log(error)
-				throw ['Kunde inte radera projekt']
-			}*/
-		},
-		
-		async getAllProjectsByUserId(userId){
-			try {
-				return await models.Project.findAll({
-					where: {
-						ownerId: userId
-					}
-				})
-			}
-			catch (error) {
-				console.error(error)
-				throw ['Kunde inte hämta projekt tillhörande användaren']
-			}
 		},
 		
 		async getProjectById(projectId){
