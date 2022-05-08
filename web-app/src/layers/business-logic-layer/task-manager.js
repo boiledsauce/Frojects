@@ -31,7 +31,7 @@ module.exports = ({taskRepository}) => {
             }
             catch (error) {
                 console.log(error)
-                throw ["Dina tasks kunde inte hämtas från databasen"]
+                throw ["Dina uppgifter kunde inte hämtas från databasen"]
             }
         },
 
@@ -43,7 +43,7 @@ module.exports = ({taskRepository}) => {
                 return task
             }
             catch (error) {
-                throw ["Din task kunde inte hämtas från databasen"]
+                throw ["Uppgiften kunde inte hämtas från databasen"]
             }
         },
 

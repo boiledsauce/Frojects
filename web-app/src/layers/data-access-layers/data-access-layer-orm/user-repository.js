@@ -5,7 +5,6 @@ module.exports = () => {
     return {
         
         async createUser(user){
-
             try{
                 const createdUser = await models.User.create({
                     firstName: user.firstName,

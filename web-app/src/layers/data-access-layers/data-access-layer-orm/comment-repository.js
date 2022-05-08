@@ -14,8 +14,8 @@ module.exports = () => {
 				})
 
 				return comment.id
+
 			} catch (error) {
-				console.error(error)
 				throw ['Kunde inte skapa kommentar']
 			}
 		},
@@ -34,7 +34,9 @@ module.exports = () => {
 					raw: true,
 					nest: true
 				})
+
 				return comments
+
 			} catch (error) {
 				console.log(error)
 				throw ['Kunde inte hämta uppgiftens kommentarer']
@@ -48,17 +50,23 @@ module.exports = () => {
 						id
 					}
 				})
-			}catch (error){
+
+			} catch (error){
 				throw ["Kommentaren kunde inte hämtas från databasen"]
 			} 
 		},
 
 		async deleteComment(commentId) {
-			await models.Comment.destroy({
-				where: {
-					id: commentId
-				}
-			})
+			try{
+				return await models.Comment.destroy({
+					where: {
+						id: commentId
+					}
+				})
+
+			} catch (error){
+				throw ['Kunde inte ta bort kommentar']
+			}
 		},
 
 		async updateComment(id, authorId, text) {
@@ -69,6 +77,7 @@ module.exports = () => {
 						authorId
 					}
 				})
+
 			} catch (error){
 				throw ["Kommentaren kunde inte hämtas från databasen"]
 			}
