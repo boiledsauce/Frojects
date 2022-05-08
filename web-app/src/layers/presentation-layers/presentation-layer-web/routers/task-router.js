@@ -172,17 +172,17 @@ module.exports = ({taskManager, commentManager, projectManager}) => {
 
         try {
             const task = await taskManager.getTaskById(taskId)
-            const comments = await commentManager.getAllCommentsByTaskId(taskId, userId) 
+            const comments = await commentManager.getAllCommentsByTaskId(taskId, userId)
             model = {
                 task,
                 comments,
                 projectId: request.params.projectId
             }
-
+            
 
 
         } catch (errors) {
-            model.errors = errors
+            model = { errors }
         }
 
         response.render('task/view', model)
