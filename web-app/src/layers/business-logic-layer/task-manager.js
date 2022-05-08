@@ -2,7 +2,7 @@ const DATE_STRING_LENGTH = 10
 
 const taskValidator = require('./task-validator')
 
-module.exports = ({taskRepository}) => {
+module.exports = ({taskMySQLRepository}) => {
 
     return {
 
@@ -14,7 +14,7 @@ module.exports = ({taskRepository}) => {
             }
 
             try {
-                return await taskRepository.createTask(task)
+                return await taskMySQLRepository.createTask(task)
             } catch (errors) {
                 throw errors
             }
@@ -22,10 +22,9 @@ module.exports = ({taskRepository}) => {
 
         async getAllTasksByProjectId(projectId) {
             try {
-                const tasks = (await taskRepository.getAllTasksByProjectId(projectId)).reverse()
-
+                const tasks = (await taskMySQLRepository.getAllTasksByProjectId(projectId)).reverse()
                 tasks.forEach((task, index, taskList) => {
-                    taskList[index].createdAtFormatted = task.createdAt.substring(0, DATE_STRING_LENGTH)
+                    taskList[index].createdAtFormatted = task.createdAt.toString().substring(0, DATE_STRING_LENGTH)
                 })
                 return tasks
             }
@@ -37,9 +36,12 @@ module.exports = ({taskRepository}) => {
 
         async getTaskById(taskId) {
             try {
-                const task = await taskRepository.getTaskById(taskId)
-
-                task.deadlineFormatted = task.Deadline.deadline.substring(0,10)
+                const task = await taskMySQLRepository.getTaskById(taskId)
+                if (task.Deadline) {
+                    task.deadlineFormatted = task.Deadline.deadline.substring(0,10)
+                } else {
+                    task.deadlineFormatted = task.deadline.toString().substring(0,10)
+                }
                 return task
             }
             catch (error) {
@@ -49,7 +51,7 @@ module.exports = ({taskRepository}) => {
 
         async getTaskDeadline(taskId) {
             try {
-                return await taskRepository.getTaskDeadline(taskId)
+                return await taskMySQLRepository.getTaskDeadline(taskId)
             } catch (error) {
                 throw ["Din deadline för denna task kunde inte hämtas från databasen"]
             }
@@ -57,7 +59,7 @@ module.exports = ({taskRepository}) => {
 
         async createTaskDeadline(taskId, deadline) {
             try {
-                return await taskRepository.createTaskDeadline(taskId, deadline)
+                return await taskMySQLRepository.createTaskDeadline(taskId, deadline)
             } catch (error) {
                 throw ["Din deadline för denna task kunde inte skapas från databasen"]
             }
@@ -69,7 +71,7 @@ module.exports = ({taskRepository}) => {
                 throw errors
             }
             try {
-                return await taskRepository.updateTask(task.taskId, task.title, task.description, task.date)
+                return await taskMySQLRepository.updateTask(task.taskId, task.title, task.description, task.date)
             } catch (error) {
                 console.log(error)
                 throw ["Din task kunde inte uppdateras"]
@@ -78,7 +80,7 @@ module.exports = ({taskRepository}) => {
 
         async deleteTask(taskId) {
             try {
-                return await taskRepository.deleteTask(taskId)
+                return await taskMySQLRepository.deleteTask(taskId)
             } catch (error) {
                 console.log(error)
                 throw ["Din task kunde inte tas bort"]
@@ -87,7 +89,7 @@ module.exports = ({taskRepository}) => {
 
         async completeTask(taskId) {
             try {
-                return await taskRepository.completeTask(taskId)
+                return await taskMySQLRepository.completeTask(taskId)
             } catch (error) {
                 console.log(error)
                 throw ["Uppgiften kunde inte klarmarkeras"]

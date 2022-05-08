@@ -71,6 +71,7 @@ module.exports = () => {
 							console.log(error)
 							reject(['Kunde inte hämta kommentar'])
 						}
+						console.log(comments)
 						resolve(comments)
 					})
 				})
