@@ -30,23 +30,6 @@ module.exports = () => {
 		},
 		
 		async getAllCommentsByTaskId(taskId){
-<<<<<<< HEAD
-			try {
-				const values = [
-					taskId
-				]
-
-				const query = `SELECT * FROM Comments AS c JOIN Users AS u ON u.id = c.authorId WHERE c.taskId = ? ORDER BY c.createdAt DESC`
-
-				return new Promise((resolve, reject) => {
-					db.query(query, values, (error, comments) => {
-						if (error) {
-							console.log(error)
-							reject(['Kunde inte hämta kommentar'])
-						}
-						console.log(comments)
-						resolve(comments)
-=======
 
 			const query = `SELECT C.id, C.text, C.createdAt, C.updatedAt, C.taskId, C.authorId, U.firstName, U.lastName 
 							FROM Comments AS C JOIN Users AS U ON U.id = C.authorId WHERE C.taskId = ? 
@@ -68,7 +51,6 @@ module.exports = () => {
 						comment.User = {}
 						comment.User.firstName = comment.firstName
 						comment.User.lastName = comment.lastName
->>>>>>> cfa0744afb241607dc893aa708a64bb4bab0447e
 					})
 
 					resolve(comments)
