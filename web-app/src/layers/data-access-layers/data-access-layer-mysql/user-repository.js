@@ -10,7 +10,13 @@ module.exports = () => {
                             (firstName, lastName, email, openId, hashedPassword) 
                             VALUES (?, ?, ?, ?, ?)`
             
-            const values = [user.firstName, user.lastName, user.email, user.openId, user.hashedPassword]
+            const values = [
+                user.firstName, 
+                user.lastName, 
+                user.email, 
+                user.openId, 
+                user.hashedPassword
+            ]
 
             return new Promise((resolve, reject) => {
                 db.query(query, values, (error, user) => {
@@ -29,11 +35,11 @@ module.exports = () => {
         },
 
         async getAllUsers(){
-            const query = "SELECT * FROM users"
+            const query = 'SELECT * FROM users'
 
             return new Promise((resolve, reject) => {
                 db.query(query, (error, users) => {
-                    if (error) reject(["Kunde inte hämta användare från databasen"])
+                    if (error) reject(['Kunde inte hämta användare från databasen'])
                     resolve(users)
                 })
             })
@@ -42,75 +48,68 @@ module.exports = () => {
 
         async getUserById(id){
 
-            const query = "SELECT * FROM Users WHERE id = ?"
+            const query = 'SELECT * FROM Users WHERE id = ?'
 
             const values = [id]
 
             return new Promise((resolve, reject) => {
-                db.query(query, values, (error, user) => {
-                    if (error) reject(["Ett fel uppstod när användaren skulle hämtas"])
-                    resolve(user)
+                db.query(query, values, (error, users) => {
+                    if (error) reject(['Ett fel uppstod när användaren skulle hämtas'])
+                    if (users.length) resolve(users[0])
+                    reject(['Ingen användare med angivet ID hittades'])
                 })
             })
             
         },
         
         async getUserByOpenId(openId){
-            try{
-                const user = await models.User.findOne({
-                    where: {
-                        openId: openId
-                    }
-                })
-                return user
 
-            } catch (error) {
-                throw ['Kunde inte hämta användare utifrån OpenId']
-            }
+            const query = 'SELECT * FROM Users WHERE openId = ?'
+
+            const values = [openId]
+
+            return new Promise((resolve, reject) => {
+                db.query(query, values, (error, users) => {
+                    if (error) reject(['Ett fel uppstod när användaren skulle hämtas utifrån OpenID'])
+                    if (users.length) resolve(users[0])
+                    reject(['Ingen användare med angivet OpenID hittades'])
+                })
+            })
+
         },
 
         async getUserByEmail(email){
 
-            try{
-                
+            const query = 'SELECT * FROM Users WHERE email = ?'
 
-                const user = await models.User.findOne({
-                    where: {
-                        email: email
-                    }
+            const values = [email]
+
+            return new Promise((resolve, reject) => {
+                db.query(query, values, (error, users) => {
+                    if (error) reject(['Ett fel uppstod när användaren skulle hämtas utifrån e-post'])
+                    if (users.length) resolve(users[0])
+                    reject(['Ingen användare med angiven e-post hittades'])
                 })
-
-                if (user) return user
-
-                throw ['Ingen användare med e-posten hittades']
-
-            } catch (error) {
-
-                if (error instanceof Error){
-                    console.log(error)
-                    throw ['Ett problem med databasen uppstod när en användare med e-posten skulle hämtas']
-                }
-                throw error
-
-            }
+            })
         
         },
 
         async getUserRealNameById(id){
-            try{
-                const name = await models.User.findOne({
-                    attributes: [
-                        'firstName',
-                        'lastName'
-                    ],
-                    where: {
-                        id
-                    }
+
+            const query = 'SELECT firstName, lastName FROM Users WHERE id = ?'
+
+            const values = [id]
+
+            return new Promise((resolve, reject) => {
+                db.query(query, values, (error, users) => {
+                    if (error) reject(['Ett fel uppstod när användarens namn skulle hämtas utifrån ID'])
+                    if (users.length) resolve(users[0])
+                    reject(['Ingen användare med angivet ID hittades'])
                 })
-            } catch (error) {
-                console.log(error)
-                throw ['Kunde inte hämta användarens namn']
-            }
+            })
+
         }
+
     }
+
 }

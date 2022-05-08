@@ -1,4 +1,4 @@
-const mysql = require('mysql2/promise')
+const mysql = require('mysql2')
 
 const DB_HOST = 'database'
 const DB_PORT = 3306
@@ -6,13 +6,14 @@ const DB_USER = 'frojects-user'
 const DB_PASSWORD = 'iWHnm16lURvL6iHfyvcK'
 const DB_NAME = 'frojects'
 
-const initialize = async () => {
+const initialize = () => {
 	try{
-		const connection = await mysql.createConnection({
+		const connection = mysql.createConnection({
 			host: DB_HOST,
 			user: DB_USER,
 			password: DB_PASSWORD,
-			port: DB_PORT
+			port: DB_PORT,
+			database: DB_NAME
 		})
 		connection.query(`CREATE DATABASE IF NOT EXISTS ${DB_NAME}`)
 
