@@ -20,7 +20,12 @@ module.exports = ({commentMySQLRepository, taskRepository, projectManager}) => {
             try {
                 return await commentMySQLRepository.createComment(comment.text, comment.taskId, comment.authorId, comment.creationDate)
             } catch (error) {
-                throw ['Kommentaren kunde inte skapas i databasen']
+                if (error instanceof Error){
+                    console.log(error)
+                    throw ['Ett oväntat fel inträffade när kommentaren skulle skapas i databasen']
+                }
+                throw error
+                
             }
         },
 
@@ -52,24 +57,34 @@ module.exports = ({commentMySQLRepository, taskRepository, projectManager}) => {
             try {
                 return await commentMySQLRepository.getCommentById(id)
             } catch (error) {
-                console.log(error)
-                throw ['Kommentarerna kunde inte hämtas från databasen']
+                if (error instanceof Error){
+                    console.log(error)
+                    throw ['Ett oväntat fel inträffade när kommentaren skulle hämtas']
+                }
+                throw error
+                
             }
         },
 
         async updateComment(comment, userId) { 
             const errors = commentValidator.getErrorsNewComment(comment)
-            if (errors.length > 0) {
-                throw errors
-            }
+
+            if (errors.length > 0) throw errors
+            
             try {
+
                 if ((await this.getCommentById(comment.id)).authorId != userId){
                     throw ['Du kan inte uppdatera en kommentar tillhörande en annan användare']
                 }
+                
                 return await commentMySQLRepository.updateComment(comment.id, userId, comment.text)
+
             } catch (error) {
-                console.log(error)
-                throw ['Kommentarerna kunde inte hämtas från databasen']
+                if (error instanceof Error){
+                    console.log(error)
+                    throw ['Ett oväntat fel inträffade när kommentaren skulle uppdateras']
+                }
+                throw error
             }
         },
 
