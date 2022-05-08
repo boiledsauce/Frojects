@@ -73,7 +73,7 @@ module.exports = ({taskManager, commentManager, projectManager}) => {
             }
 
         } catch (errors) {
-            model = {errors}
+            model = { errors }
         }
 
         response.render('comment/update', model)
@@ -178,8 +178,6 @@ module.exports = ({taskManager, commentManager, projectManager}) => {
                 comments,
                 projectId: request.params.projectId
             }
-            
-
 
         } catch (errors) {
             model = { errors }
