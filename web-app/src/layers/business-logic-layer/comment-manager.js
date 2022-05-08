@@ -2,7 +2,7 @@ const commentValidator = require('./comment-validator')
 
 isCommentAuthorOwned = (authorId, userId) => authorId == userId
 
-module.exports = ({commentMySQLRepository, taskRepository, projectManager}) => {
+module.exports = ({commentMySQLRepository, taskMySQLRepository, projectManager}) => {
 
     return {
         
