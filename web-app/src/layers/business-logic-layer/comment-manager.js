@@ -21,12 +21,12 @@ module.exports = ({commentRepository, taskRepository, projectManager}) => {
 
                 return await commentRepository.createComment(comment.text, comment.taskId, comment.authorId, comment.creationDate)
             
-            } catch (error) {
-                if (error instanceof Error){
-                    console.log(error)
+            } catch (errors) {
+                if (errors instanceof Error){
+                    console.log(errors)
                     throw ['Ett oväntat fel inträffade när kommentaren skulle skapas i databasen']
                 }
-                throw error
+                throw errors
                 
             }
 
@@ -35,13 +35,13 @@ module.exports = ({commentRepository, taskRepository, projectManager}) => {
         
         async getAllCommentsByTaskId(taskId, userId) { 
 
-            const projectId = (await taskRepository.getTaskById(taskId)).projectId
-
-            if (!(await projectManager.userHasAccessToProject(userId, projectId))){
-                throw ['Du kan endast se kommentarer i ett projekt som du har tillgång till']
-            }
-
             try {
+                const projectId = (await taskRepository.getTaskById(taskId)).projectId
+
+                if (!(await projectManager.userHasAccessToProject(userId, projectId))){
+                    throw ['Du kan endast se kommentarer i ett projekt som du har tillgång till']
+                }
+
                 const comments = await commentRepository.getAllCommentsByTaskId(taskId)
 
                 comments.forEach(comment => {
@@ -50,9 +50,12 @@ module.exports = ({commentRepository, taskRepository, projectManager}) => {
 
                 return comments
 
-            } catch (error) {
-                console.log(error)
-                throw ['Kommentarerna kunde inte hämtas från databasen']
+            } catch (errors) {
+                if (errors instanceof Error){
+                    console.log(errors)
+                    throw ['Ett oväntat fel inträffade när uppgiftens kommentarer skulle hämtas']
+                }
+                throw errors
             }
 
         },
@@ -62,12 +65,12 @@ module.exports = ({commentRepository, taskRepository, projectManager}) => {
             try {
                 return await commentRepository.getCommentById(id)
 
-            } catch (error) {
-                if (error instanceof Error){
-                    console.log(error)
+            } catch (errors) {
+                if (errors instanceof Error){
+                    console.log(errors)
                     throw ['Ett oväntat fel inträffade när kommentaren skulle hämtas']
                 }
-                throw error
+                throw errors
                 
             }
 
@@ -86,12 +89,12 @@ module.exports = ({commentRepository, taskRepository, projectManager}) => {
                 
                 return await commentRepository.updateComment(comment.id, userId, comment.text)
 
-            } catch (error) {
-                if (error instanceof Error){
-                    console.log(error)
+            } catch (errors) {
+                if (errors instanceof Error){
+                    console.log(errors)
                     throw ['Ett oväntat fel inträffade när kommentaren skulle uppdateras']
                 }
-                throw error
+                throw errors
             }
 
         },
@@ -107,12 +110,12 @@ module.exports = ({commentRepository, taskRepository, projectManager}) => {
 
                 commentRepository.deleteComment(commentId)
 
-            } catch (error) {
-                if (error instanceof Error){
-                    console.log(error)
+            } catch (errors) {
+                if (errors instanceof Error){
+                    console.log(errors)
                     throw ['Ett oväntat fel inträffade när kommentaren skulle tas bort']
                 }
-                throw error
+                throw errors
             }
 
         }

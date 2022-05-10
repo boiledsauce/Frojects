@@ -141,8 +141,8 @@ module.exports = ({userRepository}) => {
             try{
                 return await userRepository.getUserById(id)
 
-            } catch (error) {
-                throw error
+            } catch (errors) {
+                throw errors
             }
 
         },

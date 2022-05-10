@@ -74,8 +74,8 @@ module.exports = ({projectRepository}) => {
         },
 
         async deleteProject(projectId, performingUserId) {
-            try {
 
+            try {
                 const project = await this.getProjectById(projectId)
 
                 if (await this.isProjectOwner(performingUserId, project.id)) {
@@ -99,8 +99,7 @@ module.exports = ({projectRepository}) => {
                 return project.ownerId == userId
 
             } catch (errors) {
-                console.log(errors)
-                throw ['Kunde inte kontrollera projektets ägare']
+                throw errors
             }
         },
 
@@ -151,7 +150,7 @@ module.exports = ({projectRepository}) => {
             } catch (errors) {
                 if (errors instanceof Error){
                     console.log(errors)
-                    throw ['Kunde inte återkalla behörighet']
+                    throw ['Kunde inte återkalla användarens behörighet till projektet']
                 }
                 throw errors
             }
@@ -163,8 +162,8 @@ module.exports = ({projectRepository}) => {
             try{
                 return await projectRepository.getUsersWithAccessToProject(projectId)
 
-            } catch (error) {
-                throw error
+            } catch (errors) {
+                throw errors
             }
 
         },
