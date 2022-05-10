@@ -19,9 +19,11 @@ module.exports = ({taskManager, commentManager, projectManager}) => {
         }
     
         try {
-            const insertedTaskId = await taskManager.createTask(task)
+            const insertedTaskId = await taskManager.createTask(task, request.session.user.id)
             const deadline = request.body.date
-            const insertedDeadline = await taskManager.createTaskDeadline(insertedTaskId, deadline)
+
+            await taskManager.createTaskDeadline(insertedTaskId, deadline)
+
             response.redirect(`/app/projects/${task.projectId}`)
         }
         catch (errors) {
@@ -39,7 +41,7 @@ module.exports = ({taskManager, commentManager, projectManager}) => {
         let model
         try {
             const task = await taskManager.getTaskById(request.params.taskId)
-            const comment = await commentManager.getCommentById(request.params.commentId)
+            const comment = await commentManager.getCommentById(request.params.commentId, request.session.user.id)
 
             model = {task, comment}
             response.render('comment/delete', model)
@@ -65,7 +67,7 @@ module.exports = ({taskManager, commentManager, projectManager}) => {
         let model
 
         try {
-            const comment = await commentManager.getCommentById(request.params.commentId)
+            const comment = await commentManager.getCommentById(request.params.commentId, request.session.user.id)
 
             model = {
                 comment,
@@ -192,7 +194,9 @@ module.exports = ({taskManager, commentManager, projectManager}) => {
         try {
             const taskId = request.params.taskId
             const task = await taskManager.getTaskById(taskId)
+            console.log(task)
             task.date = task.deadlineFormatted
+
             model = {
                 task,
                 projectId: request.params.projectId
@@ -215,7 +219,7 @@ module.exports = ({taskManager, commentManager, projectManager}) => {
             date: request.body.date
         }
         try {
-            await taskManager.updateTask(task)
+            await taskManager.updateTask(task, request.session.user.id)
             response.redirect(request.baseUrl + '/' + task.taskId)
 
         } catch (errors) {

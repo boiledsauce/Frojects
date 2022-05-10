@@ -2,16 +2,20 @@ const DATE_STRING_LENGTH = 10
 
 const taskValidator = require('./task-validator')
 
-module.exports = ({taskRepository}) => {
+module.exports = ({taskRepository, projectManager}) => {
 
     return {
 
-        async createTask(task) {
+        async createTask(task, userId) {
 
             try {
                 const errors = taskValidator.getErrorsNewTask(task)
 
                 if (errors.length > 0) throw errors
+
+                if (!(await projectManager.userHasAccessToProject(userId, projectId))){
+                    throw ['Du kan endast skapa uppgifter inom projekt du har tillgång till']
+                }
 
                 return await taskRepository.createTask(task)
 
@@ -25,13 +29,21 @@ module.exports = ({taskRepository}) => {
 
         },
 
-        async getAllTasksByProjectId(projectId) {
+        async getAllTasksByProjectId(projectId, userId) {
 
             try {
+                if (!(await projectManager.userHasAccessToProject(userId, projectId))){
+                    throw ['Du kan endast se uppgifter tillhörande projekt du har tillgång till']
+                }
+
                 const tasks = (await taskRepository.getAllTasksByProjectId(projectId)).reverse()
 
-                tasks.forEach((task, index, taskList) => {
-                    taskList[index].createdAtFormatted = task.createdAt.toString().substring(0, DATE_STRING_LENGTH)
+                tasks.forEach(task => {
+                    if (task.createdAt instanceof Date){
+                        task.createdAtFormatted = task.createdAt.toISOString().split('T')[0]
+                    } else {
+                        task.createdAtFormatted = task.createdAt.substring(0, DATE_STRING_LENGTH)
+                    }
                 })
 
                 return tasks
@@ -54,8 +66,10 @@ module.exports = ({taskRepository}) => {
                 if (task.Deadline) {
                     task.deadlineFormatted = task.Deadline.deadline.substring(0,10)
                 } else {
-                    task.deadlineFormatted = task.deadline.toString().substring(0,10)
+                    task.deadlineFormatted = task.deadline.toISOString().split('T')[0]
                 }
+
+                console.log(task)
 
                 return task
 
@@ -90,12 +104,18 @@ module.exports = ({taskRepository}) => {
 
         },
         
-        async updateTask(task) {
+        async updateTask(task, userId) {
 
             try {
                 const errors = taskValidator.getErrorsNewTask(task)
 
                 if (errors.length > 0) throw errors
+
+                const projectId = (await taskRepository.getTaskById(task.taskId)).projectId
+
+                if (!(await projectManager.userHasAccessToProject(userId, projectId))){
+                    throw ['Du kan endast uppdatera uppgifter inom projekt du har tillgång till']
+                }
 
                 return await taskRepository.updateTask(task.taskId, task.title, task.description, task.date)
 

@@ -140,15 +140,20 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
 
     router.get('/:projectId', async (request, response) => {
         let model
-        const userId = request.session.user.id
+        
         try {
+            const userId = request.session.user.id
+
             const project = await projectManager.getProjectById(response.locals.projectId)
-            const tasks = await taskManager.getAllTasksByProjectId(response.locals.projectId)
+
+            const tasks = await taskManager.getAllTasksByProjectId(response.locals.projectId, userId)
+
             const userIsOwner = userId == project.ownerId
-            model = {project, tasks, userIsOwner}
+
+            model = { project, tasks, userIsOwner }
     
         } catch (errors) {
-            model = {errors}
+            model = { errors }
         }
 
         response.render('project/view', model)
@@ -161,7 +166,7 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
             const project = await projectManager.getProjectById(response.locals.projectId)
             model = {project}
         } catch (errors) {
-            model = {errors}
+            model = { errors }
         }
 
         response.render('project/delete', model)
@@ -173,7 +178,7 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
             response.redirect(request.baseUrl + '/')
 
         } catch (errors) {
-            const model = {errors}
+            const model = { errors }
             response.render('project/delete', model)
         }
 
@@ -184,27 +189,29 @@ module.exports = ({taskRouter, projectManager, taskManager, userManager}) => {
 
         try {
             const project = await projectManager.getProjectById(response.locals.projectId)
-            model = {project}
+            model = { project }
+
         } catch (errors) {
-            model = {errors}
+            model = { errors }
         }
 
         response.render('project/update', model)
     })
 
     router.post('/:projectId/update', async (request, response) => {
-        const project = {
-            id: request.params.projectId,
-            ownerId: request.session.user.id,
-            name: request.body.name
-        }
 
         try {
+            const project = {
+                id: request.params.projectId,
+                ownerId: request.session.user.id,
+                name: request.body.name
+            }
+
             await projectManager.updateProject(project)
             response.redirect(request.baseUrl + '/' + project.id)
 
         } catch (errors) {
-            const model = {errors}
+            const model = { errors }
             response.render('project/update', model)
         }
 

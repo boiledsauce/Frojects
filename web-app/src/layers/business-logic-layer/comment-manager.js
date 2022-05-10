@@ -4,6 +4,10 @@ const isCommentAuthorOwned = (authorId, userId) => authorId == userId
 
 module.exports = ({commentRepository, taskRepository, projectManager}) => {
 
+    const getProjectIdByTaskId = async (taskId) => {
+        return (await taskRepository.getTaskById(taskId)).projectId
+    }
+
     return {
         
         async createComment(comment) {
@@ -13,7 +17,7 @@ module.exports = ({commentRepository, taskRepository, projectManager}) => {
 
                 if (errors.length > 0) throw errors
     
-                const projectId = (await taskRepository.getTaskById(comment.taskId)).projectId
+                const projectId = await getProjectIdByTaskId(comment.taskId)
     
                 if (!(await projectManager.userHasAccessToProject(comment.authorId, projectId))){
                     throw ['Du kan endast kommentera i ett projekt som du har tillgång till']
@@ -36,7 +40,7 @@ module.exports = ({commentRepository, taskRepository, projectManager}) => {
         async getAllCommentsByTaskId(taskId, userId) { 
 
             try {
-                const projectId = (await taskRepository.getTaskById(taskId)).projectId
+                const projectId = await getProjectIdByTaskId(taskId)
 
                 if (!(await projectManager.userHasAccessToProject(userId, projectId))){
                     throw ['Du kan endast se kommentarer i ett projekt som du har tillgång till']
@@ -60,10 +64,18 @@ module.exports = ({commentRepository, taskRepository, projectManager}) => {
 
         },
 
-        async getCommentById(id) { 
+        async getCommentById(commentId, userId) { 
 
             try {
-                return await commentRepository.getCommentById(id)
+                const comment = await commentRepository.getCommentById(commentId)
+
+                const projectId = await getProjectIdByTaskId(comment.taskId)
+
+                if (!(await projectManager.userHasAccessToProject(userId, projectId))){
+                    throw ['Du kan endast se kommentarer i projekt du har tillgång till']
+                }
+
+                return comment
 
             } catch (errors) {
                 if (errors instanceof Error){
