@@ -10,7 +10,6 @@ exports.getErrorsNewTask = (task) => {
     
     const errors = []
     
-    //Validate firstName
     if (validator.isEmpty(task.title)){
         errors.push('Titel saknas')
     }

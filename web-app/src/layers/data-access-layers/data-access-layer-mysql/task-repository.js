@@ -123,7 +123,7 @@ module.exports = () => {
 			const values = [ taskId ]
 
             return new Promise((resolve, reject) => {
-                db.query(query, (error, result) => {
+                db.query(query, values, (error, result) => {
                     if (error) reject(['Uppgiften kunde inte markeras som avklarad'])
 					resolve(result)
 				})

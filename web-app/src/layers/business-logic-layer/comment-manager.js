@@ -1,24 +1,24 @@
 const commentValidator = require('./comment-validator')
 
-isCommentAuthorOwned = (authorId, userId) => authorId == userId
+const isCommentAuthorOwned = (authorId, userId) => authorId == userId
 
 module.exports = ({commentRepository, taskRepository, projectManager}) => {
 
     return {
         
         async createComment(comment) {
-
-            const errors = commentValidator.getErrorsNewComment(comment)
-
-            if (errors.length > 0) throw errors
-
-            const projectId = (await taskRepository.getTaskById(comment.taskId)).projectId
-
-            if (!(await projectManager.userHasAccessToProject(comment.authorId, projectId))){
-                throw ['Du kan endast kommentera i ett projekt som du har tillgång till']
-            }
             
             try {
+                const errors = commentValidator.getErrorsNewComment(comment)
+
+                if (errors.length > 0) throw errors
+    
+                const projectId = (await taskRepository.getTaskById(comment.taskId)).projectId
+    
+                if (!(await projectManager.userHasAccessToProject(comment.authorId, projectId))){
+                    throw ['Du kan endast kommentera i ett projekt som du har tillgång till']
+                }
+
                 return await commentRepository.createComment(comment.text, comment.taskId, comment.authorId, comment.creationDate)
             
             } catch (error) {
@@ -74,12 +74,11 @@ module.exports = ({commentRepository, taskRepository, projectManager}) => {
         },
 
         async updateComment(comment, userId) {
-
-            const errors = commentValidator.getErrorsNewComment(comment)
-
-            if (errors.length > 0) throw errors
             
             try {
+                const errors = commentValidator.getErrorsNewComment(comment)
+
+                if (errors.length > 0) throw errors
 
                 if ((await this.getCommentById(comment.id)).authorId != userId){
                     throw ['Du kan inte uppdatera en kommentar tillhörande en annan användare']
@@ -109,8 +108,11 @@ module.exports = ({commentRepository, taskRepository, projectManager}) => {
                 commentRepository.deleteComment(commentId)
 
             } catch (error) {
-                console.log(error)
-                throw ['Kunde inte ta bort kommentaren']
+                if (error instanceof Error){
+                    console.log(error)
+                    throw ['Ett oväntat fel inträffade när kommentaren skulle tas bort']
+                }
+                throw error
             }
 
         }

@@ -53,7 +53,10 @@ module.exports = ({userRepository}) => {
                 })
 
             } catch (errors) {
-                console.log(errors)
+                if (errors instanceof Error){
+                    console.log(errors)
+                    throw ['Ett oväntat fel inträffade när autentisteringskod från Google skulle hämtas']
+                }
                 throw errors
             }
 
@@ -70,7 +73,7 @@ module.exports = ({userRepository}) => {
                 return ticket
 
             } catch (errors) {
-                throw errors
+                throw ['Ett fel uppstod när en ID Token skulle verifieras']
             }
 
         },
@@ -81,9 +84,7 @@ module.exports = ({userRepository}) => {
                 if (!user.openId){
                     const validationErrors = userValidator.getErrorsNewUser(user)
             
-                    if (validationErrors.length > 0){
-                        throw validationErrors
-                    }
+                    if (validationErrors.length > 0) throw validationErrors
                 
                     user.hashedPassword = await getHashFromPassword(user.password)
                     delete user.password
@@ -95,7 +96,7 @@ module.exports = ({userRepository}) => {
             catch (errors) {
                 if (errors instanceof Error){
                     console.log(errors)
-                    errors = ['Ett oväntat fel uppstod']
+                    throw ['Ett oväntat fel uppstod när användaren skulle skapas']
                 }
                 throw errors
             }
@@ -106,6 +107,7 @@ module.exports = ({userRepository}) => {
 
             try {
                 return await userRepository.getUserByOpenId(openId)
+
             } catch (errors) {
                 throw errors
             }
@@ -127,6 +129,7 @@ module.exports = ({userRepository}) => {
 
             try{
                 return await userRepository.getAllUsers()
+
             } catch (errors) {
                 throw errors
             }
@@ -137,6 +140,7 @@ module.exports = ({userRepository}) => {
 
             try{
                 return await userRepository.getUserById(id)
+
             } catch (error) {
                 throw error
             }

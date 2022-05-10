@@ -8,15 +8,18 @@ module.exports = ({taskRepository}) => {
 
         async createTask(task) {
 
-            const errors = taskValidator.getErrorsNewTask(task)
-
-            if (errors.length > 0) {
-                throw errors
-            }
-
             try {
+                const errors = taskValidator.getErrorsNewTask(task)
+
+                if (errors.length > 0) throw errors
+
                 return await taskRepository.createTask(task)
+
             } catch (errors) {
+                if (errors instanceof Error){
+                    console.log(errors)
+                    throw ['Ett oväntat fel inträffade när uppgiften skulle skapas']
+                }
                 throw errors
             }
 
@@ -32,10 +35,13 @@ module.exports = ({taskRepository}) => {
                 })
 
                 return tasks
-            }
-            catch (error) {
-                console.log(error)
-                throw ["Dina uppgifter kunde inte hämtas från databasen"]
+
+            } catch (errors) {
+                if (errors instanceof Error){
+                    console.log(errors)
+                    throw ['Ett oväntat fel inträffade när projektets uppgifter skulle hämtas']
+                }
+                throw errors
             }
 
         },
@@ -52,9 +58,13 @@ module.exports = ({taskRepository}) => {
                 }
 
                 return task
-            }
-            catch (error) {
-                throw ["Uppgiften kunde inte hämtas från databasen"]
+
+            } catch (errors) {
+                if (errors instanceof Error){
+                    console.log(errors)
+                    throw ['Ett oväntat fel inträffade när uppgiften skulle hämtas']
+                }
+                throw errors
             }
 
         },
@@ -63,8 +73,8 @@ module.exports = ({taskRepository}) => {
 
             try {
                 return await taskRepository.getTaskDeadline(taskId)
-            } catch (error) {
-                throw ["Din deadline för denna task kunde inte hämtas från databasen"]
+            } catch (errors) {
+                throw errors
             }
 
         },
@@ -73,26 +83,28 @@ module.exports = ({taskRepository}) => {
 
             try {
                 return await taskRepository.createTaskDeadline(taskId, deadline)
-            } catch (error) {
-                throw ["Din deadline för denna task kunde inte skapas från databasen"]
+
+            } catch (errors) {
+                throw errors
             }
 
         },
         
         async updateTask(task) {
 
-            const errors = taskValidator.getErrorsNewTask(task)
-
-            if (errors.length > 0) {
-                throw errors
-            }
-
             try {
+                const errors = taskValidator.getErrorsNewTask(task)
+
+                if (errors.length > 0) throw errors
+
                 return await taskRepository.updateTask(task.taskId, task.title, task.description, task.date)
 
-            } catch (error) {
-                console.log(error)
-                throw ["Din task kunde inte uppdateras"]
+            } catch (errors) {
+                if (errors instanceof Error){
+                    console.log(errors)
+                    throw ['Ett oväntat fel inträffade när uppgiften skulle uppdateras']
+                }
+                throw errors
             }
 
         },
@@ -101,9 +113,9 @@ module.exports = ({taskRepository}) => {
 
             try {
                 return await taskRepository.deleteTask(taskId)
-            } catch (error) {
-                console.log(error)
-                throw ["Din task kunde inte tas bort"]
+
+            } catch (errors) {
+                throw errors
             }
 
         },
@@ -112,9 +124,13 @@ module.exports = ({taskRepository}) => {
 
             try {
                 return await taskRepository.completeTask(taskId)
-            } catch (error) {
-                console.log(error)
-                throw ["Uppgiften kunde inte klarmarkeras"]
+
+            } catch (errors) {
+                if (errors instanceof Error){
+                    console.log(errors)
+                    throw ['Ett oväntat fel inträffade när uppgiften skulle klarmarkeras']
+                }
+                throw errors
             }
             
         }
