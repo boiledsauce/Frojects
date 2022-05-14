@@ -24,8 +24,8 @@ module.exports = ({taskRESTRouter, projectManager}) => {
             const createdProjectId = await projectManager.createProject(project)
             response.json(createdProjectId)
         } catch (errors) {
-            console.log(errors)
             if (errors instanceof Error){
+                console.log(errors)
                 errors = ['Ett oväntat fel uppstod']
             }
             response.status(403).json(errors)

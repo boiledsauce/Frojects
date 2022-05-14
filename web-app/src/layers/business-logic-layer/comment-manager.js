@@ -35,7 +35,6 @@ module.exports = ({commentRepository, taskRepository, projectManager}) => {
             }
 
         },
-
         
         async getAllCommentsByTaskId(taskId, userId) { 
 

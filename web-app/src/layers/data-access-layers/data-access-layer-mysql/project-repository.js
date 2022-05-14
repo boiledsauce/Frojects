@@ -16,9 +16,8 @@ module.exports = () => {
 
 			return new Promise((resolve, reject) => {
 				db.query(query, values, (error, project) => {
-					console.log(error)
 					if (error) reject(['Projektet kunde inte skapas i databasen'])
-					resolve(project)
+					resolve(project.insertId)
 				})
 			})
 

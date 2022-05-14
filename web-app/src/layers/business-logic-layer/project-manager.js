@@ -30,7 +30,6 @@ module.exports = ({projectRepository}) => {
 
             } catch (errors) {
                 throw errors
-                
             }
 
         },
