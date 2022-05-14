@@ -7,24 +7,30 @@ module.exports = () => {
         async createUser(user){
 
             const query = `INSERT INTO Users 
-                            (firstName, lastName, email, openId, hashedPassword) 
-                            VALUES (?, ?, ?, ?, ?)`
+                            (firstName, lastName, email, openId, hashedPassword, createdAt, updatedAt) 
+                            VALUES (?, ?, ?, ?, ?, ?, ?)`
+
+            let createdAt = new Date()
+            createdAt.toISOString().split('T')[0]
+
+            const updatedAt = createdAt
             
             const values = [
                 user.firstName, 
                 user.lastName, 
                 user.email, 
                 user.openId, 
-                user.hashedPassword
+                user.hashedPassword,
+                createdAt,
+                updatedAt
             ]
 
             return new Promise((resolve, reject) => {
                 db.query(query, values, (error, user) => {
                     if (error) {
-                        if (error.parent.code == 'ER_DUP_ENTRY'){
+                        if (error.code == 'ER_DUP_ENTRY'){
                             reject(['Det finns redan en användare med denna e-post'])
                         }
-                        console.log(error.parent)
                         reject(['Kunde inte skapa användaren i databasen'])
                     }
 
