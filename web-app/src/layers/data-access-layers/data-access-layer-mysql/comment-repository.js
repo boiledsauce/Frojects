@@ -32,8 +32,7 @@ module.exports = () => {
 		async getAllCommentsByTaskId(taskId){
 
 			const query = `SELECT C.id, C.text, C.createdAt, C.updatedAt, C.taskId, C.authorId, U.firstName, U.lastName 
-							FROM Comments AS C JOIN Users AS U ON U.id = C.authorId WHERE C.taskId = ? 
-							ORDER BY C.createdAt DESC`
+							FROM Comments AS C JOIN Users AS U ON U.id = C.authorId WHERE C.taskId = ?`
 
 			const values = [
 				taskId
@@ -99,7 +98,8 @@ module.exports = () => {
 			const query = `UPDATE Comments SET text = ? WHERE id = ?`
 			
 			const values = [
-				text, id
+				text, 
+				id
 			]
 
 			return new Promise((resolve, reject) => {

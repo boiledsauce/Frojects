@@ -41,7 +41,7 @@ module.exports = ({taskManager, commentManager, projectManager}) => {
         let model
         try {
             const task = await taskManager.getTaskById(request.params.taskId)
-            const comment = await commentManager.getCommentById(request.params.commentId, request.session.user.id)
+            const comment = await commentManager.getCommentById(request.params.commentId)
 
             model = {task, comment}
             response.render('comment/delete', model)
@@ -67,7 +67,7 @@ module.exports = ({taskManager, commentManager, projectManager}) => {
         let model
 
         try {
-            const comment = await commentManager.getCommentById(request.params.commentId, request.session.user.id)
+            const comment = await commentManager.getCommentById(request.params.commentId)
 
             model = {
                 comment,
@@ -90,6 +90,7 @@ module.exports = ({taskManager, commentManager, projectManager}) => {
                 text: request.body.text
             }
             const userId = request.session.user.id
+            console.log("UserId:", userId)
             await commentManager.updateComment(comment, userId)
             response.redirect(`/app/projects/${request.params.projectId}/tasks/${request.params.taskId}`)
 

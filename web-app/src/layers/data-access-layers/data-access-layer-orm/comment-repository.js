@@ -30,7 +30,7 @@ module.exports = () => {
 					where: {
 						taskId
 					},
-					order: [['createdAt', 'DESC']],
+					order: [['createdAt', 'ASC']],
 					raw: true,
 					nest: true
 				})

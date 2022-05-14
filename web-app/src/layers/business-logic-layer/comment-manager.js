@@ -51,7 +51,7 @@ module.exports = ({commentRepository, taskRepository, projectManager}) => {
                     comment.isAuthor = isCommentAuthorOwned(comment.authorId, userId)
                 })
 
-                return comments
+                return comments.reverse()
 
             } catch (errors) {
                 if (errors instanceof Error){
@@ -63,16 +63,10 @@ module.exports = ({commentRepository, taskRepository, projectManager}) => {
 
         },
 
-        async getCommentById(commentId, userId) { 
+        async getCommentById(commentId) { 
 
             try {
                 const comment = await commentRepository.getCommentById(commentId)
-
-                const projectId = await getProjectIdByTaskId(comment.taskId)
-
-                if (!(await projectManager.userHasAccessToProject(userId, projectId))){
-                    throw ['Du kan endast se kommentarer i projekt du har tillgång till']
-                }
 
                 return comment
 
@@ -90,6 +84,7 @@ module.exports = ({commentRepository, taskRepository, projectManager}) => {
         async updateComment(comment, userId) {
             
             try {
+
                 const errors = commentValidator.getErrorsNewComment(comment)
 
                 if (errors.length > 0) throw errors
