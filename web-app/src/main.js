@@ -2,7 +2,7 @@ const awilix = require('awilix')
 
 const container = awilix.createContainer()
 
-const USE_ORM_DATA_ACCESS_LAYER = false
+const USE_ORM_DATA_ACCESS_LAYER = true
 
 let DATA_ACCESS_LAYER_DIRECTORY = ''
 

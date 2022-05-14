@@ -36,7 +36,7 @@ loadProjectsPage = async () => {
         }
 
     } catch (error) {
-        console.log("Ett fel uppstod:", error)
+        console.log('Ett fel uppstod:', error)
     }
 
 }

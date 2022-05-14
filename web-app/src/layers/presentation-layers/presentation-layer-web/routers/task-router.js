@@ -90,8 +90,9 @@ module.exports = ({taskManager, commentManager, projectManager}) => {
                 text: request.body.text
             }
             const userId = request.session.user.id
-            console.log("UserId:", userId)
+
             await commentManager.updateComment(comment, userId)
+
             response.redirect(`/app/projects/${request.params.projectId}/tasks/${request.params.taskId}`)
 
         } catch (errors) {
@@ -194,8 +195,9 @@ module.exports = ({taskManager, commentManager, projectManager}) => {
 
         try {
             const taskId = request.params.taskId
+            
             const task = await taskManager.getTaskById(taskId)
-            console.log(task)
+
             task.date = task.deadlineFormatted
 
             model = {

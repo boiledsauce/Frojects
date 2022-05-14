@@ -70,8 +70,6 @@ module.exports = ({taskRepository, projectManager}) => {
                     task.deadlineFormatted = task.deadline.toISOString().split('T')[0]
                 }
 
-                console.log(task)
-
                 return task
 
             } catch (errors) {
