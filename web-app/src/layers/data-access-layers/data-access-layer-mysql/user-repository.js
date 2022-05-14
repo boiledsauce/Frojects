@@ -78,7 +78,7 @@ module.exports = () => {
                 db.query(query, values, (error, users) => {
                     if (error) reject(['Ett fel uppstod när användaren skulle hämtas utifrån OpenID'])
                     if (users.length) resolve(users[0])
-                    reject(['Ingen användare med angivet OpenID hittades'])
+                    resolve(null)
                 })
             })
 

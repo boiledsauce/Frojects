@@ -176,7 +176,7 @@ module.exports = ({projectRepository}) => {
 
                 if (project.ownerId == userId) return true
 
-                for (const user in usersWithAccess){
+                for (const user of usersWithAccess){
                     if (userId == user.id) return true
                 }
                 

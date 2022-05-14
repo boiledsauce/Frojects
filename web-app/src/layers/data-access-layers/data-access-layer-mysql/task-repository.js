@@ -24,7 +24,8 @@ module.exports = () => {
             return new Promise((resolve, reject) => {
                 db.query(query, values, (error, result) => {
                     if (error) reject(['Uppgiften kunde inte skapas'])
-					resolve(result.inserted)
+					console.log(result)
+					resolve(result.insertId)
 				})
 			})
 
@@ -133,7 +134,7 @@ module.exports = () => {
 
 		async updateTask(taskId, title, description, deadline) {
 
-			const queryTask = `UPDATE Tasks SET title = ?, description = ? WHERE taskId = ?`
+			const queryTask = `UPDATE Tasks SET title = ?, description = ? WHERE id = ?`
 
 			const taskValues = [
 				title,
@@ -149,17 +150,19 @@ module.exports = () => {
 					db.query(queryTask, taskValues, (error, resultTask) => {
 						
 						if (error) {
+							console.log(error)
 							db.rollback(() => {
 								throw ['Kunde inte uppdatera uppgiften']
 							})
 
 						} else {
-							const queryDeadline = `UPDATE Deadline SET deadline = ? WHERE taskId = ?`
+							const queryDeadline = `UPDATE Deadlines SET deadline = ? WHERE taskId = ?`
 
 							const deadlineValues = [deadline, taskId]
 
-							db.query(queryDeadline, taskValues, (error, resultDeadline) => {
+							db.query(queryDeadline, deadlineValues, (error, resultDeadline) => {
 								if (error) {
+									console.log(error)
 									throw ['Kunde inte uppdatera deadlinen']
 								} else {
 									db.commit((error) => {

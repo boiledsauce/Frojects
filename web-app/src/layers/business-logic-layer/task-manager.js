@@ -13,11 +13,12 @@ module.exports = ({taskRepository, projectManager}) => {
 
                 if (errors.length > 0) throw errors
 
-                if (!(await projectManager.userHasAccessToProject(userId, projectId))){
+                if (!(await projectManager.userHasAccessToProject(userId, task.projectId))){
                     throw ['Du kan endast skapa uppgifter inom projekt du har tillgång till']
                 }
 
                 return await taskRepository.createTask(task)
+
 
             } catch (errors) {
                 if (errors instanceof Error){

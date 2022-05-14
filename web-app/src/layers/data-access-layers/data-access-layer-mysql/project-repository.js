@@ -25,9 +25,19 @@ module.exports = () => {
 
 		async giveUserAccessToProject(userId, projectId){
 
-			const query = 'INSERT INTO UserProjectAccesses (userId, projectID) VALUES (?, ?)'
+			const query = 'INSERT INTO UserProjectAccesses (userId, projectID, createdAt, updatedAt) VALUES (?, ?, ?, ?)'
 
-			const values = [userId, projectId]
+			let createdAt = new Date()
+			createdAt.toISOString().split('T')[0]
+			
+			const updatedAt = createdAt
+
+			const values = [
+				userId,
+				projectId,
+				createdAt,
+				updatedAt
+			]
 
 			return new Promise((resolve, reject) => {
 				db.query(query, values, (error, result) => {
@@ -55,14 +65,15 @@ module.exports = () => {
 
 		async getProjectsSharedWithUser(userId){
 
-			const query = `SELECT * FROM Projects 
-							JOIN UserProjectAccesses AS UPA WHERE UPA.userId = ?`
+			const query = `SELECT * FROM Projects AS P
+							JOIN UserProjectAccesses AS UPA ON P.id = UPA.projectId WHERE UPA.userId = ?`
 
 			const values = [userId]
 
 			return new Promise((resolve, reject) => {
 				db.query(query, values, (error, projects) => {
 					if (error) reject(['Kunde inte hämta projekt delade med användaren'])
+					console.log(projects)
 					resolve(projects)
 				})
 			})
