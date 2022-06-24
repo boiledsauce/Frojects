@@ -26,7 +26,9 @@ const loadDeleteProjectPage = async (projectId) => {
                     event.preventDefault()
 
                     if (projectIdField.value == project.id){
+                        
                         deleteProjectFormHandler(projectIdField.value)
+                        
                     } else {
                         toolbox.printErrors(['ProjektId:n matchar ej'])
                         toolbox.activateSubmitButton()

@@ -32,15 +32,9 @@ const api = {
             headers
         }
 
-        let body = ''
+        if (bodyParams !== undefined){
 
-        if (bodyParams != undefined){
-
-            for (const [key, value] of Object.entries(bodyParams)){
-                body += `${key}=${value}&`
-            }
-
-            body = body.slice(0, -1)
+            const body = await toolbox.generateRequestBody(bodyParams)
 
             requestOptions.body = body
         }

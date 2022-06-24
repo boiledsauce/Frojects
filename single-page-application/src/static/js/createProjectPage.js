@@ -4,7 +4,7 @@ const loadCreateProjectPage = async () => {
 
         if (await toolbox.userIsLoggedIn()){
 
-            toolbox.activateSubmitButton()
+            await toolbox.activateSubmitButton()
 
             toolbox.setAttribute('.current-page .btn-cancel', 'href', `/projects`)
 

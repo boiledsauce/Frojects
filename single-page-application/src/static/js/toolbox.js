@@ -140,6 +140,16 @@ const toolbox = {
     setAttribute: async (selector, attribute, value) => {
         const element = document.querySelector(selector)
         element.setAttribute(attribute, value)
+    },
+
+    generateRequestBody: async (bodyParams) => {
+        let body = ''
+
+        for (const [key, value] of Object.entries(bodyParams)){
+            body += `${encodeURIComponent(key)}=${encodeURIComponent(value)}&`
+        }
+
+        return body.slice(0, -1)
     }
 
 }

@@ -36,11 +36,11 @@ window.addEventListener('popstate', () => {
     showPage(location.pathname)
 })
 
-hideCurrentPage = () => {
+const hideCurrentPage = () => {
     document.querySelector('.current-page').classList.remove('current-page')
 }
 
-showPage = (url) => {
+const showPage = (url) => {
     let nextPageId
 
     history.pushState(null, "", url)
@@ -104,10 +104,11 @@ showPage = (url) => {
 
 }
 
-logoutFormHandler = (event) => {
+const logoutFormHandler = (event) => {
     event.preventDefault()
 
     const logoutInputField = event.target.querySelector('#logout')
+
     if (logoutInputField.value == 'logout'){
         toolbox.destroyUserSession()
 
