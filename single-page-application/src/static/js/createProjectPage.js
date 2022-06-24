@@ -29,7 +29,7 @@ const loadCreateProjectPage = async () => {
     }
 }
 
-createProjectFormHandler = async (projectName) => {
+const createProjectFormHandler = async (projectName) => {
 
     toolbox.showLoadingIndicator()
     toolbox.deactiveSubmitButton()
