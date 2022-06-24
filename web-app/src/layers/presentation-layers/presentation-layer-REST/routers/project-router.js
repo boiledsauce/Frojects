@@ -14,7 +14,7 @@ module.exports = ({taskRESTRouter, projectManager}) => {
         }
     })
 
-    router.post('/create', async (request, response) => {
+    router.post('/', async (request, response) => {
         try {
             const project = {
                 name: request.body.name,

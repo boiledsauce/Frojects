@@ -35,7 +35,7 @@ createProjectFormHandler = async (projectName) => {
     toolbox.deactiveSubmitButton()
 
     const response = await api.makeCall({
-        uri: '/projects/create',
+        uri: '/projects',
         method: 'POST',
         bodyParams: {
             name: projectName
@@ -44,6 +44,8 @@ createProjectFormHandler = async (projectName) => {
 
     if (response.status == 200){
         await toolbox.activateSubmitButton()
+
+        toolbox.clearFormInput()
 
         toolbox.clearErrors()
 
