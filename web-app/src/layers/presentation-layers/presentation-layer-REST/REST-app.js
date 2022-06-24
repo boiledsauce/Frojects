@@ -3,6 +3,12 @@ const cors = require('cors')
 
 const REQUIRED_CONTENT_TYPE = 'application/x-www-form-urlencoded'
 
+const dataModifyingMethods = [
+	"POST",
+	"PUT",
+	"DELETE"
+]
+
 module.exports = ({mainRESTRouter}) => {
 
 	return {
@@ -19,12 +25,21 @@ module.exports = ({mainRESTRouter}) => {
 			//Allow Cross-Origin Resource Sharing
 			app.use(cors())
 
-			//Validate Content Type
+			//Validate Content-Type
 			app.use((request, response, next) => {
-				const contentType = request.header('Content-Type')
 
-				if (contentType != REQUIRED_CONTENT_TYPE){
-					return response.status(400).json({error: 'invalid_request'})
+				if (dataModifyingMethods.includes(request.method)){
+
+					const contentType = request.header('Content-Type')
+
+					if (contentType !== REQUIRED_CONTENT_TYPE){
+						
+						return response.status(400).json({error: 'invalid_request'})
+
+					} else {
+						next()
+					}
+
 				} else {
 					next()
 				}
