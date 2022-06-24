@@ -25,7 +25,7 @@ registerFormHandler = async (event) => {
 
     try{
         const createUserResponse = await api.makeCall({
-            uri: '/users/create', 
+            uri: '/users', 
             method: 'POST',
             bodyParams: {
                 firstName,
@@ -72,6 +72,7 @@ registerFormHandler = async (event) => {
 
                 hideCurrentPage()
                 showPage('/')
+                
             } else{
                 toolbox.flashMessage('Kunde inte hämta tokens')
                 toolbox.activateSubmitButton()

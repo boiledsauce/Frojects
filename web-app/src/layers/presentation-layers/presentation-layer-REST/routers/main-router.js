@@ -40,7 +40,7 @@ const getIdToken = (user) => {
 
 module.exports = ({projectRESTRouter, userManager}) => {
 
-    router.post('/users/create', async (request, response) => {
+    router.post('/users', async (request, response) => {
     
         const user = {
             firstName: request.body.firstName,
