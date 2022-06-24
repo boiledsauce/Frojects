@@ -1,4 +1,4 @@
-loadLoginPage = async () => {
+const loadLoginPage = async () => {
     try{
         toolbox.setTitle('Logga in')
 
@@ -12,7 +12,7 @@ loadLoginPage = async () => {
 
 }
 
-loginFormHandler = async (event) => {
+const loginFormHandler = async (event) => {
     event.preventDefault()
 
     toolbox.showLoadingIndicator()

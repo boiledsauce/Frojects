@@ -1,4 +1,4 @@
-loadUpdateProjectPage = async (projectId) => {
+const loadUpdateProjectPage = async (projectId) => {
     try{
         toolbox.setTitle('Uppdatera projekt')
 
@@ -46,7 +46,7 @@ loadUpdateProjectPage = async (projectId) => {
 
 }
 
-updateProjectFormHandler = async (projectId, newName) => {
+const updateProjectFormHandler = async (projectId, newName) => {
 
     toolbox.showLoadingIndicator()
     toolbox.deactiveSubmitButton()

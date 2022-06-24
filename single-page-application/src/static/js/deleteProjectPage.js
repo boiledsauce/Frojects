@@ -1,4 +1,4 @@
-loadDeleteProjectPage = async (projectId) => {
+const loadDeleteProjectPage = async (projectId) => {
     try{
         toolbox.setTitle('Ta bort projekt')
 
@@ -51,7 +51,7 @@ loadDeleteProjectPage = async (projectId) => {
 
 }
 
-deleteProjectFormHandler = async (projectId) => {
+const deleteProjectFormHandler = async (projectId) => {
 
     toolbox.showLoadingIndicator()
     toolbox.deactiveSubmitButton()

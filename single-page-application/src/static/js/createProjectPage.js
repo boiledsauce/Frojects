@@ -1,4 +1,4 @@
-loadCreateProjectPage = async () => {
+const loadCreateProjectPage = async () => {
     try{
         toolbox.setTitle('Uppdatera projekt')
 

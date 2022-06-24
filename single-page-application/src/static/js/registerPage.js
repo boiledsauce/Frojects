@@ -1,4 +1,4 @@
-loadRegisterPage = async () => {
+const loadRegisterPage = async () => {
 
     try{
         toolbox.setTitle('Skapa konto')
@@ -13,7 +13,7 @@ loadRegisterPage = async () => {
 
 }
 
-registerFormHandler = async (event) => {
+const registerFormHandler = async (event) => {
     event.preventDefault()
 
     toolbox.showLoadingIndicator()

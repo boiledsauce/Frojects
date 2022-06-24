@@ -1,4 +1,4 @@
-loadProjectsPage = async () => {
+const loadProjectsPage = async () => {
 
     try{
         toolbox.setTitle('Projekt')

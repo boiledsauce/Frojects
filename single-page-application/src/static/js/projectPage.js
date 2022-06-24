@@ -1,4 +1,4 @@
-loadProjectPage = async (projectId) => {
+const loadProjectPage = async (projectId) => {
 
     try{
 
