@@ -6,6 +6,8 @@ const ISSUING_AUTHORITY = 'https://localhost:3000.com'
 
 const ACCESS_TOKEN_SECRET = 'd52b08e837b9ec2f937b734c5563daefc7a83b28fdf1864ea7f0e1c7f2c3eb6eb216fed8f06ee8fcc96f7224f1c98a61f9ebf27bc67cc09cd4452d60583e9a9f'
 
+const REQUIRED_GRANT_TYPE = 'password'
+
 const authenticateAccessToken = (request, response, next) => {
 	const authorizationHeader = request.header('Authorization')
 
@@ -65,7 +67,7 @@ module.exports = ({projectRESTRouter, userManager}) => {
 
         const grant_type = request.body.grant_type
 
-        if (grant_type != 'password'){
+        if (grant_type !== REQUIRED_GRANT_TYPE){
             return response.status(400).json({error: 'unsupported_grant_type'})
         }
     
