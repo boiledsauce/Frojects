@@ -41,7 +41,10 @@ module.exports = ({userManager}) => {
     })
     
     router.get('/google-login', async (request, response) => {
-        response.redirect("https://accounts.google.com/o/oauth2/auth?client_id=845630289985-h1s1qhcu7h78kmi7mogcqeplqbtta4nb.apps.googleusercontent.com&redirect_uri=http://localhost:3000/user/google-login-response&response_type=code&scope=openid%20profile%20email")  
+
+        const host = await userManager.getHost(request)
+
+        response.redirect(`https://accounts.google.com/o/oauth2/auth?client_id=845630289985-h1s1qhcu7h78kmi7mogcqeplqbtta4nb.apps.googleusercontent.com&redirect_uri=http://${host}/user/google-login-response&response_type=code&scope=openid%20profile%20email`)  
     })
 
     router.get('/google-login-response', async (request, response) => {

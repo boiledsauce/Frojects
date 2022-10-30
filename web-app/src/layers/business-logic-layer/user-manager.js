@@ -42,8 +42,7 @@ module.exports = ({userRepository}) => {
 
             try {
 
-                const proxyHost = request.headers["x-forwarded-host"];
-                const host = proxyHost ? proxyHost : request.headers.host;
+                const host = await this.getHost(request)
 
                 const REDIRECT_URI = `http://${host}/user/google-login-response`
 
@@ -178,6 +177,15 @@ module.exports = ({userRepository}) => {
         
         userIsLoggedIn(session){
             return session.hasOwnProperty('user')
+        },
+
+        async getHost(request){
+
+            const proxyHost = request.headers["x-forwarded-host"];
+
+            const host = proxyHost ? proxyHost : request.headers.host;
+
+            return host
         }
 
     }
