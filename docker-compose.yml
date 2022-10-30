@@ -3,7 +3,7 @@ services:
   "web-app":
     build: "./web-app"
     ports:
-    - "3000:8080"
+    - "3000:8090"
     volumes:
     - "./web-app/src:/web-app/src"
     depends_on:
