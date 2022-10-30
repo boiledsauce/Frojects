@@ -42,8 +42,8 @@ module.exports = ({userRepository}) => {
 
             try {
 
-                const proxyHost = req.headers["x-forwarded-host"];
-                const host = proxyHost ? proxyHost : req.headers.host;
+                const proxyHost = request.headers["x-forwarded-host"];
+                const host = proxyHost ? proxyHost : request.headers.host;
 
                 const REDIRECT_URI = `http://${host}/user/google-login-response`
 
