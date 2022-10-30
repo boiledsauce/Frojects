@@ -47,7 +47,7 @@ module.exports = ({userManager}) => {
     router.get('/google-login-response', async (request, response) => {
         try {
             const authorizationCode = request.query.code
-            const authResponse = await userManager.getGoogleAuthCodeResponse(authorizationCode)
+            const authResponse = await userManager.getGoogleAuthCodeResponse(authorizationCode, request)
             const ticket = await userManager.getIdTicket(authResponse.data.id_token)
             const payload = ticket.payload
             const openId = payload.sub

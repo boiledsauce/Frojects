@@ -7,7 +7,6 @@ const qs = require("querystring")
 
 const CLIENT_ID = "845630289985-h1s1qhcu7h78kmi7mogcqeplqbtta4nb.apps.googleusercontent.com"
 const CLIENT_SECRET = "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"
-const REDIRECT_URI = "http://localhost:3000/user/google-login-response"
 const GRANT_TYPE = "authorization_code"
 const GOOGLE_AUTH_TOKEN_URL = "https://www.googleapis.com/oauth2/v4/token"
 
@@ -39,9 +38,15 @@ module.exports = ({userRepository}) => {
 
     return {
 
-        async getGoogleAuthCodeResponse(authorizationCode){
+        async getGoogleAuthCodeResponse(authorizationCode, request){
 
             try {
+
+                const proxyHost = req.headers["x-forwarded-host"];
+                const host = proxyHost ? proxyHost : req.headers.host;
+
+                const REDIRECT_URI = `http://${host}/user/google-login-response`
+
                 return await axios.post(GOOGLE_AUTH_TOKEN_URL, qs.stringify({            
                     client_id: CLIENT_ID,
                     client_secret: CLIENT_SECRET,
