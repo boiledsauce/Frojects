@@ -3,7 +3,7 @@ const cors = require('cors')
 
 const REQUIRED_CONTENT_TYPE = 'application/x-www-form-urlencoded'
 
-const dataModifyingMethods = [
+const DATA_MODIFYING_METHODS = [
 	"POST",
 	"PUT",
 	"DELETE"
@@ -28,7 +28,7 @@ module.exports = ({mainRESTRouter}) => {
 			//Validate Content-Type
 			app.use((request, response, next) => {
 
-				if (dataModifyingMethods.includes(request.method)){
+				if (DATA_MODIFYING_METHODS.includes(request.method)){
 
 					const contentType = request.header('Content-Type')
 
