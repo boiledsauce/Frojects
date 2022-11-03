@@ -64,6 +64,20 @@ module.exports = ({mainRouter, projectManager, taskManager}) => {
 			//Generate and translate breadcrumbs
 			app.use(breadcrumb(async (item, index) => {
 
+				if (!item.url.includes('localhost') && !item.url.includes('127.0.0.1')){
+					const domain = new URL(item.url)
+
+					const uri = item.url.substring(item.url.indexOf('/')+1)
+	
+					if (uri){
+	
+						const protocol = item.url.includes('https') ? 'https' : 'http'
+	
+						//Replace localhost with actual hostname
+						item.url = `${protocol}://${domain.hostname}` + uri
+					}
+				}
+
 				switch(item.label){
 
 					case 'app':
