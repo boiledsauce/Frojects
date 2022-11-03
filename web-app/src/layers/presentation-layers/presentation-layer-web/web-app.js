@@ -19,6 +19,8 @@ module.exports = ({mainRouter, projectManager, taskManager}) => {
 
 			const app = express()
 
+			//Trust proxy since production environment is probably using Apache or similiar
+			app.enable('trust proxy');
 
 			//View configuration
 			app.engine('hbs', expressHandlebars.engine({
