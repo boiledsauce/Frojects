@@ -111,6 +111,18 @@ module.exports = ({mainRouter, projectManager, taskManager}) => {
 						item.label = 'Ta bort'
 						break
 
+					case 'user':
+						item.label = 'Användare'
+						break
+
+					case 'login':
+						item.label = 'Logga in'
+						break
+
+					case 'register':
+						item.label = 'Registrera'
+						break
+
 					default:
 						break
 						
