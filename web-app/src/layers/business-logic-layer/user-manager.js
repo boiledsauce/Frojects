@@ -44,7 +44,9 @@ module.exports = ({userRepository}) => {
 
                 const host = await this.getHost(request)
 
-                const REDIRECT_URI = `${request.protocol}://${host}/user/google-login-response`
+                const protocol = request.hostname.includes('localhost') ? 'http' : 'https'
+
+                const REDIRECT_URI = `${protocol}://${host}/user/google-login-response`
 
                 return await axios.post(GOOGLE_AUTH_TOKEN_URL, qs.stringify({            
                     client_id: CLIENT_ID,
