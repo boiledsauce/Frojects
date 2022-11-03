@@ -63,6 +63,7 @@ module.exports = ({userManager}) => {
                     openId,
                     email: payload.email, 
                 }
+                //TODO Catch error if email already exists
                 user = await userManager.createUser(userDetails)
             } 
             request.session.user = user

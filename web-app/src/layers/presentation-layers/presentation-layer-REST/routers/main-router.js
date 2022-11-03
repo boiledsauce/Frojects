@@ -2,8 +2,6 @@ const jwt = require('jsonwebtoken')
 
 const router = require("express").Router({mergeParams: true})
 
-const ISSUING_AUTHORITY = 'https://localhost:3000.com'
-
 const ACCESS_TOKEN_SECRET = 'd52b08e837b9ec2f937b734c5563daefc7a83b28fdf1864ea7f0e1c7f2c3eb6eb216fed8f06ee8fcc96f7224f1c98a61f9ebf27bc67cc09cd4452d60583e9a9f'
 
 const REQUIRED_GRANT_TYPE = 'password'
@@ -28,11 +26,13 @@ const authenticateAccessToken = (request, response, next) => {
 	}
 }
 
-const getIdToken = (user) => {
+const getIdToken = (user, hostName) => {
 	const idTokenPayload = user
 
     delete idTokenPayload.hashedPassword
     delete idTokenPayload.openId
+
+    const ISSUING_AUTHORITY = hostName
 
 	idTokenPayload.iss = ISSUING_AUTHORITY
 	idTokenPayload.aud = user.id
@@ -92,9 +92,11 @@ module.exports = ({projectRESTRouter, userManager}) => {
 
             const accessToken = jwt.sign(accessTokenPayload, ACCESS_TOKEN_SECRET)
 
+            const host = await userManager.getHost(request)
+
             return response.json({
                 access_token: accessToken,
-                id_token: getIdToken(user)
+                id_token: getIdToken(user, host)
             })	
 
         } else {
