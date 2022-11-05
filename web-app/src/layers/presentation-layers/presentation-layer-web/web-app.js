@@ -1,3 +1,5 @@
+const { request } = require('http')
+
 module.exports = ({mainRouter, projectManager, taskManager}) => {
 
 	return {
@@ -54,11 +56,15 @@ module.exports = ({mainRouter, projectManager, taskManager}) => {
 			//CSRF Protection
 			app.use(csrf())
 
+			let requestObject
+
 			//Make variables available to all views
 			app.use((request, response, next) => {
 				response.locals.message = request.flash("message")
 				response.locals.session = request.session
 				response.locals.csrfToken = request.csrfToken()
+
+				request = request
 
 				next()
 			})
@@ -66,18 +72,8 @@ module.exports = ({mainRouter, projectManager, taskManager}) => {
 			//Generate and translate breadcrumbs
 			app.use(breadcrumb(async (item, index) => {
 
-				if (!item.url.includes('localhost') && !item.url.includes('127.0.0.1')){
-					const domain = new URL(item.url)
-
-					const uri = item.url.substring(item.url.indexOf('/')+1)
-	
-					if (uri){
-	
-						const protocol = item.url.includes('https') ? 'https' : 'http'
-	
-						//Replace localhost with actual hostname
-						item.url = `${protocol}://${domain.hostname}` + uri
-					}
+				if (!requestObject.hostname.includes('localhost') && !requestObject.hostname.includes('127.0.0.1')){
+					item.url = req.protocol + '://' + request.get('host') + req.originalUrl
 				}
 
 				switch(item.label){
