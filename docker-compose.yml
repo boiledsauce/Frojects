@@ -28,7 +28,7 @@ services:
     - "3306:3306"
     healthcheck:
       test: "/usr/bin/mysql --user=root --password=V4x6qmfgwliejFcE5jd0 --execute \"SHOW DATABASES\""
-      interval: 2s
+      interval: 6s
       timeout: 20s
       retries: 10
   "redis":
