@@ -1,5 +1,3 @@
-const { request } = require('http')
-
 module.exports = ({mainRouter, projectManager, taskManager}) => {
 
 	return {
@@ -72,9 +70,11 @@ module.exports = ({mainRouter, projectManager, taskManager}) => {
 			//Generate and translate breadcrumbs
 			app.use(breadcrumb(async (item, index) => {
 
-				if (!requestObject.hostname.includes('localhost') && !requestObject.hostname.includes('127.0.0.1')){
-					item.url = req.protocol + '://' + request.get('host') + req.originalUrl
-				}
+				//item.url is always initially localhost which needs to be fixed
+				const url = new URL(item.url)
+				url.host = requestObject.get('host')
+
+				item.url = url.toString()
 
 				switch(item.label){
 
