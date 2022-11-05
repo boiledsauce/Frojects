@@ -64,7 +64,7 @@ module.exports = ({mainRouter, projectManager, taskManager}) => {
 				response.locals.session = request.session
 				response.locals.csrfToken = request.csrfToken()
 
-				request = request
+				requestObject = request
 
 				next()
 			})
