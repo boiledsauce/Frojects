@@ -1,0 +1,17 @@
+module.exports = {
+    'Home': 'Hem',
+    'app': 'App',  
+    'create': 'Skapa',
+    'update': 'Uppdatera',
+    'projects': 'Projekt',
+    'comment': 'Kommentar',
+    'usersWithAccess': 'Användare med tillgång',
+    'share': 'Dela',
+    'tasks': 'Uppgifter',
+    'create comment': 'Skapa kommentar',
+    'removeUser': 'Ta bort användare',
+    'delete': 'Ta bort',
+    'user': 'Användare',
+    'login': 'Logga in',
+    'register': 'Registrera',
+}

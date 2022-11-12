@@ -70,75 +70,9 @@ module.exports = ({mainRouter, projectManager, taskManager}) => {
 			//Generate and translate breadcrumbs
 			app.use(breadcrumb(async (item, index) => {
 
-				//item.url is always initially localhost which needs to be fixed
-				const url = new URL(item.url)
-				url.host = requestObject.get('host')
+				const pageTitles = require('./page-titles')
 
-				item.url = url.toString()
-
-				switch(item.label){
-
-					case 'app':
-						item.label = 'App'
-						break
-						
-					case 'create':
-						item.label = 'Skapa'
-						break
-
-					case 'update':
-						item.label = 'Uppdatera'
-						break
-
-					case 'projects':
-						item.label = 'Projekt'
-						previousLabelWasProject = true
-						break
-					
-					case 'comment':
-						item.label = 'Kommentar'
-						break
-
-					case 'usersWithAccess':
-						item.label = 'Användare med tillgång'
-						break
-
-					case 'share':
-						item.label = 'Dela'
-						break
-
-					case 'tasks':
-						item.label = 'Uppgifter'
-						break
-
-					case 'create comment':
-						item.label = 'Skapa kommentar'
-						break
-
-					case 'removeUser':
-						item.label = 'Ta bort användare'
-						break
-
-					case 'delete':
-						item.label = 'Ta bort'
-						break
-
-					case 'user':
-						item.label = 'Användare'
-						break
-
-					case 'login':
-						item.label = 'Logga in'
-						break
-
-					case 'register':
-						item.label = 'Registrera'
-						break
-
-					default:
-						break
-						
-				}
+				item.label = pageTitles[item.label] ? pageTitles[item.label] : item.label
 
 				//Translate projectId, taskId to corresponding resources actual name/title
 
