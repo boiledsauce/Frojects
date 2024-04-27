@@ -1,17 +1,14 @@
-<h1>Frojects</h1>
-<p>A project management platform</p>
-<h2>Run instructions</h2>
-<ol>
-  <li>Run <code>git clone https://github.com/boiledsauce/Frojects</code></li>
-  <li>Navigate to <code>/Frojects/</code></li>
-  <li>Run <code>docker-compose up</code></li>
-</ol>
+# Frojects
+A project management platform by Gustav Persson & William Branth
+## Run instructions
+1. Run `git clone https://github.com/boiledsauce/Frojects`
+2. Navigate to `/Frojects/`
+3. Run `docker-compose up`
 
-<h2>Interfaces</h2>
-<ul>
-  <li>Visit <code>localhost:3000</code> to access website</li>
-  <li>Visit <code>localhost:4000</code> to access Single Page Application</li>
-</ul>
+## Interfaces
+- Visit `localhost:3000` to access the traditional website version
+- Visit `localhost:4000` to access Single Page Application
+
 
 <h2>Requirements</h2>
 <ul>
