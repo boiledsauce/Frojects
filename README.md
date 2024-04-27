@@ -10,10 +10,8 @@ A project management platform by Gustav Persson & William Branth
 - Visit `localhost:4000` to access Single Page Application
 
 
-<h2>Requirements</h2>
-<ul>
-  <li>Docker</li>
-  <li>npm</li>
-  <li>NodeJS</li>
-</ul>
+## Requirements
+- Docker
+- npm
+- NodeJS
 
